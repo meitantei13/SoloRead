@@ -3,12 +3,12 @@ ActiveRecord::Base.transaction do
 
   15.times do |i|
     Book.create!(
-      title: "サンプルタイトル#{ i + 1 }",
-      author: "テスト作家#{ i + 1 }",
-      content: "サンプル感想です#{ i + 1 }",
-      read_date: Faker::Date.between(from: Date.today - 365, to: Date.today),
+      title: "サンプルタイトル#{i + 1}",
+      author: "テスト作家#{i + 1}",
+      content: "サンプル感想です#{i + 1}",
+      read_date: Faker::Date.between(from: Time.zone.today - 365, to: Time.zone.today),
       status: :published,
-      user: user1
-      )
+      user: user1,
+    )
   end
 end

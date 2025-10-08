@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Book, type: :model do
   context "factoryのデフォルト設定に従ったとき" do
@@ -12,11 +12,11 @@ RSpec.describe Book, type: :model do
   describe "Validations" do
     subject { book.valid? }
 
-    let(:book) { build(:book, title:, author:, content:, read_date:, status:, user: ) }
+    let(:book) { build(:book, title:, author:, content:, read_date:, status:, user:) }
     let(:title) { Faker::Lorem.sentence }
     let(:author) { Faker::Name.name }
     let(:content) { Faker::Lorem.paragraph }
-    let(:read_date) { Faker::Date.between(from: Date.today - 365, to: Date.today) }
+    let(:read_date) { Faker::Date.between(from: Time.zone.today - 365, to: Time.zone.today) }
     let(:status) { :published }
     let(:user) { create(:user) }
 
