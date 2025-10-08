@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_04_021759) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_06_055206) do
+  create_table "books", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title", comment: "本のタイトル"
+    t.string "author", comment: "著者名"
+    t.text "content", comment: "感想・メモ"
+    t.date "read_date", comment: "読了日"
+    t.integer "status", comment: "ステータス（10:未保存, 20:下書き, 30:投稿中）"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_books_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -36,4 +48,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_04_021759) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "books", "users"
 end

@@ -1,0 +1,7 @@
+ja:
+  activerecord:
+    attributes:
+      book:
+        title: タイトル
+        content: 感想
+        read_date: 読了日
