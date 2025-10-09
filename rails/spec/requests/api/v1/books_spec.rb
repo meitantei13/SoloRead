@@ -20,7 +20,7 @@ RSpec.describe "Api::V1::Books", type: :request do
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["books", "meta"]
         expect(res["books"].length).to eq 10
-        expect(res["books"][0].keys).to eq ["id", "title", "author", "content", "read_date", "user"]
+        expect(res["books"][0].keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
         expect(res["books"][0]["user"].keys).to eq ["name"]
         expect(res["meta"].keys).to eq ["current_page", "total_pages"]
         expect(res["meta"]["current_page"]).to eq 1
@@ -37,7 +37,7 @@ RSpec.describe "Api::V1::Books", type: :request do
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["books", "meta"]
         expect(res["books"].length).to eq 10
-        expect(res["books"][0].keys).to eq ["id", "title", "author", "content", "read_date", "user"]
+        expect(res["books"][0].keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
         expect(res["books"][0]["user"].keys).to eq ["name"]
         expect(res["meta"].keys).to eq ["current_page", "total_pages"]
         expect(res["meta"]["current_page"]).to eq 2
@@ -61,7 +61,7 @@ RSpec.describe "Api::V1::Books", type: :request do
         it "正常にレコードを取得できる" do
           subject
           res = JSON.parse(response.body)
-          expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "user"]
+          expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
           expect(res["user"].keys).to eq ["name"]
           expect(response).to have_http_status(:ok)
         end

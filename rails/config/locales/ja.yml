@@ -5,3 +5,9 @@ ja:
         title: タイトル
         content: 感想
         read_date: 読了日
+  enums:
+    book:
+      status:
+        unsaved: 未保存
+        dreaft: 下書き
+        published: 投稿中
