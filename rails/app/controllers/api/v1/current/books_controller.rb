@@ -13,7 +13,7 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   end
 
   private
-  
+
     def book_params
       params.require(:book).permit(:title, :author, :content, :read_date, :status)
     end

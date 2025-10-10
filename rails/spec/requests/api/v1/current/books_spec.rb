@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Api::V1::Current::Books", type: :request do
   let(:headers) { current_user.create_new_auth_token }
@@ -20,6 +20,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
 
     context "ログインユーザーに紐づく未保存ステータスが１件のとき" do
       before { create(:book, user: current_user, status: :unsaved) }
+
       it "既存の未保存ステータス記事を表示する" do
         expect { subject }.not_to change { current_user.books.count }
         res = JSON.parse(response.body)
@@ -35,13 +36,13 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
 
     let(:other_user) { create(:user) }
     let(:params) { { "book": { "title": "テストタイトル２", "author": "テスト著者２", "contect": "テスト本文２", "read_date": "2025.10.10", "status": "published" } } }
-    
+
     context "id がログインユーザーに紐づく books レコードの id であるとき" do
-      let(:current_user_book) { create(:book, title: "テストタイトル１", author:"", content: "テスト本文１", status: :draft, user: current_user) }
+      let(:current_user_book) { create(:book, title: "テストタイトル１", author: "", content: "テスト本文１", status: :draft, user: current_user) }
       let(:id) { current_user_book.id }
 
       it "正常にレコードを更新できる" do
-        expect { subject }.to change { current_user_book.reload.title}.from("テストタイトル１").to("テストタイトル２") and
+        expect { subject }.to change { current_user_book.reload.title }.from("テストタイトル１").to("テストタイトル２") and
           change { current_user_book.reload.author }.from("").to("テスト著者２") and
           change { current_user_book.reload.content }.from("テスト本文１").to("テスト本文２") and
           change { current_user_book.reload.status }.from("draft").to("published")
