@@ -9,7 +9,7 @@ Rails.application.routes.draw do
         resource :user, only: [:show]
         resources :books, only: [:index, :show, :create, :update]
       end
-      resources :books, only: [:index, :show]
+      resources :books, only: [:index, :show] # ここ要らないかも！？
     end
   end
 end

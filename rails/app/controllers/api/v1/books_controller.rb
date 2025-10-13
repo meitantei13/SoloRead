@@ -16,3 +16,4 @@ class Api::V1::BooksController < ApplicationController
     render json: book
   end
 end
+# routes.rbを削除するなら一緒に削除
