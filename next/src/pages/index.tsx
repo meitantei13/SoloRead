@@ -1,5 +1,6 @@
 import { Box, Typography, Button, Stack } from '@mui/material'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -52,13 +53,15 @@ export default function Home() {
         </Typography>
 
         <Stack spacing={3} direction="row" sx={{ p: 4 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ width: 140, height: 50, fontWeight: 'bold' }}
-          >
-            ログイン
-          </Button>
+          <Link href="/sign_in">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ width: 140, height: 50, fontWeight: 'bold' }}
+            >
+              ログイン
+            </Button>
+          </Link>
           <Button
             variant="contained"
             color="primary"
