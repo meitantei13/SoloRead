@@ -7,16 +7,16 @@ type BookCardProps = {
 }
 
 // ログイン承認ができれば、コード変更(そもそも記事登録は空欄では不可)
-const omit = (text: string) => (len: number) => (ellipsis: string) => {
-  if (!text) return ''
-  return text.length >= len
-    ? text.slice(0, len - ellipsis.length) + ellipsis
-    : text
-}
+//const omit = (text: string) => (len: number) => (ellipsis: string) => {
+//if (!text) return ''
+//return text.length >= len
+//? text.slice(0, len - ellipsis.length) + ellipsis
+//: text
+//}
 
 // ログイン承認が作成できれば上記コードを消して下記コードに変更
-// const omit = (text: string) => (len: number) => (ellipsis: string) =>
-//  text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text
+const omit = (text: string) => (len: number) => (ellipsis: string) =>
+  text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text
 
 const BookCard = (props: BookCardProps) => {
   return (

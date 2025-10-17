@@ -30,8 +30,7 @@ const MyPage: NextPage = () => {
   if (error) return <Error />
   if (!data) return <Loading />
 
-  const books = camelcaseKeys(data.books)
-
+  const books: BookProps[] = camelcaseKeys(data)
   return (
     <Box sx={{ backgroundColor: '#e6f2ff', minHeight: '100vh' }}>
       <Container>
@@ -39,7 +38,7 @@ const MyPage: NextPage = () => {
         <Grid container spacing={4}>
           {books.map((book: BookProps, i: number) => (
             <Grid key={i} item xs={12} md={6}>
-              <Link href={'/books/' + book.id}>
+              <Link href={'/current/books/' + book.id}>
                 <BookCard
                   title={book.title}
                   author={book.author}
