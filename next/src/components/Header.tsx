@@ -33,13 +33,13 @@ const Header = () => {
             </Link>
           </Box>
           <Button
-            color="primary"
             variant="outlined"
             sx={{
               textTransform: 'none',
               fontSize: 16,
               borderRadius: 2,
               boxShadow: 'none',
+              color: '#46c934ff',
               border: '1.5px solid #88cb7f',
             }}
           >
