@@ -348,7 +348,8 @@ textarea {
  * Fix appearance for Firefox
  */
 [type="number"] {
-  -moz-appearance: textfield;
+    appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 /**
