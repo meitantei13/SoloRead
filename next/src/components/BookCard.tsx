@@ -6,15 +6,6 @@ type BookCardProps = {
   readDate: string
 }
 
-// ログイン承認ができれば、コード変更(そもそも記事登録は空欄では不可)
-//const omit = (text: string) => (len: number) => (ellipsis: string) => {
-//if (!text) return ''
-//return text.length >= len
-//? text.slice(0, len - ellipsis.length) + ellipsis
-//: text
-//}
-
-// ログイン承認が作成できれば上記コードを消して下記コードに変更
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
   text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text
 
@@ -31,10 +22,10 @@ const BookCard = (props: BookCardProps) => {
     <Card>
       <CardContent>
         <Typography
-          component="h3"
+          component="h1"
           sx={{
             md: 2,
-            minHeight: 48,
+            minHeight: 50,
             lineHeight: 1.5,
           }}
         >
@@ -42,18 +33,11 @@ const BookCard = (props: BookCardProps) => {
           <Box sx={valueSx}>{omit(props.title)(45)('...')}</Box>
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2 }}>
-          <Typography
-            component="h5"
-            sx={{
-              md: 2,
-              minHeight: 48,
-              lineHeight: 1.5,
-            }}
-          >
+          <Typography component="h5">
             <Box sx={{ labelSx }}>著者</Box>
             <Box sx={valueSx}>{omit(props.author)(12)('...')}</Box>
           </Typography>
-          <Typography>
+          <Typography component="h5">
             <Box sx={{ labelSx }}>読了日</Box>
             <Box sx={valueSx}>{props.readDate}</Box>
           </Typography>

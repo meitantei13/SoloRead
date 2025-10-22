@@ -22,7 +22,7 @@ const Header = () => {
           }}
         >
           <Box>
-            <Link href="/">
+            <Link href="/current/books">
               <Image
                 src="/logo.png"
                 width={133}
