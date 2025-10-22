@@ -1,9 +1,9 @@
-import { Box, Button, Container, Typography, Grid } from '@mui/material'
+import { Box, Button, Typography, Grid, Container } from '@mui/material'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import useSWR from 'swr'
-import BookCard from './BookCard'
+import BookCard from '@/components/BookCard'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
 import { useUserState } from '@/hooks/useGlobalState'
@@ -32,25 +32,48 @@ const MyPage: NextPage = () => {
 
   const books: BookProps[] = camelcaseKeys(data)
   return (
-    <Box sx={{ backgroundColor: '#e6f2ff', minHeight: '100vh' }}>
-      <Container>
-        <Typography>最新投稿</Typography>
-        <Grid container spacing={4}>
-          {books.map((book: BookProps, i: number) => (
-            <Grid key={i} item xs={12} md={6}>
-              <Link href={'/current/books/' + book.id}>
-                <BookCard
-                  title={book.title}
-                  author={book.author}
-                  readDate={book.readDate}
-                />
-              </Link>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        minHeight: '100vh',
+      }}
+    >
+      <Box sx={{ display: 'flex', maxWidth: '1200px' }}>
+        <Box sx={{ width: '200px', backgroundColor: '#ae2a2aff' }}>
+          これは左です
+        </Box>
+        <Box sx={{ backgroundColor: 'primary.main', flex: 1 }}>
+          <Typography sx={{ py: 2, pl: 2 }}>最新投稿</Typography>
+          <Container>
+            <Grid container spacing={4}>
+              {books.slice(0, 5).map((book: BookProps, i: number) => (
+                <Grid key={i} item xs={12} md={6}>
+                  <Link href={'/current/books/' + book.id}>
+                    <BookCard
+                      title={book.title}
+                      author={book.author}
+                      readDate={book.readDate}
+                    />
+                  </Link>
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-
-        <Button>もっと見る</Button>
-      </Container>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                py: 2,
+              }}
+            >
+              <Button sx={{ color: '#000' }}>もっと見る</Button>
+            </Box>
+          </Container>
+        </Box>
+        <Box sx={{ width: '200px', backgroundColor: '#4f4fdaff' }}>
+          これは右です
+        </Box>
+      </Box>
     </Box>
   )
 }
