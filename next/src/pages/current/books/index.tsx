@@ -6,6 +6,7 @@ import useSWR from 'swr'
 import BookCard from '@/components/BookCard'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
+import MyList from '@/components/MyList'
 import { useUserState } from '@/hooks/useGlobalState'
 import { useRequireSginedIn } from '@/hooks/useRequireSignedIn'
 import { fetcher } from '@/utils'
@@ -37,11 +38,12 @@ const MyPage: NextPage = () => {
         display: 'flex',
         justifyContent: 'center',
         minHeight: '100vh',
+        backgroundColor: 'primary.main',
       }}
     >
       <Box sx={{ display: 'flex', maxWidth: '1200px' }}>
-        <Box sx={{ width: '200px', backgroundColor: '#ae2a2aff' }}>
-          これは左です
+        <Box sx={{ width: '200px' }}>
+          <MyList />
         </Box>
         <Box sx={{ backgroundColor: 'primary.main', flex: 1 }}>
           <Typography sx={{ py: 2, pl: 2 }}>最新投稿</Typography>
