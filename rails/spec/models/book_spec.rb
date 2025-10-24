@@ -70,4 +70,22 @@ RSpec.describe Book, type: :model do
       end
     end
   end
+
+  describe "読んだ冊数を取得" do
+    let(:user) { create(:user) }
+
+    before do
+      create(:book, user: user, read_date: Time.current.beginning_of_month + 1.day)
+      create(:book, user: user, read_date: 5.months.ago)
+      create(:book, user: user, read_date: 2.years.ago)
+    end
+
+    it "今月分のデータを取得する" do
+      expect(user.books.this_month.count).to eq(1)
+    end
+
+    it "今年分のデータを取得する" do
+      expect(user.books.this_year.count).to eq(2)
+    end
+  end
 end
