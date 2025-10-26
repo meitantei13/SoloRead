@@ -11,6 +11,7 @@ const Header = () => {
         color: 'black',
         boxShadow: 'none',
         py: '12px',
+        borderBottom: '1px solid #ccc',
       }}
     >
       <Container maxWidth="lg" sx={{ px: 2 }}>
