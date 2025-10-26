@@ -25,8 +25,8 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   def counts
     user_books = current_user.books
     render json: {
-      this_month: user_books.where(read_date: Time.current.beginning_of_month..Time.current.end_of_month).count,
-      this_year: user_books.where(read_date: Time.current.beginning_of_year..Time.current.end_of_year).count,
+      this_month: user_books.this_month.count,
+      this_year: user_books.this_year.count,
     }
   end
 

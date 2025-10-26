@@ -1,12 +1,6 @@
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import PersonIcon from '@mui/icons-material/Person'
-import {
-  Box,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemIcon,
-} from '@mui/material'
+import { Box, List, ListItemButton, ListItemIcon } from '@mui/material'
 import Link from 'next/link'
 import { useUserState } from '@/hooks/useGlobalState'
 
@@ -27,7 +21,6 @@ const MyList = () => {
     <List
       sx={{
         minHeight: '500px',
-
         pt: 12,
       }}
     >
@@ -48,12 +41,11 @@ const MyList = () => {
             display: 'flex',
             alignItems: 'center',
             pb: 1,
+            borderBottom: 1,
           }}
         >
-          <IconButton disableRipple>
-            <PersonIcon />
-          </IconButton>
-          <Box>{user.name}</Box>
+          <PersonIcon />
+          <Box sx={{ ml: 1 }}>{user.name}</Box>
         </Box>
         <Box
           sx={{
@@ -63,7 +55,7 @@ const MyList = () => {
             backgroundColor: '#fff',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', pb: 0.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, pb: 0.5 }}>
             <ListItemIcon sx={{ minWidth: 10 }}>
               <FiberManualRecordIcon
                 sx={{
