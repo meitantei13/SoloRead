@@ -1,6 +1,7 @@
-import { Box, Grid } from '@mui/material'
+import { Box, Grid, Pagination } from '@mui/material'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import BookCard from '@/components/BookCard'
 import Error from '@/components/Error'
@@ -19,39 +20,65 @@ type ListProps = {
 
 const BooksList: NextPage = () => {
   const [user] = useUserState()
-  const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books'
+  const router = useRouter()
+  const page = 'page' in router.query ? Number(router.query.page) : 1
+  const url =
+    process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books/list?page=' + page
 
   const { data, error } = useSWR(user.isSignedIn ? url : null, fetcher)
   if (error) return <Error />
   if (!data) return <Loading />
 
-  const books = camelcaseKeys(data, { deep: true })
+  const books = camelcaseKeys(data.books)
+  const meta = camelcaseKeys(data.meta)
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    router.push('/current/books/list?page=' + value)
+  }
 
   return (
-    <Box
-      css={styles.pageMinHeight}
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        backgroundColor: '#bafbbaff',
-      }}
-    >
-      <Box sx={{ display: 'flex', maxWidth: '1200px' }}>
-        <Box sx={{ width: '240px', pl: 3 }}>
-          <MyList />
-        </Box>
-        <Box sx={{ px: 6, pt: 5, flex: 1 }}>
-          <Grid container spacing={4}>
-            {books.map((book: ListProps, i: number) => (
-              <Grid key={i} item xs={12} md={6}>
-                <BookCard
-                  title={book.title}
-                  author={book.author}
-                  readDate={book.readDate}
-                />
-              </Grid>
-            ))}
-          </Grid>
+    <Box css={styles.pageMinHeight} sx={{ backgroundColor: 'primary.main' }}>
+      <Box
+        sx={{
+          textAlign: 'center',
+          fontSize: 28,
+          fontWeight: 'bold',
+          pt: 3,
+          width: '100%',
+        }}
+      >
+        読書一覧
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Box sx={{ display: 'flex', maxWidth: '1200px' }}>
+          <Box sx={{ width: '240px', pl: 3 }}>
+            <MyList />
+          </Box>
+          <Box sx={{ px: 6, pt: 5, flex: 1 }}>
+            <Grid container spacing={4}>
+              {books.map((book: ListProps, i: number) => (
+                <Grid key={i} item xs={12} md={6}>
+                  <BookCard
+                    title={book.title}
+                    author={book.author}
+                    readDate={book.readDate}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+              <Pagination
+                count={meta.totalPages}
+                page={meta.currentPage}
+                onChange={handleChange}
+              />
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>

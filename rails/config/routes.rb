@@ -10,10 +10,10 @@ Rails.application.routes.draw do
         resources :books, only: [:index, :show, :create, :update] do
           collection do
             get :counts
+            get :list
           end
         end
       end
-      resources :books, only: [:index, :show] # ここ要らないかも！？
     end
   end
 end

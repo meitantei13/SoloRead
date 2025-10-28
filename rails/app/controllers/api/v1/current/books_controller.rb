@@ -6,6 +6,15 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
     render json: books
   end
 
+  def list
+    books = current_api_v1_user.books.
+              where(status: :published).
+              order(read_date: :desc).
+              page(params[:page] || 1).
+              per(10)
+    render json: books, meta: pagination(books), adapter: :json
+  end
+
   def show
     book = current_user.books.find(params[:id])
     render json: book
