@@ -1,7 +1,8 @@
-import { Box, Grid, Pagination } from '@mui/material'
+import { Box, Grid, Pagination, TextField } from '@mui/material'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import BookCard from '@/components/BookCard'
 import Error from '@/components/Error'
@@ -22,8 +23,22 @@ const BooksList: NextPage = () => {
   const [user] = useUserState()
   const router = useRouter()
   const page = 'page' in router.query ? Number(router.query.page) : 1
-  const url =
+
+  const [query, setQuery] = useState('')
+  const [debounceQuery, setDebouncedQuery] = useState('')
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query)
+    }, 700)
+    return () => clearTimeout(timer)
+  }, [query])
+
+  const baseUrl =
     process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books/list?page=' + page
+  const url = debounceQuery
+    ? `${baseUrl}&q=${encodeURIComponent(debounceQuery)}`
+    : baseUrl
 
   const { data, error } = useSWR(user.isSignedIn ? url : null, fetcher)
   if (error) return <Error />
@@ -36,6 +51,10 @@ const BooksList: NextPage = () => {
     router.push('/current/books/list?page=' + value)
   }
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value)
+  }
+
   return (
     <Box css={styles.pageMinHeight} sx={{ backgroundColor: 'primary.main' }}>
       <Box
@@ -44,7 +63,6 @@ const BooksList: NextPage = () => {
           fontSize: 28,
           fontWeight: 'bold',
           pt: 3,
-          width: '100%',
         }}
       >
         読書一覧
@@ -53,23 +71,56 @@ const BooksList: NextPage = () => {
         sx={{
           display: 'flex',
           justifyContent: 'center',
+          mt: 3,
+          mb: 4,
         }}
       >
-        <Box sx={{ display: 'flex', maxWidth: '1200px' }}>
+        <TextField
+          placeholder="タイトル・著者名で検索"
+          variant="outlined"
+          value={query}
+          onChange={handleSearch}
+          sx={{
+            width: '60%',
+            maxWidth: '750px',
+            backgroundColor: '#fff',
+            mt: 3,
+          }}
+          InputLabelProps={{ shrink: false }}
+        />
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          width: '100%',
+        }}
+      >
+        <Box sx={{ display: 'flex', width: '100%', maxWidth: '1200px' }}>
           <Box sx={{ width: '240px', pl: 3 }}>
             <MyList />
           </Box>
           <Box sx={{ px: 6, pt: 5, flex: 1 }}>
             <Grid container spacing={4}>
-              {books.map((book: ListProps, i: number) => (
-                <Grid key={i} item xs={12} md={6}>
-                  <BookCard
-                    title={book.title}
-                    author={book.author}
-                    readDate={book.readDate}
-                  />
-                </Grid>
-              ))}
+              {books.length > 0 ? (
+                books.map((book: ListProps, i: number) => (
+                  <Grid key={i} item xs={12} md={6}>
+                    <BookCard
+                      title={book.title}
+                      author={book.author}
+                      readDate={book.readDate}
+                    />
+                  </Grid>
+                ))
+              ) : debounceQuery ? (
+                <Box sx={{ textAlign: 'center', width: '100%', py: 6 }}>
+                  検索結果がみつかりませんでした
+                </Box>
+              ) : (
+                <Box sx={{ textAlign: 'center', width: '100%', py: 6 }}>
+                  データがありません
+                </Box>
+              )}
             </Grid>
             <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
               <Pagination

@@ -9,9 +9,15 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   def list
     books = current_api_v1_user.books.
               where(status: :published).
-              order(read_date: :desc).
-              page(params[:page] || 1).
-              per(10)
+              order(read_date: :desc)
+
+    if params[:q].present?
+      books = books.where("title LIKE ? OR author LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%")
+      books = books.page(1).per(10)
+    else
+      books = books.page(params[:page] || 1).per(10)
+    end
+
     render json: books, meta: pagination(books), adapter: :json
   end
 

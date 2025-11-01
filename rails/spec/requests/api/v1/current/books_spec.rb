@@ -31,6 +31,44 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         expect(response).to have_http_status(:ok)
       end
     end
+
+    context "booksが複数存在するとき" do
+      before do
+        create(:book, title: "古い本", author: "テスト１", read_date: "2024-01-01", status: :published, user: current_user)
+        create(:book, title: "新しい本", author: "テスト2", read_date: "2025-01-01", status: :published, user: current_user)
+      end
+
+      it "read_dateの新しい順に返す" do
+        subject
+        res = JSON.parse(response.body)
+        titles = res.map {|b| b["title"] }
+        expect(titles).to eq ["新しい本", "古い本"]
+      end
+    end
+
+    context "published と draft の両方が存在するとき" do
+      before do
+        create(:book, title: "公開中の本", author: "テスト３", read_date: "2024-03-01", status: :published, user: current_user)
+        create(:book, title: "下書きの本", author: "テスト４", read_date: "2025-03-01", status: :draft, user: current_user)
+      end
+
+      it "published の本のみを返す" do
+        subject
+        res = JSON.parse(response.body)
+        titles = res.map {|b| b["title"] }
+        expect(titles).to eq ["公開中の本"]
+        expect(res.length).to eq 1
+      end
+    end
+
+    context "ログインしていないとき" do
+      let(:headers) { nil }
+
+      it "401を返す" do
+        get(api_v1_current_books_path)
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
   end
 
   describe "GET api/v1/current/books/:id" do
@@ -124,6 +162,80 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       it "例外が発生する" do
         subject
         expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
+  describe "GET api/v1/current/books/list" do
+    subject { get(list_api_v1_current_books_path, headers:, params:) }
+
+    let(:headers) { current_user.create_new_auth_token }
+    let(:current_user) { create(:user) }
+    let(:params) { {} }
+
+    before do
+      create(:book, title: "Ruby入門", author: "伊藤一", read_date: "2025-01-01", status: :published, user: current_user)
+      create(:book, title: "Next.js実践", author: "田中二", status: :published, user: current_user)
+      create(:book, title: "Rails完全ガイド", author: "佐藤三", status: :published, user: current_user)
+      create(:book, title: "Docker基礎", author: "斎藤四", status: :draft, user: current_user)
+    end
+
+    context "検索が入力されていないとき" do
+      it "全てのpublishd記事を取得できる" do
+        subject
+        res = JSON.parse(response.body)
+        expect(res["books"].length).to eq 3
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "検索ワード(タイトル)が指定されているとき" do
+      let(:params) { { q: "Ruby" } }
+
+      it "タイトルにマッチした記事を取得できる" do
+        subject
+        res = JSON.parse(response.body)
+        titles = res["books"].map {|b| b["title"] }
+        expect(titles).to eq ["Ruby入門"]
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "検索ワード（著者名）が指定されているとき" do
+      let(:params) { { q: "田中" } }
+
+      it "著者名にマッチした記事を取得できる" do
+        subject
+        res = JSON.parse(response.body)
+        authors = res["books"].map {|b| b["author"] }
+        expect(authors).to eq ["田中二"]
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "検索ワードにマッチする記事が存在しないとき" do
+      let(:params) { { q: "HTML" } }
+
+      it "空の配列が返る" do
+        subject
+        res = JSON.parse(response.body)
+        expect(res["books"]).to eq []
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "部分一致になっているか" do
+      before { create(:book, title: "Ruby応用", author: "佐々木太郎", read_date: "2025-02-01", status: :published, user: current_user) }
+
+      let(:params) { { q: "Ruby" } }
+
+      it "2件のデータを取得する" do
+        subject
+        res = JSON.parse(response.body)
+        titles = res["books"].map {|b| b["title"] }
+        expect(res["books"].length).to eq 2
+        expect(titles).to eq ["Ruby応用", "Ruby入門"]
+        expect(response).to have_http_status(:ok)
       end
     end
   end
