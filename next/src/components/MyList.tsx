@@ -52,10 +52,24 @@ const MyList = () => {
             display: 'flex',
             flexDirection: 'column',
             pb: 2,
+            ml: 2,
             backgroundColor: '#fff',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, pb: 0.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', pb: 0.5, mt: 2 }}>
+            <ListItemIcon sx={{ minWidth: 10 }}>
+              <FiberManualRecordIcon
+                sx={{
+                  fontSize: 10,
+                  color: '#000',
+                }}
+              />
+            </ListItemIcon>
+            <Link href={'/current/books'}>
+              <ListItemButton sx={listSx}>マイページ</ListItemButton>
+            </Link>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', pb: 0.5 }}>
             <ListItemIcon sx={{ minWidth: 10 }}>
               <FiberManualRecordIcon
                 sx={{
@@ -78,20 +92,7 @@ const MyList = () => {
               />
             </ListItemIcon>
             <Link href={'/current/books/list'}>
-              <ListItemButton sx={listSx}>本一覧</ListItemButton>
-            </Link>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', pb: 0.5 }}>
-            <ListItemIcon sx={{ minWidth: 10 }}>
-              <FiberManualRecordIcon
-                sx={{
-                  fontSize: 10,
-                  color: '#000',
-                }}
-              />
-            </ListItemIcon>
-            <Link href={'/current/books/search'}>
-              <ListItemButton sx={listSx}>本検索</ListItemButton>
+              <ListItemButton sx={listSx}>本一覧＆検索</ListItemButton>
             </Link>
           </Box>
         </Box>
