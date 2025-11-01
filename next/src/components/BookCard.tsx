@@ -35,7 +35,7 @@ const BookCard = (props: BookCardProps) => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2 }}>
           <Typography component="h5">
             <Box sx={{ labelSx }}>著者</Box>
-            <Box sx={valueSx}>{omit(props.author)(16)('...')}</Box>
+            <Box sx={valueSx}>{omit(props.author)(13)('...')}</Box>
           </Typography>
           <Typography component="h5">
             <Box sx={{ labelSx }}>読了日</Box>

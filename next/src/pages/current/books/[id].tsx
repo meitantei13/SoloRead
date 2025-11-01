@@ -62,7 +62,6 @@ const CurrentBookDetail: NextPage = () => {
       <Box
         sx={{
           borderTop: '0.5px solid #acbcc7',
-          height: 2,
           color: '#6e7b85',
         }}
       >
@@ -71,83 +70,73 @@ const CurrentBookDetail: NextPage = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
+            pt: 3,
           }}
         >
-          <Box
-            sx={{
-              width: '100%',
-              height: 60,
-              pt: 3,
-            }}
-          >
-            <Link href={'/current/books/bookList'}>
-              <Tooltip title="記事一覧に移動">
-                <IconButton sx={{ backgroundColor: '#ffffff' }}>
-                  <ChevronLefitIcon sx={{ color: '#99AAB6' }} />
-                </IconButton>
-              </Tooltip>
-            </Link>
-          </Box>
+          <Link href={'/current/books/list'}>
+            <Tooltip title="記事一覧に移動">
+              <IconButton sx={{ backgroundColor: '#ffffff' }}>
+                <ChevronLefitIcon sx={{ color: '#99AAB6' }} />
+              </IconButton>
+            </Tooltip>
+          </Link>
         </Container>
         <Container
           maxWidth="sm"
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             height: '100%',
-            gap: 2,
-            pt: 38,
+            mt: 5,
           }}
         >
-          <Box sx={{ width: '100%', height: '100vh' }}>
-            <Card
+          <Card
+            sx={{
+              boxShadow: 'none',
+              dorderRadius: '12px',
+              maxWidth: 840,
+              width: '100%',
+            }}
+          >
+            <Box
               sx={{
-                boxShadow: 'none',
-                dorderRadius: '12px',
-                maxWidth: 840,
-                m: '0 auto',
+                ...fieldBoxSx,
+                borderBottom: '1px solid #ccc',
               }}
             >
-              <Box
-                sx={{
-                  ...fieldBoxSx,
-                  borderBottom: '1px solid #ccc',
-                }}
-              >
-                <Box sx={labelSx}>書名</Box>
-                <Box sx={valueSx}>{book.title}</Box>
-              </Box>
-              <Box
-                sx={{
-                  ...fieldBoxSx,
-                  borderBottom: '1px solid #ccc',
-                }}
-              >
-                <Box sx={labelSx}>著者</Box>
-                <Box sx={valueSx}>{book.author}</Box>{' '}
-              </Box>
-              <Box
-                sx={{
-                  ...fieldBoxSx,
-                  borderBottom: '1px solid #ccc',
-                }}
-              >
-                <Box sx={labelSx}>読了日</Box>
-                <Box sx={valueSx}>{book.readDate}</Box>
-              </Box>
-              <Box
-                sx={{
-                  ...fieldBoxSx,
-                }}
-              >
-                <Box sx={labelSx}>感想</Box>
-                <Box sx={valueSx}>{book.content}</Box>{' '}
-              </Box>
-            </Card>
-          </Box>
+              <Box sx={labelSx}>書名</Box>
+              <Box sx={valueSx}>{book.title}</Box>
+            </Box>
+            <Box
+              sx={{
+                ...fieldBoxSx,
+                borderBottom: '1px solid #ccc',
+              }}
+            >
+              <Box sx={labelSx}>著者</Box>
+              <Box sx={valueSx}>{book.author}</Box>{' '}
+            </Box>
+            <Box
+              sx={{
+                ...fieldBoxSx,
+                borderBottom: '1px solid #ccc',
+              }}
+            >
+              <Box sx={labelSx}>読了日</Box>
+              <Box sx={valueSx}>{book.readDate}</Box>
+            </Box>
+            <Box
+              sx={{
+                ...fieldBoxSx,
+              }}
+            >
+              <Box sx={labelSx}>感想</Box>
+              <Box sx={valueSx}>{book.content}</Box>{' '}
+            </Box>
+          </Card>
         </Container>
       </Box>
     </Box>
