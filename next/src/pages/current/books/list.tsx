@@ -1,6 +1,7 @@
 import { Box, Grid, Pagination, TextField } from '@mui/material'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
@@ -105,11 +106,13 @@ const BooksList: NextPage = () => {
               {books.length > 0 ? (
                 books.map((book: ListProps, i: number) => (
                   <Grid key={i} item xs={12} md={6}>
-                    <BookCard
-                      title={book.title}
-                      author={book.author}
-                      readDate={book.readDate}
-                    />
+                    <Link href={'/current/books/' + book.id}>
+                      <BookCard
+                        title={book.title}
+                        author={book.author}
+                        readDate={book.readDate}
+                      />
+                    </Link>
                   </Grid>
                 ))
               ) : debounceQuery ? (
