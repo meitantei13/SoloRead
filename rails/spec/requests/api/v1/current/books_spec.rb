@@ -11,12 +11,12 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     before { create_list(:book, 2, user: other_user) }
 
     context "ログインユーザーに紐づく books レコードが存在するとき" do
-      before { create_list(:book, 3, user: current_user) }
+      before { create_list(:book, 10, user: current_user) }
 
-      it "正常にレコードを取得できる" do
+      it "正常にレコードを8件取得できる" do
         subject
         res = JSON.parse(response.body)
-        expect(res.length).to eq 3
+        expect(res.length).to eq 8
         expect(res[0].keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
         expect(res[0]["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
@@ -181,10 +181,40 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     end
 
     context "検索が入力されていないとき" do
-      it "全てのpublishd記事を取得できる" do
+      before { create_list(:book, 10, status: :published, user: current_user) }
+
+      it "publishd記事を10件ずつ取得できる" do
         subject
         res = JSON.parse(response.body)
-        expect(res["books"].length).to eq 3
+        expect(res["books"].length).to eq 10
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "ページネーション機能" do
+      before { create_list(:book, 25, status: :published, user: current_user) }
+
+      it "最初の10件を取得できる" do
+        get list_api_v1_current_books_path, headers:, params: { page: 1 }
+        res = JSON.parse(response.body)
+        expect(res["books"].length).to eq 10
+        expect(res["meta"]["current_page"]).to eq 1
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "次の10件を取得できる" do
+        get list_api_v1_current_books_path, headers:, params: { page: 2 }
+        res = JSON.parse(response.body)
+        expect(res["meta"]["current_page"]).to eq 2
+        expect(res["books"].length).to eq 10
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "残りの8件を取得できる" do
+        get list_api_v1_current_books_path, headers:, params: { page: 3 }
+        res = JSON.parse(response.body)
+        expect(res["books"].length).to eq 8
+        expect(res["meta"]["current_page"]).to eq 3
         expect(response).to have_http_status(:ok)
       end
     end
