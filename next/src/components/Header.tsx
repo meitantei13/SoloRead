@@ -49,8 +49,12 @@ const Header = () => {
               fontSize: 16,
               borderRadius: 2,
               boxShadow: 'none',
-              color: '#46c934ff',
+              color: '#7A8C64',
               border: '1.5px solid #88cb7f',
+              '&:hover': {
+                border: '1.5px solid #88cb7f',
+                backgroundColor: '#f1fdf0ff',
+              },
             }}
           >
             ログアウト
