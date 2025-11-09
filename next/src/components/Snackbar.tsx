@@ -28,7 +28,13 @@ const SuccessSnackbar = () => {
   return (
     <>
       {snackbar.severity != null && (
-        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Snackbar
+          open={open}
+          autoHideDuration={2000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          sx={{ mt: '45px' }}
+        >
           <Alert
             onClose={handleClose}
             severity={snackbar.severity}

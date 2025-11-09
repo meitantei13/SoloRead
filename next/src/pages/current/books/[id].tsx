@@ -1,5 +1,12 @@
 import ChevronLefitIcon from '@mui/icons-material/ChevronLeft'
-import { Box, Card, Container, IconButton, Tooltip } from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  IconButton,
+  Tooltip,
+} from '@mui/material'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import Link from 'next/link'
@@ -13,6 +20,7 @@ import { styles } from '@/styles'
 import { fetcher } from '@/utils'
 
 type CurrentBookProps = {
+  id: number
   title: string
   author: string
   content: string
@@ -53,16 +61,10 @@ const CurrentBookDetail: NextPage = () => {
   const book: CurrentBookProps = camelcaseKeys(data)
 
   return (
-    <Box
-      css={styles.pageMinHeight}
-      sx={{
-        backgroundColor: '#EDF2F7',
-      }}
-    >
+    <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#EDF2F7' }}>
       <Box
         sx={{
           borderTop: '0.5px solid #acbcc7',
-          color: '#6e7b85',
         }}
       >
         <Container
@@ -74,13 +76,37 @@ const CurrentBookDetail: NextPage = () => {
             pt: 3,
           }}
         >
-          <Link href={'/current/books/list'}>
-            <Tooltip title="記事一覧に移動">
-              <IconButton sx={{ backgroundColor: '#ffffff' }}>
-                <ChevronLefitIcon sx={{ color: '#99AAB6' }} />
-              </IconButton>
-            </Tooltip>
-          </Link>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Link href={'/current/books/list'}>
+              <Tooltip title="記事一覧に移動">
+                <IconButton sx={{ backgroundColor: '#ffffff' }}>
+                  <ChevronLefitIcon sx={{ color: '#99AAB6' }} />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            <Link href={'/current/books/edit/' + book.id}>
+              <Button
+                sx={{
+                  color: '#333',
+                  backgroundColor: '#fff',
+                  '&:hover': {
+                    backgroundColor: '#e0e0e0',
+                  },
+                  borderRadius: 1,
+                  px: 3,
+                  py: 1,
+                  textTransform: 'none',
+                }}
+              >
+                編集
+              </Button>
+            </Link>
+          </Box>
         </Container>
         <Container
           maxWidth="sm"

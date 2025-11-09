@@ -1,8 +1,17 @@
 import { AppBar, Box, Button, Container } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const Header = () => {
+  const router = useRouter()
+
+  const hiddenHeaderPaths = ['/']
+
+  if (hiddenHeaderPaths.includes(router.pathname)) {
+    return null
+  }
+
   return (
     <AppBar
       position="static"
