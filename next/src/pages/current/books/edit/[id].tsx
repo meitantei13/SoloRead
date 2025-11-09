@@ -116,6 +116,15 @@ const CurrentBooksEdit: NextPage = () => {
       })
     }
 
+    const strictDateRegex = /^\d{4}-\d{2}-\d{2}$/
+    if (data.readDate && !strictDateRegex.test(data.readDate)) {
+      return setSnackbar({
+        message: '読了日は YYY-MM-DD の形式で入力してください',
+        severity: 'error',
+        pathname: '/current/books/edit/[id]',
+      })
+    }
+
     setIsLoading(true)
 
     const patchUrl =
