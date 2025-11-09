@@ -82,7 +82,21 @@ const MyPage: NextPage = () => {
                 py: 2,
               }}
             >
-              <Button sx={{ color: '#000' }}>もっと見る</Button>
+              <Link href={'/current/books/list'}>
+                <Button
+                  sx={{
+                    pl: 1,
+                    transition: 'transform 0.1s',
+                    '&:hover': {
+                      transform: 'translate(2px, 2px)',
+                      color: '#779bf5ff',
+                    },
+                    color: '#000',
+                  }}
+                >
+                  もっと見る
+                </Button>
+              </Link>
             </Box>
           </Container>
         </Box>
