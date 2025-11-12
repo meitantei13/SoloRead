@@ -22,7 +22,7 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   end
 
   def drafts
-    books = current_api_v1_user.books.where(status: :draft).order(read_date: :desc).page(params[:page] || 1 ).per(10)
+    books = current_api_v1_user.books.where(status: :draft).order(read_date: :desc).page(params[:page] || 1).per(10)
     render json: books, meta: pagination(books), adapter: :json
   end
 
