@@ -289,7 +289,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         subject
         res = JSON.parse(response.body)
         expect(res["books"].length).to eq 1
-        expect(res["books"][0]["status"]).to eq "Draft"
+        expect(res["books"][0]["status"]).to eq "下書き"
         expect(response).to have_http_status(:ok)
       end
     end
