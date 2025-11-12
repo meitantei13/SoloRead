@@ -76,7 +76,7 @@ const CurrentBookDetail: NextPage = () => {
       setSnackbar({
         message: '記事の削除に失敗しました',
         severity: 'error',
-        pathname: `current/books/${book.id}`,
+        pathname: `/current/books/${book.id}`,
       })
     }
   }
