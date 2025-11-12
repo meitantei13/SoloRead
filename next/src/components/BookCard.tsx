@@ -20,13 +20,12 @@ const valueSx = {
 
 const BookCard = (props: BookCardProps) => {
   return (
-    <Card>
+    <Card sx={{ minHeight: 175 }}>
       <CardContent>
         <Typography
           component="h1"
           sx={{
             md: 2,
-            minHeight: 50,
             lineHeight: 1.5,
           }}
         >

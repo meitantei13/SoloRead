@@ -269,4 +269,57 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
     end
   end
+
+  describe "GET api/v1/current/books/drafts" do
+    subject { get(drafts_api_v1_current_books_path, headers:, params:) }
+
+    let(:headers) { current_user.create_new_auth_token }
+    let(:current_user) { create(:user) }
+    let(:params) { {} }
+
+    before do
+      create(:book, title: "Ruby入門", author: "伊藤一", status: :published, user: current_user)
+      create(:book, title: "Next.js実践", author: "田中二", status: :published, user: current_user)
+      create(:book, title: "Rails完全ガイド", author: "佐藤三", status: :published, user: current_user)
+      create(:book, title: "Docker基礎", author: "斎藤四", status: :draft, user: current_user)
+    end
+
+    context "draftを正常に取得できる" do
+      it "draft記事を1件取得できる" do
+        subject
+        res = JSON.parse(response.body)
+        expect(res["books"].length).to eq 1
+        expect(res["books"][0]["status"]).to eq "Draft"
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "ページネーション機能" do
+      before { create_list(:book, 25, status: :draft, user: current_user) }
+
+      it "最初の10件を取得する" do
+        get drafts_api_v1_current_books_path, headers:, params: { page: 1 }
+        res = JSON.parse(response.body)
+        expect(res["books"].length).to eq 10
+        expect(res["meta"]["current_page"]).to eq 1
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "次の10件を取得できる" do
+        get drafts_api_v1_current_books_path, headers:, params: { page: 2 }
+        res = JSON.parse(response.body)
+        expect(res["books"].length).to eq 10
+        expect(res["meta"]["current_page"]).to eq 2
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "残りの6件を取得できる" do
+        get drafts_api_v1_current_books_path, headers:, params: { page: 3 }
+        res = JSON.parse(response.body)
+        expect(res["books"].length).to eq 6
+        expect(res["meta"]["current_page"]).to eq 3
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 end
