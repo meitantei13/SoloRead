@@ -1,4 +1,4 @@
-import ChevronLefitIcon from '@mui/icons-material/ChevronLeft'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import {
   Box,
   Button,
@@ -25,6 +25,7 @@ type CurrentBookProps = {
   author: string
   content: string
   readDate: string
+  status: string
 }
 
 const CurrentBookDetail: NextPage = () => {
@@ -59,6 +60,7 @@ const CurrentBookDetail: NextPage = () => {
   }
 
   const book: CurrentBookProps = camelcaseKeys(data)
+  console.log(data)
 
   return (
     <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#EDF2F7' }}>
@@ -82,10 +84,22 @@ const CurrentBookDetail: NextPage = () => {
               justifyContent: 'space-between',
             }}
           >
-            <Link href={'/current/books/list'}>
-              <Tooltip title="記事一覧に移動">
+            <Link
+              href={
+                book.status === '下書き'
+                  ? '/current/books/drafts'
+                  : '/current/books/list'
+              }
+            >
+              <Tooltip
+                title={
+                  book.status === '下書き'
+                    ? '下書き一覧に移動'
+                    : '記事一覧に移動'
+                }
+              >
                 <IconButton sx={{ backgroundColor: '#ffffff' }}>
-                  <ChevronLefitIcon sx={{ color: '#99AAB6' }} />
+                  <ChevronLeftIcon sx={{ color: '#99AAB6' }} />
                 </IconButton>
               </Tooltip>
             </Link>
