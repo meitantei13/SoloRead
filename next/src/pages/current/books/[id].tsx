@@ -14,7 +14,7 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
-import { useUserState } from '@/hooks/useGlobalState'
+import { useUserState, useSnackbarState } from '@/hooks/useGlobalState'
 import { useRequireSginedIn } from '@/hooks/useRequireSignedIn'
 import { styles } from '@/styles'
 import { fetcher } from '@/utils'
@@ -31,6 +31,7 @@ type CurrentBookProps = {
 const CurrentBookDetail: NextPage = () => {
   useRequireSginedIn()
   const [user] = useUserState()
+  const [, setSnackbar] = useSnackbarState()
   const router = useRouter()
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books/'
   const { id } = router.query
@@ -41,6 +42,44 @@ const CurrentBookDetail: NextPage = () => {
   )
   if (error) return <Error />
   if (!data) return <Loading />
+
+  const handleDelete = async () => {
+    if (!confirm('この記事を削除しますか？')) return
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/current/books/${book.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'access-token': localStorage.getItem('access-token') || '',
+            client: localStorage.getItem('client') || '',
+            uid: localStorage.getItem('uid') || '',
+          },
+        },
+      )
+
+      if (!res.ok) throw new window.Error('削除失敗')
+
+      const deleteStatus =
+        book.status === '下書き'
+          ? '/current/books/drafts'
+          : '/current/books/list'
+
+      setSnackbar({
+        message: '記事を削除しました',
+        severity: 'success',
+        pathname: deleteStatus,
+      })
+      router.push(deleteStatus)
+    } catch (error) {
+      setSnackbar({
+        message: '記事の削除に失敗しました',
+        severity: 'error',
+        pathname: `current/books/${book.id}`,
+      })
+    }
+  }
 
   const fieldBoxSx = {
     padding: {
@@ -60,7 +99,6 @@ const CurrentBookDetail: NextPage = () => {
   }
 
   const book: CurrentBookProps = camelcaseKeys(data)
-  console.log(data)
 
   return (
     <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#EDF2F7' }}>
@@ -103,8 +141,27 @@ const CurrentBookDetail: NextPage = () => {
                 </IconButton>
               </Tooltip>
             </Link>
-            <Link href={'/current/books/edit/' + book.id}>
+            <Box>
+              <Link href={'/current/books/edit/' + book.id}>
+                <Button
+                  sx={{
+                    color: '#333',
+                    backgroundColor: '#fff',
+                    mr: 2,
+                    '&:hover': {
+                      backgroundColor: '#e0e0e0',
+                    },
+                    borderRadius: 1,
+                    px: 3,
+                    py: 1,
+                    textTransform: 'none',
+                  }}
+                >
+                  編集
+                </Button>
+              </Link>
               <Button
+                onClick={handleDelete}
                 sx={{
                   color: '#333',
                   backgroundColor: '#fff',
@@ -117,9 +174,9 @@ const CurrentBookDetail: NextPage = () => {
                   textTransform: 'none',
                 }}
               >
-                編集
+                削除
               </Button>
-            </Link>
+            </Box>
           </Box>
         </Container>
         <Container

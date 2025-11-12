@@ -50,6 +50,12 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
     }
   end
 
+  def destroy
+    book = current_api_v1_user.books.find(params[:id])
+    book.destroy!
+    head :no_content
+  end
+
   private
 
     def book_params

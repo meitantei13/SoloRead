@@ -183,7 +183,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     context "検索が入力されていないとき" do
       before { create_list(:book, 10, status: :published, user: current_user) }
 
-      it "publishd記事を10件ずつ取得できる" do
+      it "published記事を10件ずつ取得できる" do
         subject
         res = JSON.parse(response.body)
         expect(res["books"].length).to eq 10
@@ -319,6 +319,52 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         expect(res["books"].length).to eq 6
         expect(res["meta"]["current_page"]).to eq 3
         expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
+  describe "DELETE api/v1/current/books/:id" do
+    let!(:current_user) { create(:user) }
+    let!(:headers) { current_user.create_new_auth_token }
+
+    context "publishedの記事を削除できる" do
+      let!(:book) { create(:book, status: :published, user: current_user) }
+      it "削除できる" do
+        expect {
+          delete api_v1_current_book_path(book.id), headers: headers
+        }.to change { Book.count }.by(-1)
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context "draftの記事を削除できる" do
+      let!(:book) { create(:book, status: :draft, user: current_user) }
+      it "削除できる" do
+        expect {
+          delete api_v1_current_book_path(book.id), headers: headers
+        }.to change { Book.count }.by(-1)
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context "ログインしていない場合" do
+      let!(:book) { create(:book, status: :published, user: current_user) }
+      it "削除できない" do
+        expect {
+          delete api_v1_current_book_path(book.id)
+        }.not_to change { Book.count }
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context "他のユーザーの記事" do
+      let!(:other_user) { create(:user) }
+      let!(:book) { create(:book, status: :published, user: other_user) }
+      it "削除できない" do
+        expect {
+          delete api_v1_current_book_path(book.id), headers: headers
+        }.not_to change { Book.count }
+        expect(response).to have_http_status(:not_found)
       end
     end
   end
