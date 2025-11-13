@@ -149,6 +149,9 @@ const CurrentBooksEdit: NextPage = () => {
       },
     }
 
+    const pageChange =
+      book.status === '下書き' ? '/current/books/drafts' : '/current/books/list'
+
     axios({
       method: 'PATCH',
       url: patchUrl,
@@ -159,8 +162,9 @@ const CurrentBooksEdit: NextPage = () => {
         setSnackbar({
           message: '記事を保存しました',
           severity: 'success',
-          pathname: '/current/books/edit/[id]',
+          pathname: pageChange,
         })
+        router.push(pageChange)
       })
       .catch((err: AxiosError<{ error: string }>) => {
         console.log(err.message)
@@ -170,7 +174,9 @@ const CurrentBooksEdit: NextPage = () => {
           pathname: '/current/books/edit/[id]',
         })
       })
-    setIsLoading(false)
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   if (error) return <Error />
