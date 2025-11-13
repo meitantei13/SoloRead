@@ -1,6 +1,6 @@
 import { LoadingButton } from '@mui/lab'
 import { Box, Container, TextField, Typography, Stack } from '@mui/material'
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -39,32 +39,40 @@ const SignIn: NextPage = () => {
     },
   }
 
-  const onSubmit: SubmitHandler<SignInFormData> = (data) => {
+  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
     setIsLoading(true)
     const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth/sign_in'
-    const headers = { 'Content-Type': 'application/json' }
 
-    axios({ method: 'POST', url: url, data: data, headers: headers })
-      .then((res: AxiosResponse) => {
-        localStorage.setItem('access-token', res.headers['access-token'])
-        localStorage.setItem('client', res.headers['client'])
-        localStorage.setItem('uid', res.headers['uid'])
-        setSnackbar({
-          message: 'サインインに成功しました',
-          severity: 'success',
-          pathname: '/current/books/',
-        })
-        router.push('/current/books/')
+    try {
+      const res = await axios.post(url, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
       })
-      .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message)
-        setSnackbar({
-          message: '登録ユーザーが見つかりません',
-          severity: 'error',
-          pathname: '/sign_in',
-        })
-        setIsLoading(false)
+
+      localStorage.setItem('access-token', res.headers['access-token'])
+      localStorage.setItem('client', res.headers['client'])
+      localStorage.setItem('uid', res.headers['uid'])
+
+      setSnackbar({
+        message: 'サインインに成功しました',
+        severity: 'success',
+        pathname: '/current/books/',
       })
+      router.push('/current/books/')
+    } catch (e) {
+      const err = e as AxiosError<{ error: string }>
+      console.error(err.message)
+
+      setSnackbar({
+        message: '登録ユーザーが見つかりません',
+        severity: 'error',
+        pathname: '/sign_in',
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
