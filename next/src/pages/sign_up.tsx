@@ -1,24 +1,25 @@
 import { LoadingButton } from '@mui/lab'
-import { Box, Container, TextField, Typography, Stack } from '@mui/material'
+import { Box, Container, Stack, TextField, Typography } from '@mui/material'
 import axios, { AxiosError } from 'axios'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useSnackbarState } from '@/hooks/useGlobalState'
 
-type SignInFormData = {
+type SignUpData = {
   email: string
   password: string
+  name: string
 }
 
-const SignIn: NextPage = () => {
+const SignUp: NextPage = () => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [, setSnackbar] = useSnackbarState()
 
-  const { handleSubmit, control } = useForm<SignInFormData>({
-    defaultValues: { email: '', password: '' },
+  const { handleSubmit, control } = useForm<SignUpData>({
+    defaultValues: { email: '', password: '', name: '' },
   })
 
   const validationRules = {
@@ -37,37 +38,43 @@ const SignIn: NextPage = () => {
         message: 'パスワードは4文字以上で入力してください。',
       },
     },
+    name: {
+      required: 'ユーザー名を入力してください',
+    },
   }
 
-  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
-    setIsLoading(true)
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth/sign_in'
-
+  const onSubmit: SubmitHandler<SignUpData> = async (data) => {
     try {
-      const res = await axios.post(url, data, {
+      setIsLoading(true)
+      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth'
+      const confirmSuccessUrl =
+        process.env.NEXT_PUBLIC_FRONT_BASE_URL + '/sign_in'
+
+      const body = {
+        ...data,
+        confirm_success_url: confirmSuccessUrl,
+      }
+
+      await axios.post(url, body, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
 
-      localStorage.setItem('access-token', res.headers['access-token'])
-      localStorage.setItem('client', res.headers['client'])
-      localStorage.setItem('uid', res.headers['uid'])
-
       setSnackbar({
-        message: 'サインインに成功しました',
+        message: '承認メールをご確認ください',
         severity: 'success',
-        pathname: '/current/books',
+        pathname: '/sign_in',
       })
-      router.push('/current/books')
+      router.push('/sign_in')
     } catch (e) {
       const err = e as AxiosError<{ error: string }>
       console.error(err.message)
 
       setSnackbar({
-        message: '登録ユーザーが見つかりません',
+        message: 'ユーザー情報が正しく設定されていません',
         severity: 'error',
-        pathname: '/sign_in',
+        pathname: '/sign_up',
       })
     } finally {
       setIsLoading(false)
@@ -77,7 +84,7 @@ const SignIn: NextPage = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#EDF2F7',
+        backgroundColor: '#e38c8cff',
         minHeight: 'calc(100vh - 57px)',
       }}
     >
@@ -85,12 +92,17 @@ const SignIn: NextPage = () => {
         <Box sx={{ mb: 4, pt: 4 }}>
           <Typography
             component="h2"
-            sx={{ fontSize: 32, color: 'black', fontWeight: 'bold' }}
+            sx={{
+              fontSize: 32,
+              color: 'black',
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
           >
-            Sign in
+            新規ユーザー登録
           </Typography>
         </Box>
-        <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
+        <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={3}>
           <Controller
             name="email"
             control={control}
@@ -102,7 +114,7 @@ const SignIn: NextPage = () => {
                 label="メールアドレス"
                 error={fieldState.invalid}
                 helperText={fieldState.error?.message}
-                sx={{ backgroundColor: 'white' }}
+                sx={{ background: 'white' }}
               />
             )}
           />
@@ -117,7 +129,22 @@ const SignIn: NextPage = () => {
                 label="パスワード"
                 error={fieldState.invalid}
                 helperText={fieldState.error?.message}
-                sx={{ backgroundColor: 'white' }}
+                sx={{ background: 'white' }}
+              />
+            )}
+          />
+          <Controller
+            name="name"
+            control={control}
+            rules={validationRules.name}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                type="text"
+                label="ユーザー名"
+                error={fieldState.invalid}
+                helperText={fieldState.error?.message}
+                sx={{ background: 'white' }}
               />
             )}
           />
@@ -127,7 +154,7 @@ const SignIn: NextPage = () => {
             loading={isLoading}
             sx={{ fontWeight: 'bold', color: 'white' }}
           >
-            送信する
+            登録
           </LoadingButton>
         </Stack>
       </Container>
@@ -135,4 +162,4 @@ const SignIn: NextPage = () => {
   )
 }
 
-export default SignIn
+export default SignUp

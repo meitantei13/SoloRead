@@ -62,13 +62,15 @@ export default function Home() {
               ログイン
             </Button>
           </Link>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ width: 140, height: 50, fontWeight: 'bold' }}
-          >
-            新規登録
-          </Button>
+          <Link href="/sign_up">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ width: 140, height: 50, fontWeight: 'bold' }}
+            >
+              新規登録
+            </Button>
+          </Link>
           <Button
             variant="contained"
             color="primary"
