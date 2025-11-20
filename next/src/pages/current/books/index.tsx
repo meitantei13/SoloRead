@@ -55,49 +55,74 @@ const MyPage: NextPage = () => {
         backgroundColor: 'primary.main',
       }}
     >
-      <Box sx={{ display: 'flex', maxWidth: '1200px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          maxWidth: '1200px',
+          backgroundColor: '#807ef1ff',
+        }}
+      >
         <Box sx={{ width: '220px' }}>
           <MyList />
         </Box>
-        <Box sx={{ backgroundColor: 'primary.main', flex: 1 }}>
+        <Box
+          sx={{
+            backgroundColor: 'primary.main',
+            pl: 3,
+            flex: 1,
+            width: '450px',
+          }}
+        >
           <Typography sx={{ py: 2, pl: 2 }}>最新投稿</Typography>
           <Container>
-            <Grid container spacing={4}>
-              {visibleBooks.map((book: BookProps, i: number) => (
-                <Grid key={i} item xs={12} md={6}>
-                  <Link href={'/current/books/' + book.id}>
-                    <BookCard
-                      title={book.title}
-                      author={book.author}
-                      readDate={book.readDate}
-                    />
-                  </Link>
+            {books.length === 0 ? (
+              <Box sx={{ py: 6, fontSize: 18 }}>
+                まだ投稿はありません。
+                <br />
+                「新規登録」から最初の投稿を
+                <br />
+                追加してみましょう！
+              </Box>
+            ) : (
+              <Box>
+                <Grid container spacing={5}>
+                  {visibleBooks.map((book: BookProps, i: number) => (
+                    <Grid key={i} item xs={12}>
+                      <Link href={'/current/books/' + book.id}>
+                        <BookCard
+                          title={book.title}
+                          author={book.author}
+                          readDate={book.readDate}
+                        />
+                      </Link>
+                    </Grid>
+                  ))}
                 </Grid>
-              ))}
-            </Grid>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                py: 2,
-              }}
-            >
-              <Link href={'/current/books/list'}>
-                <Button
+                <Box
                   sx={{
-                    pl: 1,
-                    transition: 'transform 0.1s',
-                    '&:hover': {
-                      transform: 'translate(2px, 2px)',
-                      color: '#779bf5ff',
-                    },
-                    color: '#000',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    py: 2,
                   }}
                 >
-                  もっと見る
-                </Button>
-              </Link>
-            </Box>
+                  <Link href={'/current/books/list'}>
+                    <Button
+                      sx={{
+                        pl: 1,
+                        transition: 'transform 0.1s',
+                        '&:hover': {
+                          transform: 'translate(2px, 2px)',
+                          color: '#779bf5ff',
+                        },
+                        color: '#000',
+                      }}
+                    >
+                      もっと見る
+                    </Button>
+                  </Link>
+                </Box>
+              </Box>
+            )}
           </Container>
         </Box>
         <Box

@@ -9,18 +9,18 @@ type BookCardProps = {
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
   text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text
 
-const labelSx = { fontSize: 18, fontWeight: 'bold', color: '#856952' }
+const labelSx = { fontSize: 19, fontWeight: 'bold', color: '#856952' }
 const valueSx = {
   display: 'block',
   pl: 3,
   pt: 1,
-  fontSize: 15,
+  fontSize: 17,
   color: '#3D3D3D',
 }
 
 const BookCard = (props: BookCardProps) => {
   return (
-    <Card sx={{ minHeight: 175 }}>
+    <Card sx={{ minHeight: 175, width: 360, px: 2 }}>
       <CardContent>
         <Typography
           component="h1"
