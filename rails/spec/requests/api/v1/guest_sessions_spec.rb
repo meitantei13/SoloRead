@@ -15,10 +15,9 @@ RSpec.describe "Api::V1::GuestSessions", type: :request do
 
     it "ヘッダーが正常に作成できる" do
       subject
-      json = JSON.parse(response.body)
-      expect(json["auth_headers"]["access-token"]).to be_present
-      expect(json["auth_headers"]["client"]).to be_present
-      expect(json["auth_headers"]["uid"]).to be_present
+      expect(response.headers["access-token"]).to be_present
+      expect(response.headers["client"]).to be_present
+      expect(response.headers["uid"]).to be_present
     end
 
     it "複数アカウントを作成された場合" do

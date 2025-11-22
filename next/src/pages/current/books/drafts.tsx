@@ -62,17 +62,23 @@ const DraftsList: NextPage = () => {
           </Box>
           <Box sx={{ px: 6, pt: 5, flex: 1 }}>
             <Grid container spacing={4}>
-              {books.map((book: ListProps, i: number) => (
-                <Grid key={i} item xs={12} md={6}>
-                  <Link href={'/current/books/' + book.id}>
-                    <BookCard
-                      title={book.title}
-                      author={book.author}
-                      readDate={book.readDate}
-                    />
-                  </Link>
-                </Grid>
-              ))}
+              {books.length > 0 ? (
+                books.map((book: ListProps, i: number) => (
+                  <Grid key={i} item xs={12} md={6}>
+                    <Link href={'/current/books/' + book.id}>
+                      <BookCard
+                        title={book.title}
+                        author={book.author}
+                        readDate={book.readDate}
+                      />
+                    </Link>
+                  </Grid>
+                ))
+              ) : (
+                <Box sx={{ textAlign: 'center', width: '100%', py: 6 }}>
+                  データがありません
+                </Box>
+              )}
             </Grid>
             <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
               <Pagination
