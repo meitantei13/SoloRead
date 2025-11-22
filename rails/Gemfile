@@ -67,4 +67,7 @@ group :development, :test do
   # rubocop を使えるようにする
   gem "rubocop-rails"
   gem "rubocop-rspec"
+
+  # ゲストユーザーの自動削除
+  gem "whenever", require: false
 end
