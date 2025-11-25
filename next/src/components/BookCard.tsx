@@ -20,17 +20,16 @@ const valueSx = {
 
 const BookCard = (props: BookCardProps) => {
   return (
-    <Card sx={{ Height: 175, width: 380, px: 2 }}>
+    <Card sx={{ height: 175, width: 380 }}>
       <CardContent>
         <Typography
           component="h1"
           sx={{
-            md: 2,
             lineHeight: 1.5,
           }}
         >
           <Box sx={labelSx}>書名</Box>
-          <Box sx={valueSx}>{omit(props.title)(19)('...')}</Box>
+          <Box sx={valueSx}>{omit(props.title)(21)('...')}</Box>
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2 }}>
           <Typography component="h5">

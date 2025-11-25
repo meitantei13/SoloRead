@@ -42,7 +42,7 @@ const MyList = () => {
   return (
     <List
       sx={{
-        minHeight: '500px',
+        minHeight: '430px',
         pt: 12,
       }}
     >

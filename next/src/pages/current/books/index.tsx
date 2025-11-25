@@ -44,7 +44,8 @@ const MyPage: NextPage = () => {
   if (!data) return <Loading />
 
   const books: BookProps[] = camelcaseKeys(data)
-  const visibleBooks = isLargeScreen ? books.slice(0, 8) : books.slice(0, 4)
+  const visibleBooks = isLargeScreen ? books.slice(0, 6) : books.slice(0, 3)
+  const SxWidth = isLargeScreen ? '900px' : '460px'
 
   return (
     <Box
@@ -59,21 +60,32 @@ const MyPage: NextPage = () => {
         sx={{
           display: 'flex',
           maxWidth: '1200px',
-          backgroundColor: '#807ef1ff',
+          backgroundColor: '#3d27e7ff',
         }}
       >
-        <Box sx={{ width: '220px' }}>
+        <Box sx={{ width: '240px', backgroundColor: '#8dea8fff' }}>
           <MyList />
+          <Counts />
         </Box>
         <Box
           sx={{
-            backgroundColor: 'primary.main',
             pl: 3,
             flex: 1,
-            width: '450px',
+            width: SxWidth,
+            backgroundColor: '#c17575ff',
           }}
         >
-          <Typography sx={{ py: 2, pl: 2 }}>最新投稿</Typography>
+          <Typography
+            sx={{
+              mt: 7,
+              mb: 4,
+              pl: 2,
+              fontWeight: 'bold',
+              fontSize: 23,
+            }}
+          >
+            最新投稿
+          </Typography>
           <Container>
             {books.length === 0 ? (
               <Box sx={{ py: 6, fontSize: 18 }}>
@@ -87,7 +99,7 @@ const MyPage: NextPage = () => {
               <Box>
                 <Grid container spacing={5}>
                   {visibleBooks.map((book: BookProps, i: number) => (
-                    <Grid key={i} item xs={12}>
+                    <Grid key={i} item xs={12} lg={6}>
                       <Link href={'/current/books/' + book.id}>
                         <BookCard
                           title={book.title}
@@ -108,7 +120,8 @@ const MyPage: NextPage = () => {
                   <Link href={'/current/books/list'}>
                     <Button
                       sx={{
-                        pl: 1,
+                        fontSize: 15,
+                        fontWeight: 'bold',
                         transition: 'transform 0.1s',
                         '&:hover': {
                           transform: 'translate(2px, 2px)',
@@ -124,13 +137,6 @@ const MyPage: NextPage = () => {
               </Box>
             )}
           </Container>
-        </Box>
-        <Box
-          sx={{
-            width: '220px',
-          }}
-        >
-          <Counts />
         </Box>
       </Box>
     </Box>

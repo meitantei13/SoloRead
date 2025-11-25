@@ -30,12 +30,7 @@ const Counts = () => {
   if (!data) return <p>読み込み中・・・</p>
 
   return (
-    <List
-      sx={{
-        minHeight: '500px',
-        pt: 12,
-      }}
-    >
+    <List>
       <Box
         sx={{
           display: 'flex',

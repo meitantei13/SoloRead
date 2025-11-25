@@ -2,7 +2,7 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   before_action :authenticate_user!
 
   def index
-    books = current_user.books.published.order(read_date: :desc).limit(8)
+    books = current_user.books.published.order(read_date: :desc).limit(6)
     render json: books
   end
 
