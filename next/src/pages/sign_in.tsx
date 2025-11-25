@@ -47,6 +47,7 @@ const SignIn: NextPage = () => {
       const res = await axios.post(url, data, {
         headers: {
           'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
       })
 
