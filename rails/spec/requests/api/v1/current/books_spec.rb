@@ -13,10 +13,10 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     context "ログインユーザーに紐づく books レコードが存在するとき" do
       before { create_list(:book, 10, user: current_user) }
 
-      it "正常にレコードを8件取得できる" do
+      it "正常にレコードを6件取得できる" do
         subject
         res = JSON.parse(response.body)
-        expect(res.length).to eq 8
+        expect(res.length).to eq 6
         expect(res[0].keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
         expect(res[0]["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)

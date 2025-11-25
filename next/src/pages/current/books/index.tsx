@@ -45,7 +45,7 @@ const MyPage: NextPage = () => {
 
   const books: BookProps[] = camelcaseKeys(data)
   const visibleBooks = isLargeScreen ? books.slice(0, 6) : books.slice(0, 3)
-  const SxWidth = isLargeScreen ? '900px' : '460px'
+  const contentWidth = isLargeScreen ? '900px' : '460px'
 
   return (
     <Box
@@ -56,29 +56,22 @@ const MyPage: NextPage = () => {
         backgroundColor: 'primary.main',
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          maxWidth: '1200px',
-          backgroundColor: '#3d27e7ff',
-        }}
-      >
-        <Box sx={{ width: '240px', backgroundColor: '#8dea8fff' }}>
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ width: '240px' }}>
           <MyList />
           <Counts />
         </Box>
         <Box
           sx={{
-            pl: 3,
+            pl: 5,
             flex: 1,
-            width: SxWidth,
-            backgroundColor: '#c17575ff',
+            width: contentWidth,
           }}
         >
           <Typography
             sx={{
               mt: 7,
-              mb: 4,
+              mb: 2,
               pl: 2,
               fontWeight: 'bold',
               fontSize: 23,
@@ -114,7 +107,7 @@ const MyPage: NextPage = () => {
                   sx={{
                     display: 'flex',
                     justifyContent: 'flex-end',
-                    py: 2,
+                    pt: 2,
                   }}
                 >
                   <Link href={'/current/books/list'}>
