@@ -1,4 +1,4 @@
-import { Box, Grid, Pagination } from '@mui/material'
+import { Box, Grid, Pagination, useMediaQuery, useTheme } from '@mui/material'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import Link from 'next/link'
@@ -22,6 +22,8 @@ type ListProps = {
 const DraftsList: NextPage = () => {
   const [user] = useUserState()
   const router = useRouter()
+  const theme = useTheme()
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'))
   const page = 'page' in router.query ? Number(router.query.page) : 1
 
   const url =
@@ -32,6 +34,7 @@ const DraftsList: NextPage = () => {
 
   const books = camelcaseKeys(data.books)
   const meta = camelcaseKeys(data.meta)
+  const contentWidth = isLargeScreen ? '900px' : '460px'
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     router.push('/current/books/drafts?page=' + value)
@@ -49,22 +52,18 @@ const DraftsList: NextPage = () => {
       >
         下書き一覧
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            maxWidth: '1200px',
-          }}
-        >
-          <Box sx={{ width: '240px', pl: 3 }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}
+      >
+        <Box sx={{ display: 'flex' }}>
+          <Box sx={{ width: '240px' }}>
             <MyList />
           </Box>
-          <Box sx={{ px: 6, pt: 5, flex: 1 }}>
+          <Box sx={{ px: 6, pt: 5, flex: 1, width: contentWidth }}>
             <Grid container spacing={4}>
               {books.length > 0 ? (
                 books.map((book: ListProps, i: number) => (
-                  <Grid key={i} item xs={12} md={6}>
+                  <Grid key={i} item xs={12} lg={6}>
                     <Link href={'/current/books/' + book.id}>
                       <BookCard
                         title={book.title}

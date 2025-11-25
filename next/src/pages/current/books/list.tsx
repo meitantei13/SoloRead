@@ -101,25 +101,13 @@ const BooksList: NextPage = () => {
         />
       </Box>
       <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          minHeight: '100vh',
-          backgroundColor: 'primary.main',
-        }}
+        sx={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}
       >
         <Box sx={{ display: 'flex' }}>
           <Box sx={{ width: '240px' }}>
             <MyList />
           </Box>
-          <Box
-            sx={{
-              px: 6,
-              pt: 5,
-              flex: 1,
-              width: contentWidth,
-            }}
-          >
+          <Box sx={{ px: 6, pt: 5, flex: 1, width: contentWidth }}>
             <Grid container spacing={4}>
               {books.length > 0 ? (
                 books.map((book: ListProps, i: number) => (
