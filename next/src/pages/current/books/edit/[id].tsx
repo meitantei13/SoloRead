@@ -150,7 +150,7 @@ const CurrentBooksEdit: NextPage = () => {
     }
 
     const pageChange =
-      book.status === '下書き' ? '/current/books/drafts' : '/current/books/list'
+      statusChecked === false ? '/current/books/drafts' : '/current/books/list'
 
     axios({
       method: 'PATCH',
