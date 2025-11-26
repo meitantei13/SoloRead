@@ -102,7 +102,14 @@ export default function Home() {
             <Button
               variant="contained"
               color="primary"
-              sx={{ width: 140, height: 50, fontWeight: 'bold' }}
+              sx={{
+                width: 140,
+                height: 50,
+                fontWeight: 'bold',
+                '&:hover': {
+                  backgroundColor: '#e6d3b1ff',
+                },
+              }}
             >
               ログイン
             </Button>
@@ -111,7 +118,14 @@ export default function Home() {
             <Button
               variant="contained"
               color="primary"
-              sx={{ width: 140, height: 50, fontWeight: 'bold' }}
+              sx={{
+                width: 140,
+                height: 50,
+                fontWeight: 'bold',
+                '&:hover': {
+                  backgroundColor: '#e6d3b1ff',
+                },
+              }}
             >
               新規登録
             </Button>
@@ -126,7 +140,9 @@ export default function Home() {
               height: 50,
               backgroundColor: 'grey.300',
               color: 'grey.800',
-              '&:hover': { backgroundColor: 'grey.400' },
+              '&:hover': {
+                backgroundColor: '#cdc7c7ff',
+              },
               fontWeight: 'bold',
             }}
           >
