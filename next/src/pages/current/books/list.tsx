@@ -67,7 +67,7 @@ const BooksList: NextPage = () => {
   }
 
   return (
-    <Box css={styles.pageMinHeight} sx={{ backgroundColor: 'primary.main' }}>
+    <Box css={styles.pageMinHeight} sx={{ backgroundColor: 'secondary.main' }}>
       <Box
         sx={{
           textAlign: 'center',

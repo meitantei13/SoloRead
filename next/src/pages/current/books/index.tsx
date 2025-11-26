@@ -45,7 +45,19 @@ const MyPage: NextPage = () => {
 
   const books: BookProps[] = camelcaseKeys(data)
   const visibleBooks = isLargeScreen ? books.slice(0, 6) : books.slice(0, 3)
-  const contentWidth = isLargeScreen ? '900px' : '460px'
+  const contentWidth = () => {
+    if (isLargeScreen === true && data > 1) {
+      return '900px'
+    }
+
+    if (isLargeScreen === true && data === 1) {
+      return '460px'
+    }
+
+    if (isLargeScreen === false) {
+      return '460px'
+    }
+  }
 
   return (
     <Box
@@ -53,7 +65,7 @@ const MyPage: NextPage = () => {
         display: 'flex',
         justifyContent: 'center',
         minHeight: '100vh',
-        backgroundColor: 'primary.main',
+        backgroundColor: 'secondary.main',
       }}
     >
       <Box sx={{ display: 'flex' }}>
@@ -118,7 +130,8 @@ const MyPage: NextPage = () => {
                         transition: 'transform 0.1s',
                         '&:hover': {
                           transform: 'translate(2px, 2px)',
-                          color: '#779bf5ff',
+                          color: '#b3cf86ff',
+                          backgroundColor: 'secondary.main',
                         },
                         color: '#000',
                       }}

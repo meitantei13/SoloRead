@@ -183,7 +183,7 @@ const CurrentBooksEdit: NextPage = () => {
   if (!data || !isFetched) return <Loading />
 
   return (
-    <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#EDF2F7' }}>
+    <Box css={styles.pageMinHeight} sx={{ backgroundColor: 'secondary.main' }}>
       <Box
         sx={{
           display: 'flex',
@@ -233,24 +233,36 @@ const CurrentBooksEdit: NextPage = () => {
                 <Switch
                   checked={statusChecked}
                   onChange={handleChangeStatusChecked}
+                  sx={{
+                    '& .Mui-checked': {
+                      color: '#A3B18A', // スイッチの丸の色（オン時）
+                    },
+                    '& .Mui-checked + .MuiSwitch-track': {
+                      backgroundColor: '#98ad76ff', // バーの色（オン時）
+                    },
+                    '& .MuiSwitch-track': {
+                      backgroundColor: '#ccc', // オフ時のバーの色
+                    },
+                  }}
                 />
                 <Typography
                   variant="body2"
                   sx={{ color: '#333', fontSize: '0.85rem' }}
                 >
-                  下書き/投稿中
+                  下書き / 投稿中
                 </Typography>
               </Box>
               <Box component="form" onSubmit={handleSubmit(onSubmit)}>
                 <LoadingButton
                   variant="contained"
                   type="submit"
+                  color="primary"
                   loading={isLoading}
                   sx={{
-                    color: '#333',
-                    backgroundColor: '#fff',
+                    color: '#fff',
+                    fontWeight: 'bold',
                     '&:hover': {
-                      backgroundColor: '#e0e0e0',
+                      backgroundColor: '#8F9D77',
                     },
                     borderRadius: 1,
                     px: 3,

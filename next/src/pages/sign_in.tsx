@@ -78,17 +78,23 @@ const SignIn: NextPage = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#EDF2F7',
-        minHeight: 'calc(100vh - 57px)',
+        pt: 10,
+        minHeight: '100vh',
+        backgroundColor: '#eaede5ff',
       }}
     >
       <Container maxWidth="sm">
         <Box sx={{ mb: 4, pt: 4 }}>
           <Typography
             component="h2"
-            sx={{ fontSize: 32, color: 'black', fontWeight: 'bold' }}
+            sx={{
+              fontSize: 32,
+              color: 'black',
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
           >
-            Sign in
+            ログイン
           </Typography>
         </Box>
         <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
@@ -126,7 +132,13 @@ const SignIn: NextPage = () => {
             variant="contained"
             type="submit"
             loading={isLoading}
-            sx={{ fontWeight: 'bold', color: 'white' }}
+            sx={{
+              fontWeight: 'bold',
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: '#8F9D77',
+              },
+            }}
           >
             送信する
           </LoadingButton>

@@ -13,7 +13,7 @@ const hoverSx = {
   transition: 'transform 0.2s',
   '&:hover': {
     transform: 'translate(2px, 2px)',
-    backgroundColor: 'primary.main',
+    backgroundColor: 'secondary.main',
   },
 }
 const labelSx = { fontSize: 19, fontWeight: 'bold', color: '#856952' }

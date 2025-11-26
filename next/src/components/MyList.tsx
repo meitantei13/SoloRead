@@ -12,7 +12,7 @@ const listSx = {
   '&:hover': {
     transform: 'translate(2px, 2px)',
     backgroundColor: '#fff',
-    color: '#779bf5ff',
+    color: '#b3cf86ff',
   },
 }
 

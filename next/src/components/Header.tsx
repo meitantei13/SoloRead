@@ -10,10 +10,11 @@ const Header = () => {
   const [, setUser] = useUserState()
   const [, setSnackbar] = useSnackbarState()
 
-  const hiddenHeaderPaths = ['/']
+  const hiddenHeaderPaths = ['/', '/sign_up', '/sign_in']
   if (hiddenHeaderPaths.includes(router.pathname)) {
     return null
   }
+
   const logout = async () => {
     try {
       await axios.delete(
@@ -55,11 +56,11 @@ const Header = () => {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         color: 'black',
         boxShadow: 'none',
         py: '12px',
-        borderBottom: '1px solid #ccc',
+        borderBottom: '2px solid #A3B18A',
       }}
     >
       <Container maxWidth="lg" sx={{ px: 2 }}>
@@ -89,11 +90,11 @@ const Header = () => {
               fontSize: 16,
               borderRadius: 2,
               boxShadow: 'none',
-              color: '#7A8C64',
-              border: '1.5px solid #88cb7f',
+              color: '#A3B18A',
+              border: '1.5px solid #A3B18A',
               '&:hover': {
-                border: '1.5px solid #88cb7f',
-                backgroundColor: '#f1fdf0ff',
+                border: '1.5px solid #A3B18A',
+                backgroundColor: '#ccd7b5ff',
               },
             }}
           >

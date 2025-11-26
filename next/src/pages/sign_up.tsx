@@ -84,8 +84,9 @@ const SignUp: NextPage = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#e38c8cff',
-        minHeight: 'calc(100vh - 57px)',
+        pt: 10,
+        minHeight: '100vh',
+        backgroundColor: 'secondary.main',
       }}
     >
       <Container maxWidth="sm">
@@ -151,8 +152,15 @@ const SignUp: NextPage = () => {
           <LoadingButton
             variant="contained"
             type="submit"
+            color="primary"
             loading={isLoading}
-            sx={{ fontWeight: 'bold', color: 'white' }}
+            sx={{
+              fontWeight: 'bold',
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: '#8F9D77',
+              },
+            }}
           >
             登録
           </LoadingButton>

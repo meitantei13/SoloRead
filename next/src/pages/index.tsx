@@ -105,9 +105,10 @@ export default function Home() {
               sx={{
                 width: 140,
                 height: 50,
+                color: '#fff',
                 fontWeight: 'bold',
                 '&:hover': {
-                  backgroundColor: '#e6d3b1ff',
+                  backgroundColor: '#8F9D77',
                 },
               }}
             >
@@ -121,9 +122,10 @@ export default function Home() {
               sx={{
                 width: 140,
                 height: 50,
+                color: '#fff',
                 fontWeight: 'bold',
                 '&:hover': {
-                  backgroundColor: '#e6d3b1ff',
+                  backgroundColor: '#8F9D77',
                 },
               }}
             >

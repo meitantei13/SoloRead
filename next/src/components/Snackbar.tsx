@@ -38,7 +38,13 @@ const SuccessSnackbar = () => {
           <Alert
             onClose={handleClose}
             severity={snackbar.severity}
-            sx={{ width: '100% ' }}
+            sx={{
+              width: '100%',
+              ...(snackbar.severity === 'success' && {
+                backgroundColor: '#E3F2FD', // ここ好きな色に
+                color: '#000',
+              }),
+            }}
           >
             {snackbar.message}
           </Alert>

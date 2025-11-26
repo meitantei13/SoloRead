@@ -101,7 +101,7 @@ const CurrentBookDetail: NextPage = () => {
   const book: CurrentBookProps = camelcaseKeys(data)
 
   return (
-    <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#EDF2F7' }}>
+    <Box css={styles.pageMinHeight} sx={{ backgroundColor: 'secondary.main' }}>
       <Box
         sx={{
           borderTop: '0.5px solid #acbcc7',
@@ -144,12 +144,14 @@ const CurrentBookDetail: NextPage = () => {
             <Box>
               <Link href={'/current/books/edit/' + book.id}>
                 <Button
+                  variant="contained"
+                  type="submit"
+                  color="primary"
                   sx={{
-                    color: '#333',
-                    backgroundColor: '#fff',
-                    mr: 2,
+                    color: '#fff',
+                    fontWeight: 'bold',
                     '&:hover': {
-                      backgroundColor: '#e0e0e0',
+                      backgroundColor: '#8F9D77',
                     },
                     borderRadius: 1,
                     px: 3,
@@ -162,15 +164,19 @@ const CurrentBookDetail: NextPage = () => {
               </Link>
               <Button
                 onClick={handleDelete}
+                variant="contained"
+                type="submit"
+                color="primary"
                 sx={{
-                  color: '#333',
-                  backgroundColor: '#fff',
+                  color: '#fff',
+                  fontWeight: 'bold',
                   '&:hover': {
-                    backgroundColor: '#e0e0e0',
+                    backgroundColor: '#8F9D77',
                   },
                   borderRadius: 1,
                   px: 3,
                   py: 1,
+                  ml: 2,
                   textTransform: 'none',
                 }}
               >
