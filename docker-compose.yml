@@ -13,7 +13,7 @@ services:
   rails:
     build:
       context: ./rails
-    command: bash -c "tail -f log/development.log"
+    command: bash -c "bundle exec rails s -b '0.0.0.0'"
     volumes:
       - ./rails:/myapp
     ports:
@@ -31,5 +31,21 @@ services:
       - ./next:/app
     ports:
       - "8000:3000"
+  
+  sidekiq:
+    build:
+      context: ./rails
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    volumes:
+      - ./rails:/myapp
+    depends_on:
+      - db
+      - redis
+    tty: true
+    stdin_open: true
+
+  redis:
+    image: redis:7.0
+
 volumes:
   mysql_data:

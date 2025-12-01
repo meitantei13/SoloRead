@@ -68,6 +68,10 @@ group :development, :test do
   gem "rubocop-rails"
   gem "rubocop-rspec"
 
-  # ゲストユーザーの自動削除
-  gem "whenever", require: false
+  # Sidekiq（バックグラウンドジョブ）
+  gem 'sidekiq'
+
+  # Sidekiq で cron を実行する
+  gem 'sidekiq-cron'
+
 end

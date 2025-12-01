@@ -4,6 +4,7 @@ class Api::V1::GuestSessionsController < ApplicationController
       name: "ゲストユーザー",
       email: "guest_#{SecureRandom.uuid}@example.com",
       password: SecureRandom.urlsafe_base64,
+      is_guest: true
     )
 
     guest.update!(

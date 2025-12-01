@@ -1,0 +1,4 @@
+cleanup_guest_users:
+  cron: "0 3 * * *"
+  class: "CleanupGuestUsersJob"
+  queue: cron
