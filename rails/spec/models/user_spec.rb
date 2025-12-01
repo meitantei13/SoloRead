@@ -12,9 +12,9 @@ RSpec.describe User, type: :model do
 
   describe "cleanup_guest_users" do
     it "1日以上経過したゲストアカウントを自動削除" do
-      old_guest = User.create!(name: "ゲストユーザー", email: "guest_1@example.com", password: "password", created_at: 2.days.ago)
+      old_guest = User.create!(name: "ゲストユーザー", email: "guest_1@example.com", password: "password", is_guest: true, created_at: 2.days.ago)
 
-      new_guest = User.create!(name: "ゲストユーザー", email: "guest_2@example.com", password: "password", created_at: Time.current)
+      new_guest = User.create!(name: "ゲストユーザー", email: "guest_2@example.com", password: "password", is_guest: true, created_at: Time.current)
 
       expect { User.cleanup_guest_users }.to change { User.count }.by(-1)
       expect(User).not_to exist(old_guest.id)

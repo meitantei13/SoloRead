@@ -9,8 +9,8 @@ class User < ApplicationRecord
   has_many :books, dependent: :destroy
 
   scope :expired_guests, -> {
-    where(is_guest: true)
-      .where("created_at <= ?" , 1.day.ago)
+    where(is_guest: true).
+      where("created_at <= ?", 1.day.ago)
   }
 
   def self.cleanup_guest_users

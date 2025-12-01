@@ -42,8 +42,8 @@ module Myapp
     config.api_only = true
 
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, key: '_session'
-    
+    config.middleware.use ActionDispatch::Session::CookieStore, key: "_session"
+
     config.i18n.default_locale = :ja
     config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.yml").to_s]
   end
