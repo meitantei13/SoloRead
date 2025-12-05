@@ -1,19 +1,44 @@
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useUserState } from '@/hooks/useGlobalState'
+import { useSnackbarState, useUserState } from '@/hooks/useGlobalState'
 
 const CurrentUserFetch = () => {
   const [user, setUser] = useUserState()
+  const router = useRouter()
+  const [, setSnackbar] = useSnackbarState()
+
+  const publicPages = ['/', '/sign_in', '/sign_up']
+  const isPublicPages = publicPages.includes(router.pathname)
 
   useEffect(() => {
     if (user.isFetched) {
       return
     }
 
-    if (localStorage.getItem('access-token')) {
-      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/user'
-      axios
-        .get(url, {
+    if (user.isSignedIn || user.isFetched) {
+      return
+    }
+
+    const token = localStorage.getItem('access-token')
+    const client = localStorage.getItem('client')
+    const uid = localStorage.getItem('uid')
+
+    if (!token || !client || !uid) {
+      setUser({
+        id: 0,
+        name: '',
+        email: '',
+        isSignedIn: false,
+        isFetched: false,
+      })
+      return
+    }
+
+    const fetchUser = async () => {
+      try {
+        const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/user'
+        const res = await axios.get(url, {
           headers: {
             'Content-type': 'application/json',
             'access-token': localStorage.getItem('access-token'),
@@ -21,30 +46,40 @@ const CurrentUserFetch = () => {
             uid: localStorage.getItem('uid'),
           },
         })
-        .then((res: AxiosResponse) => {
-          setUser({
-            ...user,
-            ...res.data,
-            isSignedIn: true,
-            isFetched: true,
-          })
-        })
-        .catch((err: AxiosError<{ error: string }>) => {
-          console.log(err.message)
-          setUser({
-            ...user,
-            isFetched: true,
-          })
-        })
-    } else {
-      setUser({
-        ...user,
-        isFetched: true,
-      })
-    }
-  }, [user, setUser])
 
-  return <></>
+        setUser({
+          ...res.data,
+          isSignedIn: true,
+          isFetched: true,
+        })
+      } catch (err) {
+        localStorage.removeItem('access-token')
+        localStorage.removeItem('client')
+        localStorage.removeItem('uid')
+
+        setUser({
+          ...user,
+          isFetched: true,
+        })
+
+        setSnackbar({
+          message: 'ログインに失敗しました',
+          severity: 'error',
+          pathname: '/sign_in',
+        })
+      }
+    }
+
+    fetchUser()
+  }, [
+    isPublicPages,
+    setSnackbar,
+    setUser,
+    user,
+    user.isFetched,
+    user.isSignedIn,
+  ])
+  return null
 }
 
 export default CurrentUserFetch
