@@ -40,7 +40,7 @@ const Header = () => {
       name: '',
       email: '',
       isSignedIn: false,
-      isFetched: true,
+      isFetched: false,
     })
 
     await router.push('/')

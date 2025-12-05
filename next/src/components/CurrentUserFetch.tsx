@@ -71,14 +71,9 @@ const CurrentUserFetch = () => {
     }
 
     fetchUser()
-  }, [
-    isPublicPages,
-    setSnackbar,
-    setUser,
-    user,
-    user.isFetched,
-    user.isSignedIn,
-  ])
+    // 依存をすべて入れると無限ループになるため、ESLintの警告を無視
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPublicPages, user.isFetched])
   return null
 }
 
