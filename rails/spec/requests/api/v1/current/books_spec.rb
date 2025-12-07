@@ -368,4 +368,27 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
     end
   end
+
+  describe "GET api/v1/current/books/counts" do
+    subject { get(counts_api_v1_current_books_path, headers:) }
+
+    let(:current_user) { create(:user) }
+    let(:headers) { current_user.create_new_auth_token }
+
+    before do
+      create(:book, user: current_user, read_date: Time.current.beginning_of_month + 1.day)
+      create(:book, user: current_user, read_date: 5.months.ago)
+      create(:book, user: current_user, read_date: 2.years.ago)
+    end
+
+    it "正しく counts を返す" do
+      subject
+      json = JSON.parse(response.body)
+
+      expect(response).to have_http_status(:ok)
+      expect(json["this_month"]).to eq 1
+      expect(json["this_year"]).to eq 2
+      expect(json["total_count"]).to eq 3
+    end
+  end
 end

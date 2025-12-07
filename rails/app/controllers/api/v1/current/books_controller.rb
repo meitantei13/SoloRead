@@ -47,11 +47,12 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
     render json: {
       this_month: user_books.this_month.count,
       this_year: user_books.this_year.count,
+      total_count: user_books.count,
     }
   end
 
   def destroy
-    book = current_api_v1_user.books.find(params[:id])
+    book = current_user.books.find(params[:id])
     book.destroy!
     head :no_content
   end

@@ -81,11 +81,15 @@ RSpec.describe Book, type: :model do
     end
 
     it "今月分のデータを取得する" do
-      expect(user.books.this_month.count).to eq(1)
+      expect(user.books.this_month.count).to eq 1
     end
 
     it "今年分のデータを取得する" do
-      expect(user.books.this_year.count).to eq(2)
+      expect(user.books.this_year.count).to eq 2
+    end
+
+    it "過去全てのデータを取得する" do
+      expect(user.books.count).to eq 3
     end
   end
 end
