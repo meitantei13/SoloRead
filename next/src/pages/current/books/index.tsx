@@ -3,7 +3,6 @@ import {
   Button,
   Typography,
   Grid,
-  Container,
   useMediaQuery,
   useTheme,
 } from '@mui/material'
@@ -25,9 +24,6 @@ type BookProps = {
   title: string
   author: string
   readDate: string
-  user: {
-    name: string
-  }
 }
 
 const MyPage: NextPage = () => {
@@ -46,11 +42,11 @@ const MyPage: NextPage = () => {
   const books: BookProps[] = camelcaseKeys(data)
   const visibleBooks = isLargeScreen ? books.slice(0, 6) : books.slice(0, 3)
   const contentWidth = () => {
-    if (isLargeScreen === true && data > 1) {
+    if (isLargeScreen === true && books.length > 1) {
       return '900px'
     }
 
-    if (isLargeScreen === true && data === 1) {
+    if (isLargeScreen === true && books.length === 1) {
       return '460px'
     }
 
@@ -75,9 +71,9 @@ const MyPage: NextPage = () => {
         </Box>
         <Box
           sx={{
-            pl: 5,
+            px: 6,
             flex: 1,
-            width: contentWidth,
+            width: contentWidth(),
           }}
         >
           <Typography
@@ -91,9 +87,9 @@ const MyPage: NextPage = () => {
           >
             最新投稿
           </Typography>
-          <Container>
+          <Box>
             {books.length === 0 ? (
-              <Box sx={{ py: 6, fontSize: 18 }}>
+              <Box sx={{ pt: 2, pl: 5, fontSize: 18, lineHeight: 1.8 }}>
                 まだ投稿はありません。
                 <br />
                 「新規登録」から最初の投稿を
@@ -102,7 +98,7 @@ const MyPage: NextPage = () => {
               </Box>
             ) : (
               <Box>
-                <Grid container spacing={5}>
+                <Grid container spacing={4}>
                   {visibleBooks.map((book: BookProps, i: number) => (
                     <Grid key={i} item xs={12} lg={6}>
                       <Link href={'/current/books/' + book.id}>
@@ -142,7 +138,7 @@ const MyPage: NextPage = () => {
                 </Box>
               </Box>
             )}
-          </Container>
+          </Box>
         </Box>
       </Box>
     </Box>
