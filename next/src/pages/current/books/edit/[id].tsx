@@ -9,6 +9,8 @@ import {
   IconButton,
 } from '@mui/material'
 import axios, { AxiosError } from 'axios'
+import { format } from 'date-fns'
+import { ja } from 'date-fns/locale'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -17,10 +19,18 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import useSWR from 'swr'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
+import { Button as ShadcnButton } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@/components/ui/popover'
 import { useSnackbarState, useUserState } from '@/hooks/useGlobalState'
 import { useRequireSginedIn } from '@/hooks/useRequireSignedIn'
 import { styles } from '@/styles'
 import { fetcher } from '@/utils'
+import 'react-day-picker/style.css'
 
 type BookProps = {
   title: string
@@ -194,6 +204,7 @@ const CurrentBooksEdit: NextPage = () => {
         <Box
           maxWidth="sm"
           sx={{
+            width: '100%',
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'column',
@@ -310,17 +321,78 @@ const CurrentBooksEdit: NextPage = () => {
             <Controller
               name="readDate"
               control={control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  error={fieldState.invalid}
-                  helperText={fieldState.error?.message}
-                  placeholder="読了日 ※YYYY-MM-DDの形式で入力してください"
-                  fullWidth
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
+              render={({ field, fieldState }) => {
+                const selectedDate = field.value
+                  ? new Date(field.value)
+                  : undefined
+
+                const displayDate = selectedDate ?? new Date()
+
+                return (
+                  <Box>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <ShadcnButton
+                          variant="outline"
+                          className={`
+                            w-full justify-start
+                            border border-[#BDBDBD]
+                            transition-none
+                          hover:border-black
+                          data-[state=open]:border-[#A3B18A]
+                            data-[state=open]:border-2
+                          `}
+                          style={{
+                            backgroundColor: 'white',
+                            padding: '16.5px 14px',
+                            height: '56px',
+                            borderRadius: '4px',
+                            textAlign: 'left',
+                            color: selectedDate ? '#1f1f1f' : '#8a8a8a',
+                            fontSize: '15px',
+                            fontFamily: 'inherit',
+                            letterSpacing: '0.03em',
+                            width: '100%',
+                          }}
+                        >
+                          {selectedDate
+                            ? format(selectedDate, 'yyyy年M月d日')
+                            : '読了日を選択'}
+                        </ShadcnButton>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-[300px] p-0 shadow-none border-none"
+                        align="start"
+                        alignOffset={5}
+                      >
+                        <Calendar
+                          mode="single"
+                          selected={displayDate}
+                          defaultMonth={displayDate}
+                          locale={ja}
+                          modifiersClassNames={{
+                            today: 'no-today',
+                          }}
+                          onSelect={(selected) => {
+                            if (!selected) return
+                            // フォームに yyyy-MM-dd の文字列で渡す
+                            field.onChange(format(selected, 'yyyy-MM-dd'))
+                          }}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    {fieldState.error && (
+                      <Typography
+                        color="error"
+                        sx={{ mt: 1, fontSize: '0.8rem' }}
+                      >
+                        {' '}
+                        {fieldState.error.message}{' '}
+                      </Typography>
+                    )}
+                  </Box>
+                )
+              }}
             />
             <Controller
               name="content"
