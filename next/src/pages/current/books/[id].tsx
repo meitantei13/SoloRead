@@ -234,6 +234,7 @@ const CurrentBookDetail: NextPage = () => {
             <Box
               sx={{
                 ...fieldBoxSx,
+                whiteSpace: 'pre-wrap',
               }}
             >
               <Box sx={labelSx}>感想</Box>
