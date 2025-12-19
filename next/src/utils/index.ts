@@ -1,8 +1,8 @@
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { isAxiosError } from 'axios'
 
-export const fetcher = (url: string) =>
-  axios
-    .get(url, {
+export const fetcher = async (url: string) => {
+  try {
+    const res = await axios.get(url, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -11,8 +11,11 @@ export const fetcher = (url: string) =>
         uid: localStorage.getItem('uid'),
       },
     })
-    .then((res: AxiosResponse) => res.data)
-    .catch((err: AxiosError) => {
-      console.log(err.message)
-      throw err
-    })
+    return res.data
+  } catch (err) {
+    if (isAxiosError(err)) {
+      console.error(err.message)
+    }
+    throw err
+  }
+}

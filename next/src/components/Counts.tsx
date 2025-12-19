@@ -1,27 +1,7 @@
 import { Box, List, Typography } from '@mui/material'
 import { Book, BookCopy, LibraryBig } from 'lucide-react'
 import useSWR from 'swr'
-
-const fetcher = async (url: string) => {
-  const token = localStorage.getItem('access-token')
-  const client = localStorage.getItem('client')
-  const uid = localStorage.getItem('uid')
-
-  const res = await fetch(url, {
-    headers: {
-      'Countent-Type': 'application/json',
-      'access-token': token || '',
-      client: client || '',
-      uid: uid || '',
-    },
-  })
-
-  if (!res.ok) {
-    throw new Error('認証に失敗しました')
-  }
-
-  return res.json()
-}
+import { fetcher } from '@/utils'
 
 const countSx = {
   fontSize: '28px',
