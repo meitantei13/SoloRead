@@ -1,7 +1,7 @@
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import PersonIcon from '@mui/icons-material/Person'
 import { Box, List, ListItemButton, ListItemIcon } from '@mui/material'
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import axios, { isAxiosError } from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useUserState } from '@/hooks/useGlobalState'
@@ -20,23 +20,25 @@ const MyList = () => {
   const [user] = useUserState()
   const router = useRouter()
 
-  const addNewBook = () => {
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books'
+  const addNewBook = async () => {
+    try {
+      const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books'
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'access-token': localStorage.getItem('access-token'),
-      client: localStorage.getItem('client'),
-      uid: localStorage.getItem('uid'),
+      const headers = {
+        'Content-Type': 'application/json',
+        'access-token': localStorage.getItem('access-token'),
+        client: localStorage.getItem('client'),
+        uid: localStorage.getItem('uid'),
+      }
+
+      const res = await axios.post(url, headers)
+
+      return router.push('/current/books/edit/' + res.data.id)
+    } catch (err) {
+      if (isAxiosError(err)) {
+        console.error(err.message)
+      }
     }
-
-    axios({ method: 'POST', url: url, headers: headers })
-      .then((res: AxiosResponse) => {
-        router.push('/current/books/edit/' + res.data.id)
-      })
-      .catch((e: AxiosError<{ error: string }>) => {
-        console.log(e.message)
-      })
   }
 
   return (
