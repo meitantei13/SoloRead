@@ -12,10 +12,6 @@ const CurrentUserFetch = () => {
   const isPublicPages = publicPages.includes(router.pathname)
 
   useEffect(() => {
-    if (user.isFetched) {
-      return
-    }
-
     if (user.isSignedIn || user.isFetched) {
       return
     }
