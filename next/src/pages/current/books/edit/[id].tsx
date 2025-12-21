@@ -8,7 +8,7 @@ import {
   Tooltip,
   IconButton,
 } from '@mui/material'
-import axios, { AxiosError } from 'axios'
+import axios, { isAxiosError } from 'axios'
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import type { NextPage } from 'next'
@@ -99,7 +99,7 @@ const CurrentBooksEdit: NextPage = () => {
     }
   }, [data, book, reset])
 
-  const onSubmit: SubmitHandler<BookFormData> = (data) => {
+  const onSubmit: SubmitHandler<BookFormData> = async (data) => {
     const isPublished = statusChecked
 
     if (data.title.trim() === '') {
@@ -126,10 +126,9 @@ const CurrentBooksEdit: NextPage = () => {
       })
     }
 
-    const strictDateRegex = /^\d{4}-\d{2}-\d{2}$/
-    if (data.readDate && !strictDateRegex.test(data.readDate)) {
+    if (isPublished && data.content.trim() === '') {
       return setSnackbar({
-        message: '読了日は YYY-MM-DD の形式で入力してください',
+        message: '記事の保存には本の感想が必要です',
         severity: 'error',
         pathname: '/current/books/edit/[id]',
       })
@@ -162,32 +161,32 @@ const CurrentBooksEdit: NextPage = () => {
     const pageChange =
       statusChecked === false ? '/current/books/drafts' : '/current/books/list'
 
-    axios({
-      method: 'PATCH',
-      url: patchUrl,
-      data: patchData,
-      headers: headers,
-    })
-      .then(() => {
-        setSnackbar({
-          message: '記事を保存しました',
-          severity: 'success',
-          pathname: pageChange,
-        })
-        router.push(pageChange)
+    try {
+      await axios.patch(patchUrl, patchData, { headers })
+
+      setSnackbar({
+        message: '記事を保存しました',
+        severity: 'success',
+        pathname: pageChange,
       })
-      .catch((err: AxiosError<{ error: string }>) => {
+
+      router.push(pageChange)
+    } catch (err) {
+      if (isAxiosError(err)) {
         console.log(err.message)
+
         setSnackbar({
           message: '記事の保存に失敗しました',
           severity: 'error',
           pathname: '/current/books/edit/[id]',
         })
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
+
+  const [open, setOpen] = useState(false)
 
   if (error) return <Error />
   if (!data || !isFetched) return <Loading />
@@ -330,7 +329,7 @@ const CurrentBooksEdit: NextPage = () => {
 
                 return (
                   <Box>
-                    <Popover>
+                    <Popover open={open} onOpenChange={setOpen}>
                       <PopoverTrigger asChild>
                         <ShadcnButton
                           variant="outline"
@@ -373,10 +372,13 @@ const CurrentBooksEdit: NextPage = () => {
                           modifiersClassNames={{
                             today: 'no-today',
                           }}
-                          onSelect={(selected) => {
+                          onDayClick={(selected) => {
                             if (!selected) return
                             // フォームに yyyy-MM-dd の文字列で渡す
                             field.onChange(format(selected, 'yyyy-MM-dd'))
+                            setTimeout(() => {
+                              setOpen(false)
+                            }, 100)
                           }}
                         />
                       </PopoverContent>
