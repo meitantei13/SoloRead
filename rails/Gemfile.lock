@@ -373,6 +373,7 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  arm64-darwin-24
 
 DEPENDENCIES
   active_model_serializers

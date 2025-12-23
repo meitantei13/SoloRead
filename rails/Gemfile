@@ -45,6 +45,12 @@ gem "rails-i18n"
 # タイムゾーン情報を提供する（標準gem）
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
+# Sidekiq（バックグラウンドジョブ）
+gem "sidekiq"
+
+# Sidekiq で cron を実行する
+gem "sidekiq-cron"
+
 group :development, :test do
   # N+1発生時にアラートを表示する
   gem "bullet"
@@ -67,10 +73,4 @@ group :development, :test do
   # rubocop を使えるようにする
   gem "rubocop-rails"
   gem "rubocop-rspec"
-
-  # Sidekiq（バックグラウンドジョブ）
-  gem "sidekiq"
-
-  # Sidekiq で cron を実行する
-  gem "sidekiq-cron"
 end
