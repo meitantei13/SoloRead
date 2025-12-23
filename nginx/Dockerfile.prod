@@ -10,6 +10,6 @@ RUN rm -f /etc/nginx/conf.d/*
 ADD nginx.conf /etc/nginx/myapp.conf
 
 # ビルド完了後にNginxを起動
-CMD /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/myapp.conf
+CMD ["/usr/sbin/nginx", "-g", "daemon off;", "-c", "/etc/nginx/myapp.conf"]
 
 EXPOSE 80
