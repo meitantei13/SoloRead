@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Book, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
+  
   context "factoryのデフォルト設定に従ったとき" do
     subject { create(:book) }
 
@@ -75,9 +77,15 @@ RSpec.describe Book, type: :model do
     let(:user) { create(:user) }
 
     before do
+      travel_to Time.zone.local(2025, 6, 15)
+
       create(:book, user: user, read_date: Time.current.beginning_of_month + 1.day)
       create(:book, user: user, read_date: 5.months.ago)
       create(:book, user: user, read_date: 2.years.ago)
+    end
+
+    after do
+      travel_back
     end
 
     it "今月分のデータを取得する" do

@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Api::V1::Current::Books", type: :request do
+  include ActiveSupport::Testing::TimeHelpers
+
   describe "GET api/v1/current/books" do
     subject { get(api_v1_current_books_path, headers:) }
 
@@ -376,9 +378,15 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     let(:headers) { current_user.create_new_auth_token }
 
     before do
+      travel_to Time.zone.local(2025, 6, 15)
+
       create(:book, user: current_user, read_date: Time.current.beginning_of_month + 1.day)
       create(:book, user: current_user, read_date: 5.months.ago)
       create(:book, user: current_user, read_date: 2.years.ago)
+    end
+
+    after do
+      travel_back
     end
 
     it "正しく counts を返す" do
