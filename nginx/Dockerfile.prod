@@ -1,15 +1,18 @@
-FROM --platform=linux/x86_64 nginx:latest
+FROM nginx:latest
 
 # ヘルスチェック用
-RUN apt-get update && apt-get install -y curl vim sudo lsof
+# RUN apt-get update && apt-get install -y curl vim sudo lsof
 
 # インクルード用のディレクトリ内を削除
 RUN rm -f /etc/nginx/conf.d/*
 
 # Nginxの設定ファイルをコンテナにコピー
-ADD nginx.conf /etc/nginx/myapp.conf
+# COPY nginx.conf /etc/nginx/myapp.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # ビルド完了後にNginxを起動
-CMD ["/usr/sbin/nginx", "-g", "daemon off;", "-c", "/etc/nginx/myapp.conf"]
+# nginx のデフォルト起動を使うためコメントアウト
+# CMD ["/usr/sbin/nginx", "-g", "daemon off;", "-c", "/etc/nginx/myapp.conf"]
+CMD ["nginx", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
 
 EXPOSE 80

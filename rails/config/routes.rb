@@ -1,6 +1,9 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
+  # ALB ヘルスチェック用
+  get "/health", to: proc { [200, {}, ["ok"]] }
+
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
   if Rails.env.development?
