@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Book, type: :model do
   include ActiveSupport::Testing::TimeHelpers
-  
+
   context "factoryのデフォルト設定に従ったとき" do
     subject { create(:book) }
 
