@@ -51,13 +51,15 @@ gem "sidekiq"
 # Sidekiq で cron を実行する
 gem "sidekiq-cron"
 
+# サンプルデータを作成
+gem "faker"
+
 group :development, :test do
   # N+1発生時にアラートを表示する
   gem "bullet"
 
   # テスト用データを作成する
   gem "factory_bot_rails"
-  gem "faker"
 
   # 開発環境でメール送信をテストする
   gem "letter_opener_web"
