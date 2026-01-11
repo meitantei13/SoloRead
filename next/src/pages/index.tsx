@@ -1,7 +1,6 @@
 import { LoadingButton } from '@mui/lab'
 import { Box, Typography, Button, Stack } from '@mui/material'
 import axios from 'axios'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -62,16 +61,15 @@ export default function Home() {
     >
       <Box
         sx={{
+          position: 'absolute',
+          inset: 0,
           zIndex: -10,
+          backgroundImage: 'url("/back3.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
-      >
-        <Image
-          src="/back3.jpg"
-          alt="背景画像"
-          fill
-          style={{ objectFit: 'cover' }}
-        />
-      </Box>
+      />
 
       <Box
         sx={{

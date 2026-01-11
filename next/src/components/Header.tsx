@@ -1,6 +1,5 @@
 import { AppBar, Box, Button, Container } from '@mui/material'
 import axios from 'axios'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSnackbarState, useUserState } from '@/hooks/useGlobalState'
@@ -73,12 +72,13 @@ const Header = () => {
         >
           <Box>
             <Link href="/current/books">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/logo.png"
                 width={133}
                 height={40}
                 alt="logo"
-                priority
+                style={{ display: 'block' }}
               />
             </Link>
           </Box>

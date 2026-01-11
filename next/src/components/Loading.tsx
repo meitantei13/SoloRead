@@ -1,5 +1,4 @@
 import { Box } from '@mui/material'
-import Image from 'next/image'
 import { styles } from '@/styles'
 
 const Loading = () => {
@@ -12,13 +11,8 @@ const Loading = () => {
         alignItems: 'center',
       }}
     >
-      <Image
-        src="/loading.svg"
-        width={150}
-        height={150}
-        alt="loading・・・"
-        priority
-      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/loading.svg" width={150} height={150} alt="loading・・・" />
     </Box>
   )
 }
