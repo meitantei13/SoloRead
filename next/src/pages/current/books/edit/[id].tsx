@@ -94,7 +94,7 @@ const CurrentBooksEdit: NextPage = () => {
     if (data) {
       console.log(data)
       reset(book)
-      setStatusChecked(book.status == '投稿中')
+      setStatusChecked(book.status == '読了済')
       setIsFetched(true)
     }
   }, [data, book, reset])
@@ -217,8 +217,20 @@ const CurrentBooksEdit: NextPage = () => {
               alignItems: 'center',
             }}
           >
-            <Link href={'/current/books/list'}>
-              <Tooltip title="記事一覧に移動">
+            <Link
+              href={
+                book.status === '下書き'
+                  ? '/current/books/drafts'
+                  : '/current/books/list'
+              }
+            >
+              <Tooltip
+                title={
+                  book.status === '下書き'
+                    ? '下書き一覧に移動'
+                    : '記事一覧に移動'
+                }
+              >
                 <IconButton sx={{ backgroundColor: '#ffffff' }}>
                   <ChevronLefitIcon sx={{ color: '#99AAB6' }} />
                 </IconButton>
@@ -259,7 +271,7 @@ const CurrentBooksEdit: NextPage = () => {
                   variant="body2"
                   sx={{ color: '#333', fontSize: '0.85rem' }}
                 >
-                  下書き / 投稿中
+                  下書き / 読了済
                 </Typography>
               </Box>
               <Box component="form" onSubmit={handleSubmit(onSubmit)}>
