@@ -16,7 +16,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_084214) do
     t.string "author", comment: "著者名"
     t.text "content", comment: "感想・メモ"
     t.date "read_date", comment: "読了日"
-    t.integer "status", comment: "ステータス（10:未保存, 20:下書き, 30:投稿中）"
+    t.integer "status", comment: "ステータス（10:未保存, 20:下書き, 30:読了済）"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

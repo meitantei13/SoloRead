@@ -11,6 +11,8 @@ class Api::V1::GuestSessionsController < ApplicationController
       email: "guest_#{guest.id}@example.com",
     )
 
+    GuestSampleDataService.create_for(guest)
+
     token = guest.create_new_auth_token
 
     response.set_header("access-token", token["access-token"])
