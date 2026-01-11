@@ -28,7 +28,7 @@ const DraftsList: NextPage = () => {
 
   const url =
     process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books/drafts?page=' + page
-  const { data, error } = useSWR(user.isSignedIn ? url : url, fetcher)
+  const { data, error } = useSWR(user.isSignedIn ? url : null, fetcher)
   if (error) return <Error />
   if (!data) return <Loading />
 
