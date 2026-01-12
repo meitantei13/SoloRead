@@ -68,6 +68,8 @@ jobs:
         task-definition: ${{ env.ECS_TASK_DEFINITION_BACKEND }}
         container-name: ${{ env.CONTAINER_NAME_RAILS }}
         image: ${{ steps.build-image.outputs.image }}
+        environment-variables: |
+          RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2

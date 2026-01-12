@@ -19,7 +19,7 @@
             "environment": [
                 {
                     "name": "RAILS_MASTER_KEY",
-                    "value": "3badb1f6f1e18074e0c58165da3a6909"
+                    "value": ""
                 },
                 {
                     "name": "RAILS_LOG_TO_STDOUT",
