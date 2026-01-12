@@ -5,8 +5,9 @@ class Book < ApplicationRecord
   validate :verify_only_one_unsaved_status_is_allowed
 
   # 今月、今年分の本を取得するスコープ
-  scope :this_month, -> { where(read_date: Time.current.beginning_of_month..Time.current.end_of_month) }
-  scope :this_year, -> { where(read_date: Time.current.beginning_of_year..Time.current.end_of_year) }
+  scope :published,  -> { where(status: :published) }
+  scope :this_month, -> { published.where(read_date: Time.current.beginning_of_month..Time.current.end_of_month) }
+  scope :this_year, -> { published.where(read_date: Time.current.beginning_of_year..Time.current.end_of_year) }
 
   private
 
