@@ -19,5 +19,4 @@ test:
 
 production:
   <<: *default
-  database: myapp_prouction
-  url: <%= Rails.application.credentials.production.database_url %>
+  url: <%= ENV["DATABASE_URL"] %>
