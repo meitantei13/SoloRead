@@ -21,9 +21,8 @@ VOLUME /myapp/public
 VOLUME /myapp/tmp
 
 # Add a script to be executed every time the container starts.
-COPY entrypoint.prod.sh /usr/bin/
-COPY entrypoint.sidekiq.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.prod.sh
-RUN chmod +x /usr/bin/entrypoint.sidekiq.sh
-ENTRYPOINT ["entrypoint.prod.sh"]
+COPY entrypoint.prod.sh /myapp/entrypoint.prod.sh
+COPY entrypoint.sidekiq.sh /myapp/entrypoint.sidekiq.sh
+RUN chmod +x /myapp/entrypoint.prod.sh /myapp/entrypoint.sidekiq.sh
+
 EXPOSE 3000
