@@ -70,6 +70,7 @@ jobs:
         image: ${{ steps.build-image.outputs.image }}
         environment-variables: |
           RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
