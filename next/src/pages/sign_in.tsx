@@ -1,5 +1,15 @@
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { LoadingButton } from '@mui/lab'
-import { Box, Container, TextField, Typography, Stack } from '@mui/material'
+import {
+  Box,
+  Container,
+  TextField,
+  Typography,
+  Stack,
+  Link,
+  IconButton,
+  Tooltip,
+} from '@mui/material'
 import axios, { AxiosError } from 'axios'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
@@ -85,6 +95,13 @@ const SignIn: NextPage = () => {
     >
       <Container maxWidth="sm">
         <Box sx={{ mb: 4, pt: 4 }}>
+          <Link href="/">
+            <Tooltip title={'トップページに戻る'}>
+              <IconButton sx={{ backgroundColor: '#ffffff' }}>
+                <ChevronLeftIcon sx={{ color: '#99AAB6' }} />
+              </IconButton>
+            </Tooltip>
+          </Link>
           <Typography
             component="h2"
             sx={{
