@@ -1,3 +1,5 @@
+return if Rails.env.production?
+
 ActiveRecord::Base.transaction do
   # user1 = User.create!(name: "テスト太郎", email: "test1@example.com", password: "password", confirmed_at: Time.current)
   user1 = User.find_by(email: "test1@example.com")
