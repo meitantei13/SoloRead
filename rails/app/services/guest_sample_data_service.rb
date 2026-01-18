@@ -1,50 +1,41 @@
 class GuestSampleDataService
+  include GuestSampleData
+
   def self.create_for(user)
     today = Time.zone.today
+    books = GuestSampleData::BookSamples::DATA.dup
 
     ActiveRecord::Base.transaction do
-      if today.month == 1
-        create_january_sample(user, today)
-      else
-        create_normal_sample(user, today)
-      end
-
+      create_this_month_books(user, today, 2, books)
+      create_this_year_books(user, today, 5, books)
+      create_last_year_books(user, today, 9, books)
       create_draft_books(user)
     end
   end
 
-  # 1月
-  def self.create_january_sample(user, today)
-    create_this_month_books(user, today, 3)
-    create_last_year_books(user, today, 10)
-  end
-
-  # 2月から12月
-  def self.create_normal_sample(user, today)
-    create_this_month_books(user, today, 2)
-    create_this_year_books(user, today, 2)
-    create_last_year_books(user, today, 9)
-  end
-
-  # 今月読了済のデータを2件作成
-  def self.create_this_month_books(user, today, count)
-    count.times do |_i|
+  # 今月読了済のデータを作成
+  def self.create_this_month_books(user, today, count, books)
+    books.shift(count).each do |book_sample|
       create_published_book(
         user,
-        "サンプルタイトル",
-        "感想サンプル",
+        book_sample[:title],
+        book_sample[:author],
+        book_sample[:content],
         Faker::Date.between(from: today.beginning_of_month, to: today),
       )
     end
   end
 
-  # 今年読了済のデータを2件作成（今月分とは別で）
-  def self.create_this_year_books(user, today, count)
-    count.times do |_i|
+  # 今年読了済のデータを作成
+  def self.create_this_year_books(user, today, count, books)
+    return if today.month == 1
+
+    books.shift(count).each do |book_sample|
       create_published_book(
         user,
-        "サンプルタイトル",
-        "感想サンプル",
+        book_sample[:title],
+        book_sample[:author],
+        book_sample[:content],
         Faker::Date.between(
           from: today.beginning_of_year,
           to: today.beginning_of_month - 1,
@@ -53,16 +44,17 @@ class GuestSampleDataService
     end
   end
 
-  # 去年読了済のデータを9件作成
-  def self.create_last_year_books(user, today, count)
+  # 去年読了済のデータを作成
+  def self.create_last_year_books(user, today, count, books)
     from = (today - 1.year).beginning_of_year
     to   = (today - 1.year).end_of_year
 
-    count.times do |_i|
+    books.shift(count).each do |book_sample|
       create_published_book(
         user,
-        "サンプルタイトル",
-        "感想サンプル",
+        book_sample[:title],
+        book_sample[:author],
+        book_sample[:content],
         Faker::Date.between(from: from, to: to),
       )
     end
@@ -70,24 +62,24 @@ class GuestSampleDataService
 
   # 下書きデータを3件作成
   def self.create_draft_books(user)
-    3.times do |i|
+    GuestSampleData::DraftSamples::DATA.each do |sample|
       Book.create!(
-        title: "下書きサンプル#{i + 1}",
-        author: "テスト作家",
-        status: :draft,
         user: user,
+        title: sample[:title],
+        author: sample[:author],
+        status: :draft,
       )
     end
   end
 
-  def self.create_published_book(user, title, content, read_date)
+  def self.create_published_book(user, title, author, content, read_date)
     Book.create!(
+      user: user,
       title: title,
-      author: "テスト作家",
+      author: author,
       content: content,
       read_date: read_date,
       status: :published,
-      user: user,
     )
   end
 end
