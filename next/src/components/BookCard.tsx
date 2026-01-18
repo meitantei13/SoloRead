@@ -37,7 +37,7 @@ const BookCard = (props: BookCardProps) => {
             }}
           >
             <Box sx={labelSx}>書名</Box>
-            <Box sx={valueSx}>{omit(props.title)(21)('...')}</Box>
+            <Box sx={valueSx}>{omit(props.title)(19)('...')}</Box>
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2 }}>
             <Typography component="h5">
