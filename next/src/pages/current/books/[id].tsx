@@ -62,8 +62,8 @@ const CurrentBookDetail: NextPage = () => {
       if (!res.ok) throw new window.Error('削除失敗')
 
       const deleteStatus =
-        book.status === '下書き'
-          ? '/current/books/drafts'
+        book.status === '読書中'
+          ? '/current/books/reading'
           : '/current/books/list'
 
       setSnackbar({
@@ -124,15 +124,15 @@ const CurrentBookDetail: NextPage = () => {
           >
             <Link
               href={
-                book.status === '下書き'
-                  ? '/current/books/drafts'
+                book.status === '読書中'
+                  ? '/current/books/reading'
                   : '/current/books/list'
               }
             >
               <Tooltip
                 title={
-                  book.status === '下書き'
-                    ? '下書き一覧に移動'
+                  book.status === '読書中'
+                    ? '読書中一覧に移動'
                     : '記事一覧に移動'
                 }
               >

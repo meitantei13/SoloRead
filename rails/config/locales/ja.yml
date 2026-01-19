@@ -9,5 +9,5 @@ ja:
     book:
       status:
         unsaved: 未保存
-        draft: 下書き
-        published: 読了済
+        reading: 読書中
+        finished: 読了済

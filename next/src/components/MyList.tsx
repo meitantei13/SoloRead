@@ -128,8 +128,8 @@ const MyList = () => {
                 }}
               />
             </ListItemIcon>
-            <Link href={'/current/books/drafts'}>
-              <ListItemButton sx={listSx}>下書き一覧</ListItemButton>
+            <Link href={'/current/books/reading'}>
+              <ListItemButton sx={listSx}>読書中一覧</ListItemButton>
             </Link>
           </Box>
         </Box>

@@ -100,7 +100,7 @@ const CurrentBooksEdit: NextPage = () => {
   }, [data, book, reset])
 
   const onSubmit: SubmitHandler<BookFormData> = async (data) => {
-    const isPublished = statusChecked
+    const isfinished = statusChecked
 
     if (data.title.trim() === '') {
       return setSnackbar({
@@ -110,7 +110,7 @@ const CurrentBooksEdit: NextPage = () => {
       })
     }
 
-    if (isPublished && data.author.trim() === '') {
+    if (isfinished && data.author.trim() === '') {
       return setSnackbar({
         message: '記事の保存には著者名が必要です',
         severity: 'error',
@@ -118,7 +118,7 @@ const CurrentBooksEdit: NextPage = () => {
       })
     }
 
-    if (isPublished && data.readDate.trim() === '') {
+    if (isfinished && data.readDate.trim() === '') {
       return setSnackbar({
         message: '記事の保存には読了日が必要です',
         severity: 'error',
@@ -126,7 +126,7 @@ const CurrentBooksEdit: NextPage = () => {
       })
     }
 
-    if (isPublished && data.content.trim() === '') {
+    if (isfinished && data.content.trim() === '') {
       return setSnackbar({
         message: '記事の保存には本の感想が必要です',
         severity: 'error',
@@ -146,7 +146,7 @@ const CurrentBooksEdit: NextPage = () => {
       uid: localStorage.getItem('uid'),
     }
 
-    const status = statusChecked ? 'published' : 'draft'
+    const status = statusChecked ? 'finished' : 'draft'
 
     const patchData = {
       book: {
@@ -159,7 +159,7 @@ const CurrentBooksEdit: NextPage = () => {
     }
 
     const pageChange =
-      statusChecked === false ? '/current/books/drafts' : '/current/books/list'
+      statusChecked === false ? '/current/books/reading' : '/current/books/list'
 
     try {
       await axios.patch(patchUrl, patchData, { headers })
@@ -219,15 +219,15 @@ const CurrentBooksEdit: NextPage = () => {
           >
             <Link
               href={
-                book.status === '下書き'
-                  ? '/current/books/drafts'
+                book.status === '読書中'
+                  ? '/current/books/reading'
                   : '/current/books/list'
               }
             >
               <Tooltip
                 title={
-                  book.status === '下書き'
-                    ? '下書き一覧に移動'
+                  book.status === '読書中'
+                    ? '読書中一覧に移動'
                     : '記事一覧に移動'
                 }
               >
@@ -271,7 +271,7 @@ const CurrentBooksEdit: NextPage = () => {
                   variant="body2"
                   sx={{ color: '#333', fontSize: '0.85rem' }}
                 >
-                  下書き / 読了済
+                  読書中 / 読了済
                 </Typography>
               </Box>
               <Box component="form" onSubmit={handleSubmit(onSubmit)}>

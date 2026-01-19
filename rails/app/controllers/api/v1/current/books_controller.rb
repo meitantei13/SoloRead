@@ -2,13 +2,13 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   before_action :authenticate_user!
 
   def index
-    books = current_user.books.published.order(read_date: :desc).limit(6)
+    books = current_user.books.finished.order(read_date: :desc).limit(6)
     render json: books
   end
 
   def list
     books = current_api_v1_user.books.
-              where(status: :published).
+              where(status: :finished).
               order(read_date: :desc)
 
     if params[:q].present?
@@ -21,8 +21,8 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
     render json: books, meta: pagination(books), adapter: :json
   end
 
-  def drafts
-    books = current_api_v1_user.books.where(status: :draft).order(read_date: :desc).page(params[:page] || 1).per(10)
+  def reading
+    books = current_api_v1_user.books.where(status: :reading).order(read_date: :desc).page(params[:page] || 1).per(10)
     render json: books, meta: pagination(books), adapter: :json
   end
 
@@ -43,7 +43,7 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   end
 
   def counts
-    user_books = current_user.books.published
+    user_books = current_user.books.finished
     render json: {
       this_month: user_books.this_month.count,
       this_year: user_books.this_year.count,

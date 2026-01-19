@@ -19,7 +19,7 @@ RSpec.describe Book, type: :model do
     let(:author) { Faker::Name.name }
     let(:content) { Faker::Lorem.paragraph }
     let(:read_date) { Faker::Date.between(from: Time.zone.today - 365, to: Time.zone.today) }
-    let(:status) { :published }
+    let(:status) { :finished }
     let(:user) { create(:user) }
 
     context "すべての値が正常なとき" do

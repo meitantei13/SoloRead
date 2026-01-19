@@ -16,7 +16,7 @@ class GuestSampleDataService
   # 今月読了済のデータを作成
   def self.create_this_month_books(user, today, count, books)
     books.shift(count).each do |book_sample|
-      create_published_book(
+      create_finished_book(
         user,
         book_sample[:title],
         book_sample[:author],
@@ -31,7 +31,7 @@ class GuestSampleDataService
     return if today.month == 1
 
     books.shift(count).each do |book_sample|
-      create_published_book(
+      create_finished_book(
         user,
         book_sample[:title],
         book_sample[:author],
@@ -50,7 +50,7 @@ class GuestSampleDataService
     to   = (today - 1.year).end_of_year
 
     books.shift(count).each do |book_sample|
-      create_published_book(
+      create_finished_book(
         user,
         book_sample[:title],
         book_sample[:author],
@@ -60,26 +60,26 @@ class GuestSampleDataService
     end
   end
 
-  # 下書きデータを3件作成
+  # 読書中データを3件作成
   def self.create_draft_books(user)
     GuestSampleData::DraftSamples::DATA.each do |sample|
       Book.create!(
         user: user,
         title: sample[:title],
         author: sample[:author],
-        status: :draft,
+        status: :reading,
       )
     end
   end
 
-  def self.create_published_book(user, title, author, content, read_date)
+  def self.create_finished_book(user, title, author, content, read_date)
     Book.create!(
       user: user,
       title: title,
       author: author,
       content: content,
       read_date: read_date,
-      status: :published,
+      status: :finished,
     )
   end
 end
