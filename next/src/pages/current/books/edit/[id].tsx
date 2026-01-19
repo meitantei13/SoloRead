@@ -146,7 +146,7 @@ const CurrentBooksEdit: NextPage = () => {
       uid: localStorage.getItem('uid'),
     }
 
-    const status = statusChecked ? 'finished' : 'draft'
+    const status = statusChecked ? 'finished' : 'reading'
 
     const patchData = {
       book: {
