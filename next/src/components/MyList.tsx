@@ -116,7 +116,7 @@ const MyList = () => {
               />
             </ListItemIcon>
             <Link href={'/current/books/list'}>
-              <ListItemButton sx={listSx}>本一覧＆検索</ListItemButton>
+              <ListItemButton sx={listSx}>読了済一覧＆検索</ListItemButton>
             </Link>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', pb: 0.5 }}>
