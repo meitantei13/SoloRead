@@ -36,12 +36,12 @@ const Counts = () => {
         <Typography sx={{ fontSize: '20px' }}>今月読んだ本:</Typography>
         <Typography sx={countSx}>
           <Book size={26} color="#333" />
-          {data.this_month}冊
+          {data.finished_this_month}冊
         </Typography>
         <Typography sx={{ fontSize: '20px', mt: 2 }}>今年読んだ本:</Typography>
         <Typography sx={countSx}>
           <BookCopy size={26} color="#333" />
-          {data.this_year}冊
+          {data.finished_this_year}冊
         </Typography>
         <Typography sx={{ fontSize: '20px', mt: 2 }}>
           今まで読んだ本:

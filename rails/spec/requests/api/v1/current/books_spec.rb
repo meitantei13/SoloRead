@@ -394,8 +394,8 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       json = JSON.parse(response.body)
 
       expect(response).to have_http_status(:ok)
-      expect(json["this_month"]).to eq 1
-      expect(json["this_year"]).to eq 2
+      expect(json["finished_this_month"]).to eq 1
+      expect(json["finished_this_year"]).to eq 2
       expect(json["total_count"]).to eq 3
     end
   end

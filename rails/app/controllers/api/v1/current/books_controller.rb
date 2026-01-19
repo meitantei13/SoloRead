@@ -45,8 +45,8 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   def counts
     user_books = current_user.books.finished
     render json: {
-      this_month: user_books.this_month.count,
-      this_year: user_books.this_year.count,
+      finished_this_month: user_books.finished_this_month.count,
+      finished_this_year: user_books.finished_this_year.count,
       total_count: user_books.count,
     }
   end
