@@ -36,8 +36,8 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
 
     context "booksが複数存在するとき" do
       before do
-        create(:book, title: "古い本", author: "テスト１", read_date: "2024-01-01", status: :published, user: current_user)
-        create(:book, title: "新しい本", author: "テスト2", read_date: "2025-01-01", status: :published, user: current_user)
+        create(:book, title: "古い本", author: "テスト１", read_date: "2024-01-01", status: :finished, user: current_user)
+        create(:book, title: "新しい本", author: "テスト2", read_date: "2025-01-01", status: :finished, user: current_user)
       end
 
       it "read_dateの新しい順に返す" do
@@ -48,13 +48,13 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
     end
 
-    context "published と draft の両方が存在するとき" do
+    context "finished と draft の両方が存在するとき" do
       before do
-        create(:book, title: "公開中の本", author: "テスト３", read_date: "2024-03-01", status: :published, user: current_user)
-        create(:book, title: "下書きの本", author: "テスト４", read_date: "2025-03-01", status: :draft, user: current_user)
+        create(:book, title: "公開中の本", author: "テスト３", read_date: "2024-03-01", status: :finished, user: current_user)
+        create(:book, title: "読書中の本", author: "テスト４", read_date: "2025-03-01", status: :reading, user: current_user)
       end
 
-      it "published の本のみを返す" do
+      it "finished の本のみを返す" do
         subject
         res = JSON.parse(response.body)
         titles = res.map {|b| b["title"] }
@@ -139,17 +139,17 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     let(:headers) { current_user.create_new_auth_token }
     let(:current_user) { create(:user) }
     let(:other_user) { create(:user) }
-    let(:params) { { "book": { "title": "テストタイトル２", "author": "テスト著者２", "contect": "テスト本文２", "read_date": "2025.10.10", "status": "published" } } }
+    let(:params) { { "book": { "title": "テストタイトル２", "author": "テスト著者２", "contect": "テスト本文２", "read_date": "2025.10.10", "status": "finished" } } }
 
     context "id がログインユーザーに紐づく books レコードの id であるとき" do
-      let(:current_user_book) { create(:book, title: "テストタイトル１", author: "", content: "テスト本文１", status: :draft, user: current_user) }
+      let(:current_user_book) { create(:book, title: "テストタイトル１", author: "", content: "テスト本文１", status: :reading, user: current_user) }
       let(:id) { current_user_book.id }
 
       it "正常にレコードを更新できる" do
         expect { subject }.to change { current_user_book.reload.title }.from("テストタイトル１").to("テストタイトル２") and
           change { current_user_book.reload.author }.from("").to("テスト著者２") and
           change { current_user_book.reload.content }.from("テスト本文１").to("テスト本文２") and
-          change { current_user_book.reload.status }.from("draft").to("published")
+          change { current_user_book.reload.status }.from("draft").to("finished")
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
         expect(res["user"].keys).to eq ["name"]
@@ -176,16 +176,16 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     let(:params) { {} }
 
     before do
-      create(:book, title: "Ruby入門", author: "伊藤一", read_date: "2025-01-01", status: :published, user: current_user)
-      create(:book, title: "Next.js実践", author: "田中二", status: :published, user: current_user)
-      create(:book, title: "Rails完全ガイド", author: "佐藤三", status: :published, user: current_user)
-      create(:book, title: "Docker基礎", author: "斎藤四", status: :draft, user: current_user)
+      create(:book, title: "Ruby入門", author: "伊藤一", read_date: "2025-01-01", status: :finished, user: current_user)
+      create(:book, title: "Next.js実践", author: "田中二", status: :finished, user: current_user)
+      create(:book, title: "Rails完全ガイド", author: "佐藤三", status: :finished, user: current_user)
+      create(:book, title: "Docker基礎", author: "斎藤四", status: :reading, user: current_user)
     end
 
     context "検索が入力されていないとき" do
-      before { create_list(:book, 10, status: :published, user: current_user) }
+      before { create_list(:book, 10, status: :finished, user: current_user) }
 
-      it "published記事を10件ずつ取得できる" do
+      it "finished記事を10件ずつ取得できる" do
         subject
         res = JSON.parse(response.body)
         expect(res["books"].length).to eq 10
@@ -194,7 +194,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     end
 
     context "ページネーション機能" do
-      before { create_list(:book, 25, status: :published, user: current_user) }
+      before { create_list(:book, 25, status: :finished, user: current_user) }
 
       it "最初の10件を取得できる" do
         get list_api_v1_current_books_path, headers:, params: { page: 1 }
@@ -257,7 +257,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     end
 
     context "部分一致になっているか" do
-      before { create(:book, title: "Ruby応用", author: "佐々木太郎", read_date: "2025-02-01", status: :published, user: current_user) }
+      before { create(:book, title: "Ruby応用", author: "佐々木太郎", read_date: "2025-02-01", status: :finished, user: current_user) }
 
       let(:params) { { q: "Ruby" } }
 
@@ -272,35 +272,35 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     end
   end
 
-  describe "GET api/v1/current/books/drafts" do
-    subject { get(drafts_api_v1_current_books_path, headers:, params:) }
+  describe "GET api/v1/current/books/reading" do
+    subject { get(reading_api_v1_current_books_path, headers:, params:) }
 
     let(:headers) { current_user.create_new_auth_token }
     let(:current_user) { create(:user) }
     let(:params) { {} }
 
     before do
-      create(:book, title: "Ruby入門", author: "伊藤一", status: :published, user: current_user)
-      create(:book, title: "Next.js実践", author: "田中二", status: :published, user: current_user)
-      create(:book, title: "Rails完全ガイド", author: "佐藤三", status: :published, user: current_user)
-      create(:book, title: "Docker基礎", author: "斎藤四", status: :draft, user: current_user)
+      create(:book, title: "Ruby入門", author: "伊藤一", status: :finished, user: current_user)
+      create(:book, title: "Next.js実践", author: "田中二", status: :finished, user: current_user)
+      create(:book, title: "Rails完全ガイド", author: "佐藤三", status: :finished, user: current_user)
+      create(:book, title: "Docker基礎", author: "斎藤四", status: :reading, user: current_user)
     end
 
-    context "draftを正常に取得できる" do
-      it "draft記事を1件取得できる" do
+    context "readingを正常に取得できる" do
+      it "reading記事を1件取得できる" do
         subject
         res = JSON.parse(response.body)
         expect(res["books"].length).to eq 1
-        expect(res["books"][0]["status"]).to eq "下書き"
+        expect(res["books"][0]["status"]).to eq "読書中"
         expect(response).to have_http_status(:ok)
       end
     end
 
     context "ページネーション機能" do
-      before { create_list(:book, 25, status: :draft, user: current_user) }
+      before { create_list(:book, 25, status: :reading, user: current_user) }
 
       it "最初の10件を取得する" do
-        get drafts_api_v1_current_books_path, headers:, params: { page: 1 }
+        get reading_api_v1_current_books_path, headers:, params: { page: 1 }
         res = JSON.parse(response.body)
         expect(res["books"].length).to eq 10
         expect(res["meta"]["current_page"]).to eq 1
@@ -308,7 +308,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
 
       it "次の10件を取得できる" do
-        get drafts_api_v1_current_books_path, headers:, params: { page: 2 }
+        get reading_api_v1_current_books_path, headers:, params: { page: 2 }
         res = JSON.parse(response.body)
         expect(res["books"].length).to eq 10
         expect(res["meta"]["current_page"]).to eq 2
@@ -316,7 +316,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
 
       it "残りの6件を取得できる" do
-        get drafts_api_v1_current_books_path, headers:, params: { page: 3 }
+        get reading_api_v1_current_books_path, headers:, params: { page: 3 }
         res = JSON.parse(response.body)
         expect(res["books"].length).to eq 6
         expect(res["meta"]["current_page"]).to eq 3
@@ -329,8 +329,8 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     let!(:current_user) { create(:user) }
     let!(:headers) { current_user.create_new_auth_token }
 
-    context "publishedの記事を削除できる" do
-      let!(:book) { create(:book, status: :published, user: current_user) }
+    context "finishedの記事を削除できる" do
+      let!(:book) { create(:book, status: :finished, user: current_user) }
       it "削除できる" do
         expect {
           delete api_v1_current_book_path(book.id), headers: headers
@@ -340,7 +340,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     end
 
     context "draftの記事を削除できる" do
-      let!(:book) { create(:book, status: :draft, user: current_user) }
+      let!(:book) { create(:book, status: :reading, user: current_user) }
       it "削除できる" do
         expect {
           delete api_v1_current_book_path(book.id), headers: headers
@@ -350,7 +350,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     end
 
     context "ログインしていない場合" do
-      let!(:book) { create(:book, status: :published, user: current_user) }
+      let!(:book) { create(:book, status: :finished, user: current_user) }
       it "削除できない" do
         expect {
           delete api_v1_current_book_path(book.id)
@@ -361,7 +361,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
 
     context "他のユーザーの記事" do
       let!(:other_user) { create(:user) }
-      let!(:book) { create(:book, status: :published, user: other_user) }
+      let!(:book) { create(:book, status: :finished, user: other_user) }
       it "削除できない" do
         expect {
           delete api_v1_current_book_path(book.id), headers: headers

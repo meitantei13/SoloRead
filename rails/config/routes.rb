@@ -23,7 +23,7 @@ Rails.application.routes.draw do
           collection do
             get :counts
             get :list
-            get :drafts
+            get :reading
           end
         end
       end

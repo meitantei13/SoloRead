@@ -27,7 +27,7 @@ const DraftsList: NextPage = () => {
   const page = 'page' in router.query ? Number(router.query.page) : 1
 
   const url =
-    process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books/drafts?page=' + page
+    process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books/reading?page=' + page
   const { data, error } = useSWR(user.isSignedIn ? url : null, fetcher)
   if (error) return <Error />
   if (!data) return <Loading />
@@ -37,7 +37,7 @@ const DraftsList: NextPage = () => {
   const contentWidth = isLargeScreen ? '900px' : '460px'
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    router.push('/current/books/drafts?page=' + value)
+    router.push('/current/books/reading?page=' + value)
   }
 
   return (
@@ -50,7 +50,7 @@ const DraftsList: NextPage = () => {
           pt: 3,
         }}
       >
-        下書き一覧
+        読書中一覧
       </Box>
       <Box
         sx={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}

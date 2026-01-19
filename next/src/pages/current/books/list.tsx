@@ -76,7 +76,7 @@ const BooksList: NextPage = () => {
           pt: 3,
         }}
       >
-        本一覧＆検索
+        読了済一覧＆検索
       </Box>
       <Box
         sx={{

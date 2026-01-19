@@ -13,7 +13,7 @@ RSpec.describe GuestSampleDataService, type: :service do
       end
 
       it "読了済データを11件作成する" do
-        expect(user.books.published.count).to eq(11)
+        expect(user.books.finished.count).to eq(11)
       end
     end
 
@@ -25,7 +25,7 @@ RSpec.describe GuestSampleDataService, type: :service do
       end
 
       it "読了済データを16件作成する" do
-        expect(user.books.published.count).to eq(16)
+        expect(user.books.finished.count).to eq(16)
       end
     end
 
@@ -39,12 +39,12 @@ RSpec.describe GuestSampleDataService, type: :service do
         travel_back
       end
 
-      it "下書きのデータを3件作成する" do
-        expect(user.books.draft.count).to eq(3)
+      it "読書中のデータを3件作成する" do
+        expect(user.books.reading.count).to eq(3)
       end
 
       it "今月の読了済のデータが1件以上存在する" do
-        this_month = user.books.published.where(
+        this_month = user.books.finished.where(
           read_date: Time.zone.today.beginning_of_month..Time.zone.today,
         )
         expect(this_month.count).to be >= 1
@@ -54,7 +54,7 @@ RSpec.describe GuestSampleDataService, type: :service do
         last_year_range =
           (Time.zone.today - 1.year).beginning_of_year..(Time.zone.today - 1.year).end_of_year
 
-        last_year_books = user.books.published.where(read_date: last_year_range)
+        last_year_books = user.books.finished.where(read_date: last_year_range)
         expect(last_year_books.count).to be >= 1
       end
     end

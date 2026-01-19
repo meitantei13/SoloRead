@@ -116,7 +116,7 @@ const MyList = () => {
               />
             </ListItemIcon>
             <Link href={'/current/books/list'}>
-              <ListItemButton sx={listSx}>本一覧＆検索</ListItemButton>
+              <ListItemButton sx={listSx}>読了済一覧＆検索</ListItemButton>
             </Link>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', pb: 0.5 }}>
@@ -128,8 +128,8 @@ const MyList = () => {
                 }}
               />
             </ListItemIcon>
-            <Link href={'/current/books/drafts'}>
-              <ListItemButton sx={listSx}>下書き一覧</ListItemButton>
+            <Link href={'/current/books/reading'}>
+              <ListItemButton sx={listSx}>読書中一覧</ListItemButton>
             </Link>
           </Box>
         </Box>
