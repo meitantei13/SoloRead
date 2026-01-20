@@ -33,6 +33,7 @@ import { useRequireSginedIn } from '@/hooks/useRequireSignedIn'
 import { styles } from '@/styles'
 import { fetcher } from '@/utils'
 import 'react-day-picker/style.css'
+import GenreDialog from '@/components/GenreDialog'
 
 type BookProps = {
   title: string
@@ -78,7 +79,7 @@ const CurrentBooksEdit: NextPage = () => {
   )
 
   const genresUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/genres'
-  const { data: genres } = useSWR<Genre[]>(
+  const { data: genres, mutate: mutateGenres } = useSWR<Genre[]>(
     user.isSignedIn ? genresUrl : null,
     fetcher,
   )
@@ -214,6 +215,7 @@ const CurrentBooksEdit: NextPage = () => {
   }
 
   const [open, setOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   if (error) return <Error />
   if (!data || !isFetched || !genres) return <Loading />
@@ -360,32 +362,50 @@ const CurrentBooksEdit: NextPage = () => {
               name="genreId"
               control={control}
               render={({ field, fieldState }) => (
-                <Select
-                  {...field}
-                  value={field.value}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  error={fieldState.invalid}
-                  fullWidth
-                  displayEmpty
-                  sx={{
-                    backgroundColor: 'white',
-                    '& .MuiSelect-select': {
-                      color: field.value ? 'inherit' : '#8a8a8a',
-                    },
-                  }}
-                >
-                  <MenuItem value="">
-                    <em>ジャンルを選択</em>
-                  </MenuItem>
-
-                  {genres.map((genre) => (
-                    <MenuItem key={genre.id} value={String(genre.id)}>
-                      {genre.name}
+                <>
+                  <Select
+                    {...field}
+                    value={field.value}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      if (value === "add_new") {
+                        setDialogOpen(true)
+                        return
+                      }
+                      field.onChange(value)
+                    }}
+                    error={fieldState.invalid}
+                    fullWidth
+                    displayEmpty
+                    sx={{
+                      backgroundColor: 'white',
+                      '& .MuiSelect-select': {
+                        color: field.value ? 'inherit' : '#8a8a8a',
+                      },
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>ジャンルを選択</em>
                     </MenuItem>
-                  ))}
-                </Select>
+                    {genres.map((genre) => (
+                      <MenuItem key={genre.id} value={String(genre.id)}>
+                        {genre.name}
+                      </MenuItem>
+                    ))}
+                    <MenuItem value="add_new" sx={{ color: "primary.main" }}>+ 新しいジャンルを追加</MenuItem>
+                  </Select>
+                  <GenreDialog 
+                    open={dialogOpen}
+                    onClose={() => setDialogOpen(false)}
+                    onSuccess={(newGenre) => {
+                      mutateGenres()
+                      field.onChange(String(newGenre.id))
+                    }}
+                  />
+                </>
               )}
             />
+            
             <Controller
               name="readDate"
               control={control}
