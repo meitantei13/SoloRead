@@ -12,8 +12,8 @@ RSpec.describe GuestSampleDataService, type: :service do
         end
       end
 
-      it "読了済データを11件作成する" do
-        expect(user.books.finished.count).to eq(11)
+      it "読了済データを15件作成する" do
+        expect(user.books.finished.count).to eq(15)
       end
     end
 
@@ -24,8 +24,8 @@ RSpec.describe GuestSampleDataService, type: :service do
         end
       end
 
-      it "読了済データを16件作成する" do
-        expect(user.books.finished.count).to eq(16)
+      it "読了済データを20件作成する" do
+        expect(user.books.finished.count).to eq(20)
       end
     end
 

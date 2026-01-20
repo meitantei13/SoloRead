@@ -392,7 +392,14 @@ const CurrentBooksEdit: NextPage = () => {
                         {genre.name}
                       </MenuItem>
                     ))}
-                    <MenuItem value="add_new" sx={{ color: 'primary.main' }}>
+                    <MenuItem
+                      value="add_new"
+                      sx={{
+                        backgroundColor: '#F0F7F4',
+                        color: '#000',
+                        fontWeight: 600,
+                      }}
+                    >
                       + 新しいジャンルを追加
                     </MenuItem>
                   </Select>

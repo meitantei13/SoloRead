@@ -8,7 +8,7 @@ class GuestSampleDataService
     ActiveRecord::Base.transaction do
       create_this_month_books(user, today, 2, books)
       create_this_year_books(user, today, 5, books)
-      create_last_year_books(user, today, 9, books)
+      create_last_year_books(user, today, 13, books)
       create_draft_books(user)
     end
   end
@@ -18,9 +18,7 @@ class GuestSampleDataService
     books.shift(count).each do |book_sample|
       create_finished_book(
         user,
-        book_sample[:title],
-        book_sample[:author],
-        book_sample[:content],
+        book_sample,
         Faker::Date.between(from: today.beginning_of_month, to: today),
       )
     end
@@ -33,9 +31,7 @@ class GuestSampleDataService
     books.shift(count).each do |book_sample|
       create_finished_book(
         user,
-        book_sample[:title],
-        book_sample[:author],
-        book_sample[:content],
+        book_sample,
         Faker::Date.between(
           from: today.beginning_of_year,
           to: today.beginning_of_month - 1,
@@ -52,9 +48,7 @@ class GuestSampleDataService
     books.shift(count).each do |book_sample|
       create_finished_book(
         user,
-        book_sample[:title],
-        book_sample[:author],
-        book_sample[:content],
+        book_sample,
         Faker::Date.between(from: from, to: to),
       )
     end
@@ -63,21 +57,25 @@ class GuestSampleDataService
   # 読書中データを3件作成
   def self.create_draft_books(user)
     GuestSampleData::DraftSamples::DATA.each do |sample|
+      genre = Genre.find_by(name: sample[:genre], is_default: true)
       Book.create!(
         user: user,
         title: sample[:title],
         author: sample[:author],
+        genre: genre,
         status: :reading,
       )
     end
   end
 
-  def self.create_finished_book(user, title, author, content, read_date)
+  def self.create_finished_book(user, book_data, read_date)
+    genre = Genre.find_by(name: book_data[:genre], is_default: true)
     Book.create!(
       user: user,
-      title: title,
-      author: author,
-      content: content,
+      title: book_data[:title],
+      author: book_data[:author],
+      content: book_data[:content],
+      genre: genre,
       read_date: read_date,
       status: :finished,
     )
