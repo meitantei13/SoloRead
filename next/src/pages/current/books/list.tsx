@@ -5,11 +5,6 @@ import {
   TextField,
   useMediaQuery,
   useTheme,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
 } from '@mui/material'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
@@ -19,6 +14,7 @@ import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import BookCard from '@/components/BookCard'
 import Error from '@/components/Error'
+import GenreSelect from '@/components/GenreSelect'
 import Loading from '@/components/Loading'
 import MyList from '@/components/MyList'
 import { useUserState } from '@/hooks/useGlobalState'
@@ -33,11 +29,6 @@ type ListProps = {
   genreName: string
 }
 
-type Genre = {
-  id: number
-  name: string
-}
-
 const BooksList: NextPage = () => {
   const [user] = useUserState()
   const router = useRouter()
@@ -49,13 +40,6 @@ const BooksList: NextPage = () => {
   const [debounceQuery, setDebouncedQuery] = useState('')
 
   const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null)
-
-  const genreUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/genres'
-  const { data: genresData } = useSWR(
-    user.isSignedIn ? genreUrl : null,
-    fetcher,
-  )
-  const genres: Genre[] = genresData || []
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -106,6 +90,8 @@ const BooksList: NextPage = () => {
         sx={{
           display: 'flex',
           justifyContent: 'center',
+          alignItems: 'center',
+          gap: 2,
           mt: 3,
           mb: 4,
         }}
@@ -116,34 +102,16 @@ const BooksList: NextPage = () => {
           value={query}
           onChange={handleSearch}
           sx={{
-            width: '60%',
-            maxWidth: '750px',
+            width: '50%',
+            maxWidth: '500px',
             backgroundColor: '#fff',
-            mt: 3,
           }}
           InputLabelProps={{ shrink: false }}
         />
-      </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-        <FormControl sx={{ minWidth: 150 }}>
-          <InputLabel>ジャンル</InputLabel>
-          <Select
-            value={selectedGenreId ?? ''}
-            label="ジャンル"
-            onChange={(e: SelectChangeEvent<number | string>) => {
-              const value = e.target.value
-              setSelectedGenreId(value === '' ? null : Number(value))
-            }}
-            sx={{ backgroundColor: '#fff' }}
-          >
-            <MenuItem value="">すべて</MenuItem>
-            {genres.map((genre) => (
-              <MenuItem key={genre.id} value={genre.id}>
-                {genre.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <GenreSelect
+          selectedGenreId={selectedGenreId}
+          onGenreChange={setSelectedGenreId}
+        />
       </Box>
       <Box
         sx={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}
