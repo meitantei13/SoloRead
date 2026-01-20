@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import BookCard from '@/components/BookCard'
 import Error from '@/components/Error'
+import GenreSelect from '@/components/GenreSelect'
 import Loading from '@/components/Loading'
 import MyList from '@/components/MyList'
 import { useUserState } from '@/hooks/useGlobalState'
@@ -25,6 +26,7 @@ type ListProps = {
   title: string
   author: string
   readDate: string
+  genreName: string
 }
 
 const BooksList: NextPage = () => {
@@ -37,6 +39,8 @@ const BooksList: NextPage = () => {
   const [query, setQuery] = useState('')
   const [debounceQuery, setDebouncedQuery] = useState('')
 
+  const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null)
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(query)
@@ -46,9 +50,13 @@ const BooksList: NextPage = () => {
 
   const baseUrl =
     process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books/list?page=' + page
-  const url = debounceQuery
-    ? `${baseUrl}&q=${encodeURIComponent(debounceQuery)}`
-    : baseUrl
+  let url = baseUrl
+  if (debounceQuery) {
+    url += `&q=${encodeURIComponent(debounceQuery)}`
+  }
+  if (selectedGenreId) {
+    url += `&genre_id=${selectedGenreId}`
+  }
 
   const { data, error } = useSWR(user.isSignedIn ? url : null, fetcher)
   if (error) return <Error />
@@ -82,6 +90,8 @@ const BooksList: NextPage = () => {
         sx={{
           display: 'flex',
           justifyContent: 'center',
+          alignItems: 'center',
+          gap: 2,
           mt: 3,
           mb: 4,
         }}
@@ -92,12 +102,15 @@ const BooksList: NextPage = () => {
           value={query}
           onChange={handleSearch}
           sx={{
-            width: '60%',
-            maxWidth: '750px',
+            width: '50%',
+            maxWidth: '500px',
             backgroundColor: '#fff',
-            mt: 3,
           }}
           InputLabelProps={{ shrink: false }}
+        />
+        <GenreSelect
+          selectedGenreId={selectedGenreId}
+          onGenreChange={setSelectedGenreId}
         />
       </Box>
       <Box
@@ -117,6 +130,7 @@ const BooksList: NextPage = () => {
                         title={book.title}
                         author={book.author}
                         readDate={book.readDate}
+                        genreName={book.genreName}
                       />
                     </Link>
                   </Grid>

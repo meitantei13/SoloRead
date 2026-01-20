@@ -7,6 +7,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable
   include DeviseTokenAuth::Concerns::User
   has_many :books, dependent: :destroy
+  has_many :genres, dependent: :destroy
 
   scope :expired_guests, -> {
     where(is_guest: true).

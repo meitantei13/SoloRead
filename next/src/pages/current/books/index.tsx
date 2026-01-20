@@ -24,6 +24,7 @@ type BookProps = {
   title: string
   author: string
   readDate: string
+  genreName: string
 }
 
 const MyPage: NextPage = () => {
@@ -106,6 +107,7 @@ const MyPage: NextPage = () => {
                           title={book.title}
                           author={book.author}
                           readDate={book.readDate}
+                          genreName={book.genreName}
                         />
                       </Link>
                     </Grid>

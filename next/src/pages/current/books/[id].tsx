@@ -26,6 +26,7 @@ type CurrentBookProps = {
   content: string
   readDate: string
   status: string
+  genreName: string
 }
 
 const CurrentBookDetail: NextPage = () => {
@@ -133,7 +134,7 @@ const CurrentBookDetail: NextPage = () => {
                 title={
                   book.status === '読書中'
                     ? '読書中一覧に移動'
-                    : '記事一覧に移動'
+                    : '読了済一覧に移動'
                 }
               >
                 <IconButton sx={{ backgroundColor: '#ffffff' }}>
@@ -221,6 +222,15 @@ const CurrentBookDetail: NextPage = () => {
             >
               <Box sx={labelSx}>著者</Box>
               <Box sx={valueSx}>{book.author}</Box>{' '}
+            </Box>
+            <Box
+              sx={{
+                ...fieldBoxSx,
+                borderBottom: '1px solid #ccc',
+              }}
+            >
+              <Box sx={labelSx}>ジャンル</Box>
+              <Box sx={valueSx}>{book.genreName}</Box>{' '}
             </Box>
             <Box
               sx={{

@@ -19,7 +19,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         subject
         res = JSON.parse(response.body)
         expect(res.length).to eq 6
-        expect(res[0].keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
+        expect(res[0].keys).to eq ["id", "title", "author", "content", "read_date", "status", "genre_id", "genre_name", "user"]
         expect(res[0]["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -86,7 +86,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       it "正常にレコードを取得できる" do
         subject
         res = JSON.parse(response.body)
-        expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "genre_id", "genre_name", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -114,7 +114,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         expect { subject }.to change { current_user.books.count }.by(1)
         expect(current_user.books.last).to be_unsaved
         res = JSON.parse(response.body)
-        expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "genre_id", "genre_name", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -126,7 +126,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       it "既存の未保存ステータス記事を表示する" do
         expect { subject }.not_to change { current_user.books.count }
         res = JSON.parse(response.body)
-        expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "genre_id", "genre_name", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -151,7 +151,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
           change { current_user_book.reload.content }.from("テスト本文１").to("テスト本文２") and
           change { current_user_book.reload.status }.from("draft").to("finished")
         res = JSON.parse(response.body)
-        expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "read_date", "status", "genre_id", "genre_name", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -268,6 +268,53 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         expect(res["books"].length).to eq 2
         expect(titles).to eq ["Ruby応用", "Ruby入門"]
         expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "ジャンルで絞り込み" do
+      let(:novel_genre) { create(:genre, :default, name: "小説") }
+      let(:tech_genre) { create(:genre, :default, name: "技術書") }
+
+      before do
+        create(:book, title: "小説A", genre: novel_genre, status: :finished, user: current_user)
+        create(:book, title: "小説B", genre: novel_genre, status: :finished, user: current_user)
+        create(:book, title: "技術書A", genre: tech_genre, status: :finished, user: current_user)
+      end
+
+      context "genre_id が指定されているとき" do
+        let(:params) { { genre_id: novel_genre.id } }
+
+        it "指定したジャンルの本のみ取得できる" do
+          subject
+          res = JSON.parse(response.body)
+          titles = res["books"].map {|b| b["title"] }
+          expect(titles).to contain_exactly("小説A", "小説B")
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "genre_id と検索ワードが両方指定されているとき" do
+        let(:params) { { genre_id: novel_genre.id, q: "小説A" } }
+
+        it "両方の条件にマッチする本のみ取得できる" do
+          subject
+          res = JSON.parse(response.body)
+          titles = res["books"].map {|b| b["title"] }
+          expect(titles).to eq ["小説A"]
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "genre_id にマッチする本がないとき" do
+        let(:manga_genre) { create(:genre, :default, name: "漫画") }
+        let(:params) { { genre_id: manga_genre.id } }
+
+        it "空の配列が返る" do
+          subject
+          res = JSON.parse(response.body)
+          expect(res["books"]).to eq []
+          expect(response).to have_http_status(:ok)
+        end
       end
     end
   end

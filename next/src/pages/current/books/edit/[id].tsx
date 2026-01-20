@@ -7,6 +7,8 @@ import {
   TextField,
   Tooltip,
   IconButton,
+  Select,
+  MenuItem,
 } from '@mui/material'
 import axios, { isAxiosError } from 'axios'
 import { format } from 'date-fns'
@@ -18,6 +20,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import useSWR from 'swr'
 import Error from '@/components/Error'
+import GenreDialog from '@/components/GenreDialog'
 import Loading from '@/components/Loading'
 import { Button as ShadcnButton } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -38,6 +41,7 @@ type BookProps = {
   readDate: string
   content: string
   status: string
+  genreId: string
 }
 
 type BookFormData = {
@@ -45,6 +49,13 @@ type BookFormData = {
   author: string
   readDate: string
   content: string
+  genreId: string
+}
+
+type Genre = {
+  id: number
+  name: string
+  is_default: boolean
 }
 
 const CurrentBooksEdit: NextPage = () => {
@@ -67,6 +78,12 @@ const CurrentBooksEdit: NextPage = () => {
     fetcher,
   )
 
+  const genresUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/genres'
+  const { data: genres, mutate: mutateGenres } = useSWR<Genre[]>(
+    user.isSignedIn ? genresUrl : null,
+    fetcher,
+  )
+
   const book: BookProps = useMemo(() => {
     if (!data) {
       return {
@@ -75,6 +92,7 @@ const CurrentBooksEdit: NextPage = () => {
         readDate: '',
         content: '',
         status: '',
+        genreId: '',
       }
     }
     return {
@@ -83,6 +101,7 @@ const CurrentBooksEdit: NextPage = () => {
       readDate: data.read_date == null ? '' : data.read_date,
       content: data.content == null ? '' : data.content,
       status: data.status,
+      genreId: data.genre_id == null ? '' : String(data.genre_id),
     }
   }, [data])
 
@@ -100,7 +119,7 @@ const CurrentBooksEdit: NextPage = () => {
   }, [data, book, reset])
 
   const onSubmit: SubmitHandler<BookFormData> = async (data) => {
-    const isfinished = statusChecked
+    const isFinished = statusChecked
 
     if (data.title.trim() === '') {
       return setSnackbar({
@@ -110,7 +129,7 @@ const CurrentBooksEdit: NextPage = () => {
       })
     }
 
-    if (isfinished && data.author.trim() === '') {
+    if (isFinished && data.author.trim() === '') {
       return setSnackbar({
         message: '記事の保存には著者名が必要です',
         severity: 'error',
@@ -118,7 +137,15 @@ const CurrentBooksEdit: NextPage = () => {
       })
     }
 
-    if (isfinished && data.readDate.trim() === '') {
+    if (isFinished && data.genreId.trim() === '') {
+      return setSnackbar({
+        message: '記事の保存にはジャンルが必要です',
+        severity: 'error',
+        pathname: '/current/books/edit/[id]',
+      })
+    }
+
+    if (isFinished && data.readDate.trim() === '') {
       return setSnackbar({
         message: '記事の保存には読了日が必要です',
         severity: 'error',
@@ -126,7 +153,7 @@ const CurrentBooksEdit: NextPage = () => {
       })
     }
 
-    if (isfinished && data.content.trim() === '') {
+    if (isFinished && data.content.trim() === '') {
       return setSnackbar({
         message: '記事の保存には本の感想が必要です',
         severity: 'error',
@@ -155,6 +182,7 @@ const CurrentBooksEdit: NextPage = () => {
         read_date: data.readDate,
         content: data.content,
         status: status,
+        genre_id: data.genreId ? Number(data.genreId) : null,
       },
     }
 
@@ -187,9 +215,10 @@ const CurrentBooksEdit: NextPage = () => {
   }
 
   const [open, setOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   if (error) return <Error />
-  if (!data || !isFetched) return <Loading />
+  if (!data || !isFetched || !genres) return <Loading />
 
   return (
     <Box css={styles.pageMinHeight} sx={{ backgroundColor: 'secondary.main' }}>
@@ -329,6 +358,56 @@ const CurrentBooksEdit: NextPage = () => {
                 />
               )}
             />
+            <Controller
+              name="genreId"
+              control={control}
+              render={({ field, fieldState }) => (
+                <>
+                  <Select
+                    {...field}
+                    value={field.value}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      if (value === 'add_new') {
+                        setDialogOpen(true)
+                        return
+                      }
+                      field.onChange(value)
+                    }}
+                    error={fieldState.invalid}
+                    fullWidth
+                    displayEmpty
+                    sx={{
+                      backgroundColor: 'white',
+                      '& .MuiSelect-select': {
+                        color: field.value ? 'inherit' : '#8a8a8a',
+                      },
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>ジャンルを選択</em>
+                    </MenuItem>
+                    {genres.map((genre) => (
+                      <MenuItem key={genre.id} value={String(genre.id)}>
+                        {genre.name}
+                      </MenuItem>
+                    ))}
+                    <MenuItem value="add_new" sx={{ color: 'primary.main' }}>
+                      + 新しいジャンルを追加
+                    </MenuItem>
+                  </Select>
+                  <GenreDialog
+                    open={dialogOpen}
+                    onClose={() => setDialogOpen(false)}
+                    onSuccess={(newGenre) => {
+                      mutateGenres()
+                      field.onChange(String(newGenre.id))
+                    }}
+                  />
+                </>
+              )}
+            />
+
             <Controller
               name="readDate"
               control={control}
