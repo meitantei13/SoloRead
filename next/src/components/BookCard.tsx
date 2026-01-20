@@ -4,6 +4,7 @@ type BookCardProps = {
   title: string
   author: string
   readDate: string
+  genreName: string
 }
 
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
@@ -28,7 +29,23 @@ const valueSx = {
 const BookCard = (props: BookCardProps) => {
   return (
     <Box sx={hoverSx}>
-      <Card sx={{ height: 175, width: 380 }}>
+      <Card sx={{ height: 175, width: 380, position: 'relative' }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 10,
+            right: 13,
+            fontSize: 15,
+            color: '#666',
+            backgroundColor: '#f0f0f0',
+            letterSpacing: '0.05em',
+            px: 1,
+            py: 0.3,
+            borderRadius: '4px',
+          }}
+        >
+          {props.genreName}
+        </Box>
         <CardContent>
           <Typography
             component="h1"

@@ -1,5 +1,6 @@
 class Book < ApplicationRecord
   belongs_to :user
+  belongs_to :genre, optional: true
   enum :status, { unsaved: 10, reading: 20, finished: 30 }
   validates :title, :content, :read_date, presence: true, if: :finished?
   validate :verify_only_one_unsaved_status_is_allowed

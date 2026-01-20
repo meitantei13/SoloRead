@@ -5,6 +5,11 @@ import {
   TextField,
   useMediaQuery,
   useTheme,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
 } from '@mui/material'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
@@ -25,6 +30,12 @@ type ListProps = {
   title: string
   author: string
   readDate: string
+  genreName: string
+}
+
+type Genre = {
+  id: number
+  name: string
 }
 
 const BooksList: NextPage = () => {
@@ -37,6 +48,15 @@ const BooksList: NextPage = () => {
   const [query, setQuery] = useState('')
   const [debounceQuery, setDebouncedQuery] = useState('')
 
+  const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null)
+
+  const genreUrl = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/genres'
+  const { data: genresData } = useSWR(
+    user.isSignedIn ? genreUrl : null,
+    fetcher,
+  )
+  const genres: Genre[] = genresData || []
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(query)
@@ -46,9 +66,13 @@ const BooksList: NextPage = () => {
 
   const baseUrl =
     process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books/list?page=' + page
-  const url = debounceQuery
-    ? `${baseUrl}&q=${encodeURIComponent(debounceQuery)}`
-    : baseUrl
+  let url = baseUrl
+  if (debounceQuery) {
+    url += `&q=${encodeURIComponent(debounceQuery)}`
+  }
+  if (selectedGenreId) {
+    url += `&genre_id=${selectedGenreId}`
+  }
 
   const { data, error } = useSWR(user.isSignedIn ? url : null, fetcher)
   if (error) return <Error />
@@ -100,6 +124,27 @@ const BooksList: NextPage = () => {
           InputLabelProps={{ shrink: false }}
         />
       </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+        <FormControl sx={{ minWidth: 150 }}>
+          <InputLabel>ジャンル</InputLabel>
+          <Select
+            value={selectedGenreId ?? ''}
+            label="ジャンル"
+            onChange={(e: SelectChangeEvent<number | string>) => {
+              const value = e.target.value
+              setSelectedGenreId(value === '' ? null : Number(value))
+            }}
+            sx={{ backgroundColor: '#fff' }}
+          >
+            <MenuItem value="">すべて</MenuItem>
+            {genres.map((genre) => (
+              <MenuItem key={genre.id} value={genre.id}>
+                {genre.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
       <Box
         sx={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}
       >
@@ -117,6 +162,7 @@ const BooksList: NextPage = () => {
                         title={book.title}
                         author={book.author}
                         readDate={book.readDate}
+                        genreName={book.genreName}
                       />
                     </Link>
                   </Grid>

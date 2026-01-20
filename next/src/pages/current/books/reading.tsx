@@ -17,6 +17,7 @@ type ListProps = {
   title: string
   author: string
   readDate: string
+  genreName: string
 }
 
 const DraftsList: NextPage = () => {
@@ -69,6 +70,7 @@ const DraftsList: NextPage = () => {
                         title={book.title}
                         author={book.author}
                         readDate={book.readDate}
+                        genreName={book.genreName}
                       />
                     </Link>
                   </Grid>

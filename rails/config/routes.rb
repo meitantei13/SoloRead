@@ -26,6 +26,7 @@ Rails.application.routes.draw do
             get :reading
           end
         end
+        resources :genres, only: [:index, :create]
       end
     end
   end
