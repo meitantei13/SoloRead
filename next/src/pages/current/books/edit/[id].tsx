@@ -20,6 +20,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import useSWR from 'swr'
 import Error from '@/components/Error'
+import GenreDialog from '@/components/GenreDialog'
 import Loading from '@/components/Loading'
 import { Button as ShadcnButton } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -33,7 +34,6 @@ import { useRequireSginedIn } from '@/hooks/useRequireSignedIn'
 import { styles } from '@/styles'
 import { fetcher } from '@/utils'
 import 'react-day-picker/style.css'
-import GenreDialog from '@/components/GenreDialog'
 
 type BookProps = {
   title: string
@@ -368,7 +368,7 @@ const CurrentBooksEdit: NextPage = () => {
                     value={field.value}
                     onChange={(e) => {
                       const value = e.target.value
-                      if (value === "add_new") {
+                      if (value === 'add_new') {
                         setDialogOpen(true)
                         return
                       }
@@ -392,9 +392,11 @@ const CurrentBooksEdit: NextPage = () => {
                         {genre.name}
                       </MenuItem>
                     ))}
-                    <MenuItem value="add_new" sx={{ color: "primary.main" }}>+ 新しいジャンルを追加</MenuItem>
+                    <MenuItem value="add_new" sx={{ color: 'primary.main' }}>
+                      + 新しいジャンルを追加
+                    </MenuItem>
                   </Select>
-                  <GenreDialog 
+                  <GenreDialog
                     open={dialogOpen}
                     onClose={() => setDialogOpen(false)}
                     onSuccess={(newGenre) => {
@@ -405,7 +407,7 @@ const CurrentBooksEdit: NextPage = () => {
                 </>
               )}
             />
-            
+
             <Controller
               name="readDate"
               control={control}
