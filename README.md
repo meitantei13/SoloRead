@@ -1,7 +1,7 @@
 # Solo Read
 誰にも見られない、自分だけの読書管理アプリ
 
-![Image](https://github.com/user-attachments/assets/fd19c35d-1e63-42e7-9085-35a06b40e519)
+![Image](https://github.com/user-attachments/assets/bf98e7d5-7b9f-447a-a52a-b660f4906b49)
 
 ## サービスURL
 https://solo-read.click
@@ -177,12 +177,12 @@ SWR を用いたデータ取得とキャッシュ制御により、
 - データベースは RDS (MySQL) を Private Subnet に配置
 - GitHub Actions と ECR を連携した自動デプロイパイプラインを構築
 
-![Image](https://github.com/user-attachments/assets/fd19c35d-1e63-42e7-9085-35a06b40e519)
+![Image](https://github.com/user-attachments/assets/bf98e7d5-7b9f-447a-a52a-b660f4906b49)
 
 ### ER図
 - ユーザーごとに読書記録を管理するため、User と Book を**1対多**の関係で設計しています
 
-![Image](https://github.com/user-attachments/assets/adbb454c-0c5f-476b-a3cf-113ba1eb0bc2)
+![Image](https://github.com/user-attachments/assets/096f5ed7-1baf-452a-8795-5e38d296a84d)
 
 
 ## 設計で工夫した点
