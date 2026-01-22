@@ -1,0 +1,64 @@
+{
+    "family": "solo-read-sidekiq-task",
+    "containerDefinitions": [
+        {
+            "name": "sidekiq",
+            "image": "901005418622.dkr.ecr.ap-northeast-1.amazonaws.com/solo-read-rails@sha256:5ad99a23a1eea49f2bdd8e8a799bec053c40827ce345aaf4a7bf6aef525ea239",
+            "cpu": 0,
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [
+                "/usr/bin/entrypoint.sidekiq.sh"
+            ],
+            "environment": [
+                {
+                    "name": "RAILS_ENV",
+                    "value": "production"
+                },
+                {
+                    "name": "DATABASE_URL",
+                    "value": ""
+                },
+                {
+                    "name": "RAILS_MASTER_KEY",
+                    "value": ""
+                },
+                {
+                    "name": "REDIS_URL",
+                    "value": ""
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "workingDirectory": "/myapp",
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/solo-read-sidekiq-task",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "taskRoleArn": "arn:aws:iam::901005418622:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::901005418622:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "volumes": [],
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "enableFaultInjection": false
+}
