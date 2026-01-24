@@ -9,7 +9,8 @@ const Header = () => {
   const [, setUser] = useUserState()
   const [, setSnackbar] = useSnackbarState()
 
-  const hiddenHeaderPaths = ['/', '/sign_up', '/sign_in']
+  // ヘッダーを非表示にするページ
+  const hiddenHeaderPaths = ['/', '/sign_up', '/sign_in', "/forgot_password"]
   if (hiddenHeaderPaths.includes(router.pathname)) {
     return null
   }

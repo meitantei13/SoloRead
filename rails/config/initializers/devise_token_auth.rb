@@ -63,4 +63,6 @@ DeviseTokenAuth.setup do |config|
   # devise confirmable module. If you want to use devise confirmable module and
   # send email, set it to true. (This is a setting for compatibility)
   # config.send_confirmation_email = true
+ 
+  config.default_password_reset_url = ENV.fetch("PASSWORD_RESET_URL", "http://localhost:8000/reset_password")
 end

@@ -159,6 +159,14 @@ const SignIn: NextPage = () => {
           >
             送信する
           </LoadingButton>
+          <Box sx={{ textAlign: "center" }}>
+            <Link
+              href="/forgot_password"
+              style={{ color: "#666", textDecoration: "underline"}}
+            >
+              パスワードを忘れた方はこちら
+            </Link>
+          </Box>
         </Stack>
       </Container>
     </Box>
