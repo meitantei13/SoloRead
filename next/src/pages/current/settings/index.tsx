@@ -1,9 +1,10 @@
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import EmailIcon from '@mui/icons-material/Email'
 import LockIcon from '@mui/icons-material/Lock'
 import PersonIcon from '@mui/icons-material/Person'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Box, Card, CardContent, Container, Typography } from '@mui/material'
+import { Box, Card, CardContent, Container, IconButton, Tooltip, Typography } from '@mui/material'
 import Link from 'next/link'
 import { NextPage } from 'next/types'
 
@@ -56,20 +57,26 @@ const Settings: NextPage = () => {
       }}
     >
       <Container maxWidth="sm">
-        <Typography
-          component="h2"
-          sx={{
-            fontSize: 28,
-            color: 'black',
-            fontWeight: 'bold',
-            textAlign: 'center',
-            mb: 6,
-            pt: 4,
-          }}
-        >
-          ユーザー設定
-        </Typography>
-
+        <Box sx={{ mb:4, pt:4 }}>
+          <Link href="/">
+              <Tooltip title={'トップページに戻る'}>
+                <IconButton sx={{ backgroundColor: '#ffffff' }}>
+                  <ChevronLeftIcon sx={{ color: '#99AAB6' }} />
+                </IconButton>
+              </Tooltip>
+            </Link>
+          <Typography
+            component="h2"
+            sx={{
+              fontSize: 32,
+              color: 'black',
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
+          >
+            ユーザー設定
+          </Typography>
+        </Box>
         <SettingItem
           href="/current/settings/email"
           icon={<EmailIcon sx={{ color: '#A3B18A' }} />}

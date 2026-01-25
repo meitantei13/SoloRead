@@ -79,9 +79,9 @@ const BooksList: NextPage = () => {
       <Box
         sx={{
           textAlign: 'center',
-          fontSize: 28,
+          fontSize: 32,
           fontWeight: 'bold',
-          pt: 3,
+          pt: 5,
         }}
       >
         読了済一覧＆検索
@@ -92,7 +92,7 @@ const BooksList: NextPage = () => {
           justifyContent: 'center',
           alignItems: 'center',
           gap: 2,
-          mt: 3,
+          mt: 5,
           mb: 4,
         }}
       >
