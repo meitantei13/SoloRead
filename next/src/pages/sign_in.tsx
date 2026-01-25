@@ -43,8 +43,8 @@ const SignIn: NextPage = () => {
     password: {
       required: 'パスワードを入力してください。',
       minLength: {
-        value: 4,
-        message: 'パスワードは4文字以上で入力してください。',
+        value: 6,
+        message: 'パスワードは6文字以上で入力してください。',
       },
     },
   }
@@ -159,6 +159,14 @@ const SignIn: NextPage = () => {
           >
             送信する
           </LoadingButton>
+          <Box sx={{ textAlign: 'center' }}>
+            <Link
+              href="/forgot_password"
+              style={{ color: '#666', textDecoration: 'underline' }}
+            >
+              パスワードを忘れた方はこちら
+            </Link>
+          </Box>
         </Stack>
       </Container>
     </Box>
