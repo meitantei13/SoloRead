@@ -10,56 +10,69 @@ import {
   Typography,
 } from '@mui/material'
 import axios, { AxiosError } from 'axios'
-import type { NextPage } from 'next'
+import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useSnackbarState } from '@/hooks/useGlobalState'
 
-type ForgotPasswordData = {
-  email: string
+type ResetPasswordData = {
+  password: string
+  passwordConfirmation: string
 }
 
-const ForgotPassword: NextPage = () => {
+const ResetPassword: NextPage = () => {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [, setSnackbar] = useSnackbarState()
 
-  const { control, handleSubmit } = useForm<ForgotPasswordData>({
-    defaultValues: { email: '' },
+  const { control, handleSubmit, watch } = useForm<ResetPasswordData>({
+    defaultValues: { password: '', passwordConfirmation: '' },
   })
 
-  const onSubmit = async (data: ForgotPasswordData) => {
+  const password = watch('password')
+
+  // URLパラメータから認証情報を取得
+  const accessToken = router.query['access-token'] as string | undefined
+  const client = router.query['client'] as string | undefined
+  const uid = router.query['uid'] as string | undefined
+
+  const onSubmit = async (data: ResetPasswordData) => {
     setIsLoading(true)
     const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/auth/password'
 
     try {
-      await axios.post(
+      await axios.put(
         url,
         {
-          email: data.email,
-          redirect_url:
-            process.env.NEXT_PUBLIC_FRONT_BASE_URL + '/reset_password',
+          password: data.password,
+          password_confirmation: data.passwordConfirmation,
         },
         {
           headers: {
-            'Content-type': 'application/json',
+            'Content-Type': 'application/json',
             Accept: 'application/json',
+            'access-token': accessToken,
+            client: client,
+            uid: uid,
           },
         },
       )
 
       setSnackbar({
-        message: 'パスワードリセット用のメールを送信しました',
+        message: 'パスワードを更新しました',
         severity: 'success',
-        pathname: '/forgot_password',
+        pathname: '/sign_in',
       })
+      router.push('/sign_in')
     } catch (e) {
       const err = e as AxiosError<{ errors: string[] }>
       console.error(err.message)
 
       setSnackbar({
-        message: 'メールの送信に失敗しました',
+        message: 'パスワードの更新に失敗しました',
         severity: 'error',
-        pathname: '/forgot_password',
+        pathname: '/reset_password',
       })
     } finally {
       setIsLoading(false)
@@ -67,13 +80,17 @@ const ForgotPassword: NextPage = () => {
   }
 
   const validationRules = {
-    email: {
-      required: 'メールアドレスを入力してください。',
-      pattern: {
-        value:
-          /^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
-        message: '正しい形式のメールアドレスを入力してください。',
+    password: {
+      required: 'パスワードを入力してください。',
+      minLength: {
+        value: 6,
+        message: 'パスワードは6文字以上で入力してください。',
       },
+    },
+    passwordConfirmation: {
+      required: 'パスワード（確認）を入力してください',
+      validate: (value: string) =>
+        value === password || 'パスワードが一致しません。',
     },
   }
 
@@ -111,27 +128,37 @@ const ForgotPassword: NextPage = () => {
                 textAlign: 'center',
               }}
             >
-              パスワードの再設定
+              パスワードの更新
             </Typography>
           </Box>
-          <Typography
-            align="center"
-            sx={{ mt: 3, mb: 6, whiteSpace: 'pre-line', lineHeight: 2 }}
-          >
-            登録済みのメールアドレスを入力してください。
-            {'\n'}
-            パスワード再設定用のリンクをお送りします。
-          </Typography>
           <Controller
-            name="email"
+            name="password"
             control={control}
-            rules={validationRules.email}
-            render={({ field }) => (
+            rules={validationRules.password}
+            render={({ field, fieldState }) => (
               <TextField
                 {...field}
-                type="text"
-                placeholder="登録済みのメールアドレス"
+                type="password"
+                placeholder="新しいパスワード"
                 fullWidth
+                error={fieldState.invalid}
+                helperText={fieldState.error?.message}
+                sx={{ backgroundColor: 'white', mb: 3 }}
+              />
+            )}
+          />
+          <Controller
+            name="passwordConfirmation"
+            control={control}
+            rules={validationRules.passwordConfirmation}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                type="password"
+                placeholder="新しいパスワード（確認）"
+                fullWidth
+                error={fieldState.invalid}
+                helperText={fieldState.error?.message}
                 sx={{ backgroundColor: 'white' }}
               />
             )}
@@ -149,7 +176,7 @@ const ForgotPassword: NextPage = () => {
               mt: 3,
             }}
           >
-            送信
+            更新
           </LoadingButton>
         </Box>
       </Container>
@@ -157,4 +184,4 @@ const ForgotPassword: NextPage = () => {
   )
 }
 
-export default ForgotPassword
+export default ResetPassword
