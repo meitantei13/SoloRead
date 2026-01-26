@@ -1,10 +1,18 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import DeleteIcon from '@mui/icons-material/Delete'
 import EmailIcon from '@mui/icons-material/Email'
 import LockIcon from '@mui/icons-material/Lock'
 import PersonIcon from '@mui/icons-material/Person'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { Box, Card, CardContent, Container, IconButton, Tooltip, Typography } from '@mui/material'
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import Link from 'next/link'
 import { NextPage } from 'next/types'
 
@@ -23,7 +31,12 @@ type SettingItemProps = {
   color?: string
 }
 
-const SettingItem = ({ href, icon, label, color = '#3D3D3D' }: SettingItemProps) => (
+const SettingItem = ({
+  href,
+  icon,
+  label,
+  color = '#3D3D3D',
+}: SettingItemProps) => (
   <Link href={href}>
     <Box sx={hoverSx}>
       <Card sx={{ mb: 3 }}>
@@ -57,14 +70,14 @@ const Settings: NextPage = () => {
       }}
     >
       <Container maxWidth="sm">
-        <Box sx={{ mb:4, pt:4 }}>
-          <Link href="/">
-              <Tooltip title={'トップページに戻る'}>
-                <IconButton sx={{ backgroundColor: '#ffffff' }}>
-                  <ChevronLeftIcon sx={{ color: '#99AAB6' }} />
-                </IconButton>
-              </Tooltip>
-            </Link>
+        <Box sx={{ mb: 4, pt: 4 }}>
+          <Link href="/current/books">
+            <Tooltip title={'トップページに戻る'}>
+              <IconButton sx={{ backgroundColor: '#ffffff' }}>
+                <ChevronLeftIcon sx={{ color: '#99AAB6' }} />
+              </IconButton>
+            </Tooltip>
+          </Link>
           <Typography
             component="h2"
             sx={{
