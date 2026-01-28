@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         resources :genres, only: [:index, :create]
         namespace :settings do
           resource :name, only: [:update]
+          resource :account, only: [:destroy]
           resource :email, only: [:create] do
             get :confirm, on: :collection
           end

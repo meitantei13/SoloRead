@@ -13,8 +13,11 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
+import axios, { AxiosError } from 'axios'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { NextPage } from 'next/types'
+import { useSnackbarState } from '@/hooks/useGlobalState'
 
 const hoverSx = {
   transition: 'transform 0.2s',
@@ -25,7 +28,8 @@ const hoverSx = {
 }
 
 type SettingItemProps = {
-  href: string
+  href?: string
+  onClick?: () => void
   icon: React.ReactNode
   label: string
   color?: string
@@ -33,11 +37,12 @@ type SettingItemProps = {
 
 const SettingItem = ({
   href,
+  onClick,
   icon,
   label,
   color = '#3D3D3D',
-}: SettingItemProps) => (
-  <Link href={href}>
+}: SettingItemProps) => {
+  const content = (
     <Box sx={hoverSx}>
       <Card sx={{ mb: 3 }}>
         <CardContent
@@ -57,10 +62,54 @@ const SettingItem = ({
         </CardContent>
       </Card>
     </Box>
-  </Link>
-)
+  )
+  return href ? (
+    <Link href={href}>{content}</Link>
+  ) : (
+    <Box onClick={onClick}>{content}</Box>
+  )
+}
 
 const Settings: NextPage = () => {
+  const router = useRouter()
+  const [, setSnackbar] = useSnackbarState()
+
+  const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/settings/account'
+
+  const handleDelete = async () => {
+    if (!confirm('このアカウントを削除しますか？')) return
+    try {
+      await axios.delete(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          'access-token': localStorage.getItem('access-token'),
+          client: localStorage.getItem('client'),
+          uid: localStorage.getItem('uid'),
+        },
+      })
+
+      localStorage.removeItem('access-token')
+      localStorage.removeItem('client')
+      localStorage.removeItem('uid')
+
+      setSnackbar({
+        message: 'ユーザーを削除しました',
+        severity: 'success',
+        pathname: '/',
+      })
+      router.push('/')
+    } catch (e) {
+      const err = e as AxiosError<{ errors: string[] }>
+      console.error(err.message)
+
+      setSnackbar({
+        message: 'ユーザーの削除に失敗しました。',
+        severity: 'error',
+        pathname: '/current/settings',
+      })
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -106,7 +155,7 @@ const Settings: NextPage = () => {
           label="ユーザー名の変更"
         />
         <SettingItem
-          href="/current/settings/delete"
+          onClick={handleDelete}
           icon={<DeleteIcon sx={{ color: '#cc6666' }} />}
           label="アカウントの削除"
           color="#cc6666"
