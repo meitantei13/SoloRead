@@ -95,7 +95,11 @@ export default function Home() {
           Solo Readは、あなただけが開ける秘密の本棚です。
         </Typography>
 
-        <Stack spacing={3} direction="row" sx={{ p: 4 }}>
+        <Stack
+          spacing={3}
+          direction={{ xs: 'column', sm: 'row' }}
+          sx={{ p: 4, alignItems: 'center' }}
+        >
           <Link href="/sign_in">
             <Button
               variant="contained"

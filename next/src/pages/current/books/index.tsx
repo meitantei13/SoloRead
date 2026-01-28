@@ -9,12 +9,12 @@ import {
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import Link from 'next/link'
+import { useState } from 'react'
 import useSWR from 'swr'
 import BookCard from '@/components/BookCard'
-import Counts from '@/components/Counts'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
-import MyList from '@/components/MyList'
+import Sidebar from '@/components/Sidebar'
 import { useUserState } from '@/hooks/useGlobalState'
 import { useRequireSginedIn } from '@/hooks/useRequireSignedIn'
 import { fetcher } from '@/utils'
@@ -30,6 +30,11 @@ type BookProps = {
 const MyPage: NextPage = () => {
   useRequireSginedIn()
   const [user] = useUserState()
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen((prev) => !prev)
+  }
 
   const theme = useTheme()
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'))
@@ -65,22 +70,26 @@ const MyPage: NextPage = () => {
         backgroundColor: 'secondary.main',
       }}
     >
+      <Sidebar
+        drawerOpen={drawerOpen}
+        onToggle={handleDrawerToggle}
+        desktopMt={7}
+      />
       <Box sx={{ display: 'flex' }}>
-        <Box sx={{ width: '240px' }}>
-          <MyList />
-          <Counts />
-        </Box>
+        {/* メインコンテンツ */}
         <Box
           sx={{
-            px: 6,
-            flex: 1,
-            width: contentWidth(),
+            position: 'relative',
+            px: { xs: 2, sm: 6 },
+            width: { xs: '100%', lg: contentWidth() },
+            maxWidth: contentWidth(),
+            mx: 'auto',
           }}
         >
           <Typography
             sx={{
               mt: 7,
-              mb: 2,
+              mb: 3,
               pl: 2,
               fontWeight: 'bold',
               fontSize: 23,
