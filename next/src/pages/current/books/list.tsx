@@ -16,7 +16,7 @@ import BookCard from '@/components/BookCard'
 import Error from '@/components/Error'
 import GenreSelect from '@/components/GenreSelect'
 import Loading from '@/components/Loading'
-import MyList from '@/components/MyList'
+import Sidebar from '@/components/Sidebar'
 import { useUserState } from '@/hooks/useGlobalState'
 import { styles } from '@/styles'
 import { fetcher } from '@/utils'
@@ -34,7 +34,12 @@ const BooksList: NextPage = () => {
   const router = useRouter()
   const theme = useTheme()
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'))
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const page = 'page' in router.query ? Number(router.query.page) : 1
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen((prev) => !prev)
+  }
 
   const [query, setQuery] = useState('')
   const [debounceQuery, setDebouncedQuery] = useState('')
@@ -81,7 +86,7 @@ const BooksList: NextPage = () => {
           textAlign: 'center',
           fontSize: 32,
           fontWeight: 'bold',
-          pt: 5,
+          pt: 7,
         }}
       >
         読了済一覧＆検索
@@ -93,7 +98,7 @@ const BooksList: NextPage = () => {
           alignItems: 'center',
           gap: 2,
           mt: 5,
-          mb: 4,
+          mb: 8,
         }}
       >
         <TextField
@@ -116,11 +121,22 @@ const BooksList: NextPage = () => {
       <Box
         sx={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}
       >
+        <Sidebar
+          drawerOpen={drawerOpen}
+          onToggle={handleDrawerToggle}
+          desktopMt={-10}
+        />
         <Box sx={{ display: 'flex' }}>
-          <Box sx={{ width: '240px' }}>
-            <MyList />
-          </Box>
-          <Box sx={{ px: 6, pt: 5, flex: 1, width: contentWidth }}>
+          <Box
+            sx={{
+              position: 'relative',
+              px: { xs: 2, sm: 6 },
+              flex: 1,
+              width: { xs: '100%', lg: contentWidth },
+              maxWidth: contentWidth,
+              mx: 'auto',
+            }}
+          >
             <Grid container spacing={4}>
               {books.length > 0 ? (
                 books.map((book: ListProps, i: number) => (

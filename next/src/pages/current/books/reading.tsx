@@ -3,11 +3,12 @@ import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import useSWR from 'swr'
 import BookCard from '@/components/BookCard'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
-import MyList from '@/components/MyList'
+import Sidebar from '@/components/Sidebar'
 import { useUserState } from '@/hooks/useGlobalState'
 import { styles } from '@/styles'
 import { fetcher } from '@/utils'
@@ -20,12 +21,17 @@ type ListProps = {
   genreName: string
 }
 
-const DraftsList: NextPage = () => {
+const ReadingList: NextPage = () => {
   const [user] = useUserState()
   const router = useRouter()
   const theme = useTheme()
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'))
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const page = 'page' in router.query ? Number(router.query.page) : 1
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen((prev) => !prev)
+  }
 
   const url =
     process.env.NEXT_PUBLIC_API_BASE_URL + '/current/books/reading?page=' + page
@@ -48,7 +54,8 @@ const DraftsList: NextPage = () => {
           textAlign: 'center',
           fontSize: 32,
           fontWeight: 'bold',
-          pt: 3,
+          pt: 7,
+          pb: 7,
         }}
       >
         読書中一覧
@@ -56,11 +63,22 @@ const DraftsList: NextPage = () => {
       <Box
         sx={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}
       >
+        <Sidebar
+          drawerOpen={drawerOpen}
+          onToggle={handleDrawerToggle}
+          desktopMt={-8}
+        />
         <Box sx={{ display: 'flex' }}>
-          <Box sx={{ width: '240px' }}>
-            <MyList />
-          </Box>
-          <Box sx={{ px: 6, pt: 5, flex: 1, width: contentWidth }}>
+          <Box
+            sx={{
+              position: 'relative',
+              px: { xs: 2, sm: 6 },
+              flex: 1,
+              width: { xs: '100%', lg: contentWidth },
+              maxWidth: contentWidth,
+              mx: 'auto',
+            }}
+          >
             <Grid container spacing={4}>
               {books.length > 0 ? (
                 books.map((book: ListProps, i: number) => (
@@ -95,4 +113,4 @@ const DraftsList: NextPage = () => {
   )
 }
 
-export default DraftsList
+export default ReadingList
