@@ -46,7 +46,7 @@ const DraftsList: NextPage = () => {
       <Box
         sx={{
           textAlign: 'center',
-          fontSize: 28,
+          fontSize: 32,
           fontWeight: 'bold',
           pt: 3,
         }}
