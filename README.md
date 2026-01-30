@@ -136,28 +136,32 @@ SWR を用いたデータ取得とキャッシュ制御により、
 ※動画ではゲストログインを表示しています。
 ※ゲストログインでは自動でサンプルデータが追加されています。
 
-![Image](https://github.com/user-attachments/assets/bb9c2dbd-4902-4548-b201-17747b465880)
+![Image](https://github.com/user-attachments/assets/f16505cb-a996-4988-9255-9be3cc47a3b0)
 
 ### 記事の新規登録
 
 記事の新規登録画面です。
-登録には以下の４項目の入力があります。
+登録には以下の５項目の入力が必要です。
 ①書名
 ②著者
-③読了日
-④感想
+③ジャンル
+④読了日
+⑤感想
 
 各項目を入力後、画面上部で**読書中**か**読了済**を選択し、**更新する**ボタンを押します。
+※読書中で更新する場合は、書名のみが必須項目となります。
 
-![Image](https://github.com/user-attachments/assets/8662e259-a211-47f6-a403-4aaeb43a11a4)
+![Image](https://github.com/user-attachments/assets/5cff5766-9845-468d-9933-979528dc12bc)
 
 ### 登録一覧からデータを検索
 
 本一覧＆検索画面から、読了済で登録したデータを検索することができます。
 検索バーに入力すると自動で検索が開始されます。
 検索範囲は**書名**と**著者**です。
+また、ジャンルを選択することで、指定したジャンルの本のみを表示することができます。
+ジャンルを指定した後に検索を行うことで、**指定したジャンル内での検索**が可能です。
 
-![Image](https://github.com/user-attachments/assets/d8b9ca08-9ca1-4b32-9859-9a0b4ddf943b)
+![Image](https://github.com/user-attachments/assets/100ffaf8-3766-42ce-9f59-4163541ad14d)
 
 ## システム構成
 ### インフラ構成図
