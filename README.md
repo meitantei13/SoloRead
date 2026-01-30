@@ -1,5 +1,5 @@
 # Solo Read
-誰にも見られない、**自分だけの読書管理アプリ**
+誰にも見られない、**自分だけの読書管理アプリ**. 
 「Solo Read」は、あなただけが開ける**秘密の本棚**です。
 
 ![Image](https://github.com/user-attachments/assets/bf98e7d5-7b9f-447a-a52a-b660f4906b49)
