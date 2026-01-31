@@ -214,7 +214,7 @@ https://solo-read.click
 - GitHub Actions と ECR を連携した自動デプロイパイプラインを構築
 - アプリケーションの応答性と安全性を保つため、Sidekiq と Redis (ElastiCache) を用いた非同期処理基盤を構築
 
-![Image](https://github.com/user-attachments/assets/bf98e7d5-7b9f-447a-a52a-b660f4906b49)
+![Image](https://github.com/user-attachments/assets/ac8a17bd-57b3-4efc-b111-06d599d91488)
   
 
 
@@ -222,7 +222,7 @@ https://solo-read.click
 - 完全非公開の読書記録をユーザー単位で管理するため、User と Book を**1対多**の関係で設計
 - Genre は共通で利用できるデフォルトジャンルと、ユーザーが独自に追加できるジャンルの両方を扱えるよう、user_id を nullable とした設計
 
-![Image](https://github.com/user-attachments/assets/47419760-fa3c-4846-9cc9-d28e40649a84)
+![Image](https://github.com/user-attachments/assets/15bcda10-363e-449c-9edf-f97d3620d1c1)
   
   
 

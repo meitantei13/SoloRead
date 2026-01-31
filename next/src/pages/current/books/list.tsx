@@ -44,7 +44,9 @@ const BooksList: NextPage = () => {
   const [query, setQuery] = useState('')
   const [debounceQuery, setDebouncedQuery] = useState('')
 
-  const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null)
+  const [selectedGenreId, setSelectedGenreId] = useState<
+    number | 'unset' | null
+  >(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -59,7 +61,9 @@ const BooksList: NextPage = () => {
   if (debounceQuery) {
     url += `&q=${encodeURIComponent(debounceQuery)}`
   }
-  if (selectedGenreId) {
+  if (selectedGenreId === 'unset') {
+    url += `&genre_id=null`
+  } else if (selectedGenreId) {
     url += `&genre_id=${selectedGenreId}`
   }
 

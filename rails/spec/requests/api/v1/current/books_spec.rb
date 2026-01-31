@@ -316,6 +316,30 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
           expect(response).to have_http_status(:ok)
         end
       end
+
+      context "genre_id=null が指定されているとき" do
+        let(:params) { { genre_id: "null" } }
+
+        it "ジャンル未設定の本のみ取得できる" do
+          subject
+          res = JSON.parse(response.body)
+          titles = res["books"].map {|b| b["title"] }
+          expect(titles).to contain_exactly("Ruby入門", "Next.js実践", "Rails完全ガイド")
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "genre_id=null と検索ワードが両方指定されているとき" do
+        let(:params) { { genre_id: "null", q: "Ruby" } }
+
+        it "両方の条件にマッチする本のみ取得できる" do
+          subject
+          res = JSON.parse(response.body)
+          titles = res["books"].map {|b| b["title"] }
+          expect(titles).to eq ["Ruby入門"]
+          expect(response).to have_http_status(:ok)
+        end
+      end
     end
   end
 

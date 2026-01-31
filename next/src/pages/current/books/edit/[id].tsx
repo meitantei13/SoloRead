@@ -137,14 +137,6 @@ const CurrentBooksEdit: NextPage = () => {
       })
     }
 
-    if (isFinished && data.genreId.trim() === '') {
-      return setSnackbar({
-        message: '記事の保存にはジャンルが必要です',
-        severity: 'error',
-        pathname: '/current/books/edit/[id]',
-      })
-    }
-
     if (isFinished && data.readDate.trim() === '') {
       return setSnackbar({
         message: '記事の保存には読了日が必要です',

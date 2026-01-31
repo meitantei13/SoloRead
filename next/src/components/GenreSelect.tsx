@@ -15,8 +15,8 @@ type Genre = {
 }
 
 type GenreSelectProps = {
-  selectedGenreId: number | null
-  onGenreChange: (genreId: number | null) => void
+  selectedGenreId: number | 'unset' | null
+  onGenreChange: (genreId: number | 'unset' | null) => void
 }
 
 const GenreSelect = ({ selectedGenreId, onGenreChange }: GenreSelectProps) => {
@@ -40,7 +40,13 @@ const GenreSelect = ({ selectedGenreId, onGenreChange }: GenreSelectProps) => {
         displayEmpty
         onChange={(e: SelectChangeEvent<number | string>) => {
           const value = e.target.value
-          onGenreChange(value === '' ? null : Number(value))
+          if (value === '') {
+            onGenreChange(null)
+          } else if (value === 'unset') {
+            onGenreChange('unset')
+          } else {
+            onGenreChange(Number(value))
+          }
         }}
         sx={{ backgroundColor: '#fff' }}
       >
@@ -50,6 +56,7 @@ const GenreSelect = ({ selectedGenreId, onGenreChange }: GenreSelectProps) => {
             {genre.name}
           </MenuItem>
         ))}
+        <MenuItem value="unset">未設定</MenuItem>
       </Select>
     </FormControl>
   )
