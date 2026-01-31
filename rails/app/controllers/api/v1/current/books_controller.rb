@@ -17,7 +17,11 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
     end
 
     if params[:genre_id].present?
-      books = books.where(genre_id: params[:genre_id])
+      books = if params[:genre_id] == "null"
+                books.where(genre_id: nil)
+              else
+                books.where(genre_id: params[:genre_id])
+              end
     end
 
     books = books.page(params[:page] || 1).per(10)
