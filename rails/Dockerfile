@@ -1,6 +1,6 @@
 FROM ruby:4.0.1
 RUN apt-get update -qq && apt-get install -y vim
-RUN gem install rdoc -v 7.1.0
+RUN gem update rdoc
 
 WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile
