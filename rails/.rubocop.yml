@@ -1,5 +1,6 @@
-require:
+plugins:
   - rubocop-rails
+  - rubocop-rspec
 
 inherit_from:
   - config/rubocop/rubocop.yml
@@ -8,3 +9,5 @@ inherit_from:
 
 AllCops:
   TargetRubyVersion: 4.0
+  NewCops: enable
+  SuggestExtensions: false
