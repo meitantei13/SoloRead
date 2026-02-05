@@ -12,3 +12,9 @@ ja:
           attributes:
             read_date:
               blank: を選択してください
+  enums:
+    book:
+      status:
+        nusaved: 未保存
+        reading: 読書中
+        finished: 読了済
