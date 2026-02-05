@@ -34,6 +34,10 @@ gem "rack-cors"
 gem "rails", "~> 8.1.2"
 
 group :development, :test do
+  # テスト用のデータを作成する
+  gem "factory_bot_rails"
+  gem "faker"
+
   # 開発環境でメール送信をテストする
   gem "letter_opener_web"
 
