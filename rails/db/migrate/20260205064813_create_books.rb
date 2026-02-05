@@ -1,0 +1,15 @@
+class CreateBooks < ActiveRecord::Migration[8.1]
+  def change
+    create_table :books do |t|
+      t.string :title, comment: "タイトル"
+      t.string :author, comment: "著者"
+      t.text :content, comment: "感想"
+      t.date :read_date, comment: "読了日"
+      t.integer :status, comment: "ステータス （10:未保存, 20：読書中, 30:読了済）"
+
+      t.references :user, null: false, foreign_key: true
+
+      t.timestamps
+    end
+  end
+end

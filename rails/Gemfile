@@ -33,6 +33,9 @@ gem "rack-cors"
 # rails本体（標準gem）
 gem "rails", "~> 8.1.2"
 
+# メッセージを日本語化
+gem "rails-i18n"
+
 group :development, :test do
   # テスト用のデータを作成する
   gem "factory_bot_rails"
