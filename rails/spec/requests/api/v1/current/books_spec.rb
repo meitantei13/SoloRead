@@ -91,4 +91,30 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
     end
   end
+
+  describe "PATCH api/v1/current/books/:id" do
+    subject { patch(api_v1_current_book_path(id), headers:, params:) }
+
+    let(:headers) { current_user.create_new_auth_token }
+    let(:current_user) { create(:user) }
+    let(:other_user) { create(:other_user) }
+    let(:params) { { book: { title: "テストタイトル２", author: "テスト著者２", content: "テスト本文２", read_date: "2026.2.7", status: "finished" } } }
+
+    context ":id がログインユーザーに紐づく book レコードの id であるとき" do
+      let(:current_user_book) { create(:book, title: "テストタイトル１", author: "", content: "", read_date: "", status: "reading", user: current_user) }
+      let(:id) { current_user_book.id }
+
+      it "正常にレコードを更新できる" do
+        expect { subject }.to change { current_user_book.reload.title }.from("テストタイトル１").to("テストタイトル２") and
+          change { current_user_book.reload.auther }.from("").to("テスト著者２") and
+          change { current_user_book.reload.content }.from("").to("テスト本文２") and
+          change { current_user_book.reload.read_date }.from("").to("2026.2.7") and
+          change { current_user_book.reload.status }.from("reading").to("finished")
+        res = response.parsed_body
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "user"]
+        expect(res["user"].keys).to eq ["name"]
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 end

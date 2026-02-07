@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
       namespace :current do
         resource :user, only: [:show]
-        resources :books, only: [:index, :show, :create]
+        resources :books, only: [:index, :show, :create, :update]
       end
     end
   end
