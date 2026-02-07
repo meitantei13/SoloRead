@@ -61,4 +61,34 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
     end
   end
+
+  describe "POST api/v1/current/books" do
+    subject { post(api_v1_current_books_path, headers:) }
+
+    let(:headers) { current_user.create_new_auth_token }
+    let(:current_user) { create(:user) }
+
+    context "ログインユーザーに紐づく未保存ステータスの記事が０件のとき" do
+      it "未保存ステータスの記事が新規作成される" do
+        expect { subject }.to change { current_user.books.count }.by(1)
+        expect(current_user.books.last).to be_unsaved
+        res = response.parsed_body
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "user"]
+        expect(res["user"].keys).to eq ["name"]
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "ログインユーザーに紐づく未保存ステータスの記事が１件のとき" do
+      before { create(:book, user: current_user, status: :unsaved) }
+
+      it "既存の未保存ステータスの記事を表示する" do
+        expect { subject }.not_to change { current_user.books.count }
+        res = response.parsed_body
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "user"]
+        expect(res["user"].keys).to eq ["name"]
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 end
