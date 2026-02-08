@@ -17,7 +17,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useSnackbarState } from "@/hooks/useGlobalState";
-import type { NextPage } from "next";
 
 type SignInFormData = {
   email: string;
