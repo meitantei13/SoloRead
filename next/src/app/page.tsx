@@ -1,79 +1,112 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import Image from "next/image";
-import styles from "@/styles/Home.module.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { LoadingButton } from "@mui/lab";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div
-      className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
+    <Box
+      sx={{
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        p: 4,
+      }}
     >
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the index.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          zIndex: -10,
+          backgroundImage: 'url("/back.jpg")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 10,
+          textAlign: "center",
+          backdropFilter: "blur(6px)",
+          backgroundColor: "rgba(255,255,255,0.1)",
+        }}
+      >
+        <Typography
+          variant="h1"
+          sx={{
+            color: "#333631",
+            p: 2,
+          }}
+        >
+          Solo Read
+        </Typography>
+        <Typography variant="body1" sx={{ fontWeight: 500 }}>
+          心に残る一冊を、自分だけの本棚に。
+          <br />
+          Solo Readは、あなただけが開ける秘密の本棚です。
+        </Typography>
+
+        <Stack
+          spacing={3}
+          direction={{ xs: "column", sm: "row" }}
+          sx={{ p: 4, alignItems: "center" }}
+        >
+          <Link href="/sign_in">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                width: 140,
+                height: 50,
+                color: "#fff",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: "#8F9D77",
+                },
+              }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+              ログイン
+            </Button>
+          </Link>
+          <Link href="/sign_up">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                width: 140,
+                height: 50,
+                color: "#fff",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: "#8F9D77",
+                },
+              }}
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+              新規登録
+            </Button>
+          </Link>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              width: 140,
+              height: 50,
+              color: "#fff",
+              fontWeight: "bold",
+              "&:hover": {
+                backgroundColor: "#8F9D77",
+              },
+            }}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            ゲストログイン
+          </Button>
+        </Stack>
+      </Box>
+    </Box>
   );
 }
