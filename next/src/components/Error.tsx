@@ -1,6 +1,6 @@
 import { Card, CardContent, Container } from "@mui/material";
 
-const Error = () => {
+export default function Error() {
   return (
     <Container maxWidth="sm">
       <Card sx={{ p: 3, mt: 8, backgroundColor: "#EEEEEE" }}>
@@ -10,6 +10,4 @@ const Error = () => {
       </Card>
     </Container>
   );
-};
-
-export default Error;
+}

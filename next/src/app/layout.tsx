@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import ThemeRegistry from "./ThemeRegistry";
 
 export default function RootLayout({
@@ -8,7 +9,10 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <ThemeRegistry>{children}</ThemeRegistry>
+        <ThemeRegistry>
+          <Header />
+          {children}
+        </ThemeRegistry>
       </body>
     </html>
   );

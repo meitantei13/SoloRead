@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import { styles } from "@/styles";
 
-const Loading = () => {
+export default function Loading() {
   return (
     <Box
       sx={{
@@ -15,6 +15,4 @@ const Loading = () => {
       <Image src="/loading.svg" width={150} height={150} alt="loading・・・" />
     </Box>
   );
-};
-
-export default Loading;
+}
