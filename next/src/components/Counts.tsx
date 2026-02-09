@@ -1,5 +1,5 @@
-import { MenuBook, LibraryBooks, LocalLibrary } from "@mui/icons-material";
 import { Box, List, Typography } from "@mui/material";
+import { Book, BookCopy, LibraryBig } from "lucide-react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 
@@ -35,19 +35,19 @@ const Counts = () => {
       >
         <Typography sx={{ fontSize: "20px" }}>今月読んだ本:</Typography>
         <Typography sx={countSx}>
-          <MenuBook sx={{ size: 26, color: "#333" }} />
+          <Book size={26} color="#333" />
           {data.finished_this_month}冊
         </Typography>
         <Typography sx={{ fontSize: "20px", mt: 2 }}>今年読んだ本:</Typography>
         <Typography sx={countSx}>
-          <LibraryBooks sx={{ size: 26, color: "#333" }} />
+          <BookCopy size={26} color="#333" />
           {data.finished_this_year}冊
         </Typography>
         <Typography sx={{ fontSize: "20px", mt: 2 }}>
           今まで読んだ本:
         </Typography>
         <Typography sx={countSx}>
-          <LocalLibrary sx={{ size: 26, color: "#333" }} />
+          <LibraryBig size={26} color="#333" />
           {data.total_count}冊
         </Typography>
       </Box>

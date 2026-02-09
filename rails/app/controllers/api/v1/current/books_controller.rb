@@ -22,6 +22,15 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
     render json: book
   end
 
+  def counts
+    user_books = current_user.books.finished
+    render json: {
+      finished_this_month: user_books.finished_this_month.count,
+      finished_this_year: user_books.finished_this_year.count,
+      total_count: user_books.count,
+    }
+  end
+
   private
 
     def book_params
