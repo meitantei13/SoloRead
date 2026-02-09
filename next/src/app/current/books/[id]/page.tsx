@@ -1,0 +1,261 @@
+"use client";
+
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import camelcaseKeys from "camelcase-keys";
+import Link from "next/link";
+import { useRouter, useParams } from "next/navigation";
+import useSWR from "swr";
+import Error from "@/components/Error";
+import Loading from "@/components/Loading";
+import { useUserState, useSnackbarState } from "@/hooks/useGlobalState";
+import { useRequireSginedIn } from "@/hooks/useRequireSignedIn";
+import { fetcher } from "@/lib/fetcher";
+import { styles } from "@/styles";
+
+type CurrentBookProps = {
+  id: number;
+  title: string;
+  author: string;
+  content: string;
+  readDate: string;
+  status: string;
+  genreName: string;
+};
+
+const CurrentBookDetail = () => {
+  useRequireSginedIn();
+  const [user] = useUserState();
+  const [, setSnackbar] = useSnackbarState();
+  const router = useRouter();
+  const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/books/";
+  const { id } = useParams();
+
+  const { data, error } = useSWR(
+    user.isSignedIn && id ? url + id : null,
+    fetcher,
+  );
+  if (error) return <Error />;
+  if (!data) return <Loading />;
+
+  const handleDelete = async () => {
+    if (!confirm("この記事を削除しますか？")) return;
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/current/books/${book.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": localStorage.getItem("access-token") || "",
+            client: localStorage.getItem("client") || "",
+            uid: localStorage.getItem("uid") || "",
+          },
+        },
+      );
+
+      if (!res.ok) throw new window.Error("削除失敗");
+
+      const deleteStatus =
+        book.status === "読書中"
+          ? "/current/books/reading"
+          : "/current/books/list";
+
+      setSnackbar({
+        message: "記事を削除しました",
+        severity: "success",
+        pathname: deleteStatus,
+      });
+      router.push(deleteStatus);
+    } catch (error) {
+      setSnackbar({
+        message: "記事の削除に失敗しました",
+        severity: "error",
+        pathname: `/current/books/${book.id}`,
+      });
+    }
+  };
+
+  const fieldBoxSx = {
+    padding: {
+      xs: "0 24px 24px 24px",
+      sm: "0 30px 20px 30px",
+    },
+    marginTop: "20px",
+  };
+
+  const labelSx = { fontSize: 14, fontWeight: "bold", color: "#555" };
+  const valueSx = {
+    display: "block",
+    pl: 3,
+    pt: 1,
+    fontSize: 16,
+    fontWeight: "medium",
+  };
+
+  const book: CurrentBookProps = camelcaseKeys(data);
+
+  return (
+    <Box sx={{ ...styles.pageMinHeight, backgroundColor: "secondary.main" }}>
+      <Box
+        sx={{
+          borderTop: "0.5px solid #acbcc7",
+        }}
+      >
+        <Container
+          maxWidth="sm"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            pt: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Link
+              href={
+                book.status === "読書中"
+                  ? "/current/books/reading"
+                  : "/current/books/list"
+              }
+            >
+              <Tooltip
+                title={
+                  book.status === "読書中"
+                    ? "読書中一覧に移動"
+                    : "読了済一覧に移動"
+                }
+              >
+                <IconButton sx={{ backgroundColor: "#ffffff" }}>
+                  <ChevronLeftIcon sx={{ color: "#99AAB6" }} />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            <Box>
+              <Link href={"/current/books/edit/" + book.id}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  sx={{
+                    color: "#fff",
+                    fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "#8F9D77",
+                    },
+                    borderRadius: 1,
+                    px: 3,
+                    py: 1,
+                    textTransform: "none",
+                  }}
+                >
+                  編集
+                </Button>
+              </Link>
+              <Button
+                onClick={handleDelete}
+                variant="contained"
+                type="submit"
+                color="primary"
+                sx={{
+                  color: "#fff",
+                  fontWeight: "bold",
+                  "&:hover": {
+                    backgroundColor: "#8F9D77",
+                  },
+                  borderRadius: 1,
+                  px: 3,
+                  py: 1,
+                  ml: 2,
+                  textTransform: "none",
+                }}
+              >
+                削除
+              </Button>
+            </Box>
+          </Box>
+        </Container>
+        <Container
+          maxWidth="sm"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            height: "100%",
+            mt: 5,
+          }}
+        >
+          <Card
+            sx={{
+              boxShadow: "none",
+              dorderRadius: "12px",
+              maxWidth: 840,
+              width: "100%",
+            }}
+          >
+            <Box
+              sx={{
+                ...fieldBoxSx,
+                borderBottom: "1px solid #ccc",
+              }}
+            >
+              <Box sx={labelSx}>書名</Box>
+              <Box sx={valueSx}>{book.title}</Box>
+            </Box>
+            <Box
+              sx={{
+                ...fieldBoxSx,
+                borderBottom: "1px solid #ccc",
+              }}
+            >
+              <Box sx={labelSx}>著者</Box>
+              <Box sx={valueSx}>{book.author}</Box>{" "}
+            </Box>
+            <Box
+              sx={{
+                ...fieldBoxSx,
+                borderBottom: "1px solid #ccc",
+              }}
+            >
+              <Box sx={labelSx}>ジャンル</Box>
+              <Box sx={valueSx}>{book.genreName}</Box>{" "}
+            </Box>
+            <Box
+              sx={{
+                ...fieldBoxSx,
+                borderBottom: "1px solid #ccc",
+              }}
+            >
+              <Box sx={labelSx}>読了日</Box>
+              <Box sx={valueSx}>{book.readDate}</Box>
+            </Box>
+            <Box
+              sx={{
+                ...fieldBoxSx,
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              <Box sx={labelSx}>感想</Box>
+              <Box sx={valueSx}>{book.content}</Box>{" "}
+            </Box>
+          </Card>
+        </Container>
+      </Box>
+    </Box>
+  );
+};
+
+export default CurrentBookDetail;
