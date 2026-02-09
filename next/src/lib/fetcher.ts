@@ -1,3 +1,5 @@
+"use client";
+
 import axios, { isAxiosError } from "axios";
 
 export const fetcher = async (url: string) => {
