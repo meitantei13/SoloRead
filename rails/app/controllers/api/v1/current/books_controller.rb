@@ -2,12 +2,12 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   before_action :authenticate_user!
 
   def index
-    book = current_user.books.finished.order(read_date: :desc).limit(6)
-    render json: book
+    books = current_user.books.includes(:genre).finished.order(read_date: :desc).limit(6)
+    render json: books
   end
 
   def show
-    book = current_user.books.find(params[:id])
+    book = current_user.books.includes(:genre).find(params[:id])
     render json: book
   end
 
@@ -34,6 +34,6 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   private
 
     def book_params
-      params.expect(book: [:title, :author, :content, :read_date, :status])
+      params.expect(book: [:title, :author, :content, :read_date, :status, :genre_id])
     end
 end
