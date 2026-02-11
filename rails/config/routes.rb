@@ -12,6 +12,7 @@ Rails.application.routes.draw do
             get "counts"
           end
         end
+        resources :genres, only: [:index, :create]
       end
     end
   end

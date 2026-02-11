@@ -3,6 +3,8 @@ import {
   Box,
   Button,
   IconButton,
+  MenuItem,
+  Select,
   Switch,
   TextField,
   Tooltip,
@@ -17,6 +19,9 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import useSWR from "swr";
+import Error from "@/components/Error";
+import GenreDialog from "@/components/GenreDialog";
+import Loading from "@/components/Loading";
 import { useSnackbarState, useUserState } from "@/hooks/useGlobalState";
 import { fetcher } from "@/lib/fetcher";
 import { styles } from "@/styles";
@@ -39,12 +44,19 @@ type BookFormData = {
   genreId: string;
 };
 
+type Genre = {
+  id: number;
+  name: string;
+  is_default: boolean;
+};
+
 export default function CurrntBookEdit() {
   const [user] = useUserState();
   const [, setSnackbar] = useSnackbarState();
   const [statusChecked, setStatusChecked] = useState<boolean>(false);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleChangeStatusChecked = () => {
     setStatusChecked(!statusChecked);
@@ -52,11 +64,19 @@ export default function CurrntBookEdit() {
 
   const router = useRouter();
   const { id } = router.query;
+
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/books/";
   const { data, error } = useSWR(
     user.isSignedIn && id ? url + id : null,
     fetcher,
   );
+
+  const genresUrl = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/genres/";
+  const { data: genres, mutate: mutateGenres } = useSWR<Genre[]>(
+    user.isSignedIn ? genresUrl : null,
+    fetcher,
+  );
+
   const book: BookProps = useMemo(() => {
     if (!data) {
       return {
@@ -85,6 +105,15 @@ export default function CurrntBookEdit() {
   useEffect(() => {
     if (data) {
       reset(book);
+    }
+  }, [data, book, reset]);
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      reset(book);
+      setStatusChecked(book.status == "読了済");
+      setIsFetched(true);
     }
   }, [data, book, reset]);
 
@@ -177,6 +206,10 @@ export default function CurrntBookEdit() {
       setIsLoading(false);
     }
   };
+
+  if (error) return <Error />;
+  if (!data || !isFetched || !genres) return <Loading />;
+
   return (
     <Box sx={{ ...styles.pageMinHeight, backgroundColor: "secondary.main" }}>
       <Box
@@ -371,15 +404,56 @@ export default function CurrntBookEdit() {
             name="genreId"
             control={control}
             render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                type="text"
-                error={fieldState.invalid}
-                helperText={fieldState.error?.message}
-                placeholder="ジャンル"
-                fullWidth
-                sx={{ backgroundColor: "white" }}
-              />
+              <>
+                <Select
+                  {...field}
+                  value={field.value}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === "add_new") {
+                      setDialogOpen(true);
+                      return;
+                    }
+                    field.onChange(value);
+                  }}
+                  error={fieldState.invalid}
+                  fullWidth
+                  displayEmpty
+                  sx={{
+                    backgroundColor: "white",
+                    "& .MuiSelect-select": {
+                      color: field.value ? "inherit" : "#8a8a8a",
+                    },
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>ジャンルを選択</em>
+                  </MenuItem>
+                  {genres.map((genre) => (
+                    <MenuItem key={genre.id} value={String(genre.id)}>
+                      {genre.name}
+                    </MenuItem>
+                  ))}
+                  <MenuItem
+                    value="add_new"
+                    sx={{
+                      backgroundColor: "#F0F7F4",
+                      color: "#000",
+                      fontWeight: 600,
+                    }}
+                  >
+                    + 新しいジャンルを追加
+                  </MenuItem>
+                </Select>
+                <GenreDialog
+                  open={dialogOpen}
+                  onClose={() => setDialogOpen(false)}
+                  onSuccess={(newGenre) => {
+                    mutateGenres();
+                    field.onChange(String(newGenre.id));
+                  }}
+                />
+              </>
             )}
           />
           <Controller

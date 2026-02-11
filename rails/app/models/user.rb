@@ -8,4 +8,5 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   has_many :books, dependent: :destroy
+  has_many :genres, dependent: :destroy
 end
