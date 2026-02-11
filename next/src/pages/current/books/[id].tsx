@@ -1,5 +1,3 @@
-"use client";
-
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import {
   Box,
@@ -11,7 +9,7 @@ import {
 } from "@mui/material";
 import camelcaseKeys from "camelcase-keys";
 import Link from "next/link";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/router";
 import useSWR from "swr";
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
@@ -35,8 +33,8 @@ const CurrentBookDetail = () => {
   const [user] = useUserState();
   const [, setSnackbar] = useSnackbarState();
   const router = useRouter();
+  const { id } = router.query;
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/books/";
-  const { id } = useParams();
 
   const { data, error } = useSWR(
     user.isSignedIn && id ? url + id : null,

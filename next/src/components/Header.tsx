@@ -1,15 +1,13 @@
-"use client";
-
 import { AppBar, Box, Button, Container } from "@mui/material";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { useSnackbarState, useUserState } from "@/hooks/useGlobalState";
 
 export default function Header() {
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = router.pathname;
   const [, setUser] = useUserState();
   const [, setSnackbar] = useSnackbarState();
 

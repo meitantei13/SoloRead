@@ -3,7 +3,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { Box, List, ListItemButton, ListItemIcon } from "@mui/material";
 import axios, { isAxiosError } from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useUserState } from "@/hooks/useGlobalState";
 
 const listSx = {

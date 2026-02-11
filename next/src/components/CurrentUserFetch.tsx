@@ -1,13 +1,12 @@
-"use client";
-
 import axios from "axios";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSnackbarState, useUserState } from "@/hooks/useGlobalState";
 
 export default function CurrentUserFetch() {
   const [user, setUser] = useUserState();
-  const pathname = usePathname();
+  const router = useRouter();
+  const pathname = router.pathname;
   const [, setSnackbar] = useSnackbarState();
 
   const publicPages = ["/", "/sign_in", "/sign_up"];

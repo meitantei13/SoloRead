@@ -1,5 +1,3 @@
-"use client";
-
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -13,7 +11,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useSnackbarState } from "@/hooks/useGlobalState";
