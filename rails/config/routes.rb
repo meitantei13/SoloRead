@@ -11,6 +11,7 @@ Rails.application.routes.draw do
           collection do
             get "counts"
             get "list"
+            get "reading"
           end
         end
         resources :genres, only: [:index, :create]

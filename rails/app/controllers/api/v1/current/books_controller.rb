@@ -33,8 +33,7 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
 
   def list
     books = current_user.books.
-              includes(:genre).
-              where(status: :finished).
+              includes(:genre).finished.
               order(read_date: :desc)
 
     if params[:q].present?
@@ -51,6 +50,11 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
 
     books = books.page(params[:page] || 1).per(10)
 
+    render json: books, meta: pagination(books), adapter: :json
+  end
+
+  def reading
+    books = current_user.books.includes(:genre).reading.order(read_date: :desc).page(params[:page] || 1).per(10)
     render json: books, meta: pagination(books), adapter: :json
   end
 

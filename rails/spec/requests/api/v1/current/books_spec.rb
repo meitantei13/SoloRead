@@ -274,4 +274,47 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
     end
   end
+
+  describe "GET api/v1/current/books/reading" do
+    subject { get(reading_api_v1_current_books_path, headers:, params:) }
+
+    let(:headers) { current_user.create_new_auth_token }
+    let(:current_user) { create(:user) }
+    let(:other_user) { create(:user) }
+    let(:params) { {} }
+
+    before { create_list(:book, 2, status: :reading, user: other_user) }
+
+    context "ログインユーザーに紐づく reading データを取得できる" do
+      before do
+        create_list(:book, 2, status: :reading, user: current_user)
+        create(:book, user: current_user)
+      end
+
+      it "レコードを2件取得できる" do
+        subject
+        res = response.parsed_body
+        expect(res["books"].length).to eq 2
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "ページネーション機能" do
+      before { create_list(:book, 12, status: :reading, user: current_user) }
+
+      it "最初の１０件を取得できる" do
+        get(reading_api_v1_current_books_path, headers:, params: { page: 1 })
+        res = response.parsed_body
+        expect(res["books"].length).to eq 10
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "次の3件が取得できる" do
+        get(reading_api_v1_current_books_path, headers:, params: { page: 2 })
+        res = response.parsed_body
+        expect(res["books"].length).to eq 2
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 end
