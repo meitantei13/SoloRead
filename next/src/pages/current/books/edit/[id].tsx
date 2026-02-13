@@ -372,6 +372,16 @@ export default function CurrntBookEdit() {
                       field: {
                         clearable: true,
                       },
+                      day: {
+                        sx: {
+                          "&.Mui-selected": {
+                            backgroundColor: "#E6EDE0 !important", // 選択中の丸
+                          },
+                          "&:hover": {
+                            backgroundColor: "#EEF3EA", // 未選択時
+                          },
+                        },
+                      },
                       textField: {
                         fullWidth: true,
                         error: fieldState.invalid,
@@ -381,9 +391,6 @@ export default function CurrntBookEdit() {
                           "& .MuiOutlinedInput-root": {
                             "&:hover fieldset": {
                               borderColor: "black",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "#A3B18A",
                             },
                           },
                           "& .MuiInputLabel-root": {
