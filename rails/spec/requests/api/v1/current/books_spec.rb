@@ -119,24 +119,158 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
   end
 
   describe "GET api/v1/current/books/list" do
+    subject { get(list_api_v1_current_books_path, headers:, params:) }
+
     let(:headers) { current_user.create_new_auth_token }
     let(:current_user) { create(:user) }
+    let(:params) { {} }
 
-    context "正常にリストを取得できる(ページネーション)" do
+    context "正常にリストを取得できる(検索なし)" do
       before { create_list(:book, 13, user: current_user) }
 
       it "最初の１０件を取得できる" do
         get(list_api_v1_current_books_path, headers:, params: { page: 1 })
         res = response.parsed_body
-        expect(res.length).to eq 10
+        expect(res["books"].length).to eq 10
         expect(response).to have_http_status(:ok)
       end
 
       it "次の3件が取得できる" do
         get(list_api_v1_current_books_path, headers:, params: { page: 2 })
         res = response.parsed_body
-        expect(res.length).to eq 3
+        expect(res["books"].length).to eq 3
         expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "検索ワード（タイトル）が指定されているとき" do
+      before do
+        create(:book, title: "Ruby入門", author: "伊藤一", read_date: "2026-01-01", status: :finished, user: current_user)
+        create(:book, title: "Next.js実践", author: "田中二", status: :finished, user: current_user)
+        create(:book, title: "Docker基礎", author: "佐藤三", status: :finished, user: current_user)
+      end
+
+      context "タイトルにマッチした記事を取得できる" do
+        let(:params) { { q: "Ruby" } }
+
+        it "該当するタイトルの記事を取得" do
+          subject
+          res = response.parsed_body
+          titles = res["books"].map {|b| b["title"] }
+          expect(titles).to eq ["Ruby入門"]
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "著者にマッチした記事を取得できる" do
+        let(:params) { { q: "田中" } }
+        it "該当する著者の記事を取得" do
+          subject
+          res = response.parsed_body
+          author = res["books"].map {|b| b["author"] }
+          expect(author).to eq ["田中二"]
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "検索ワードに該当する記事が存在しないとき" do
+        let(:params) { { q: "HTML" } }
+        it "空の配列が返る" do
+          subject
+          res = response.parsed_body
+          expect(res["books"]).to eq []
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "部分一致になっているか" do
+        before { create(:book, title: "Ruby応用", author: "伊藤一", read_date: "2026-02-01", status: :finished, user: current_user) }
+
+        let(:params) { { q: "Ruby" } }
+        it "2件のデータを取得" do
+          subject
+          res = response.parsed_body
+          titles = res["books"].map {|b| b["title"] }
+          expect(res["books"].length).to eq 2
+          expect(titles).to eq ["Ruby応用", "Ruby入門"]
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+
+    context "ジャンルで絞り込む" do
+      let(:novel_genre) { create(:genre, :default, name: "小説") }
+      let(:tech_genre) { create(:genre, :default, name: "技術書") }
+
+      before do
+        create(:book, title: "小説A", genre: novel_genre, status: :finished, user: current_user)
+        create(:book, title: "小説B", genre: novel_genre, status: :finished, user: current_user)
+        create(:book, title: "技術書A", genre: tech_genre, status: :finished, user: current_user)
+      end
+
+      context "genre_id が指定されているとき" do
+        let(:params) { { genre_id: novel_genre.id } }
+
+        it "指定したジャンルの本のみ取得できる" do
+          subject
+          res = response.parsed_body
+          titles = res["books"].map {|b| b["title"] }
+          expect(titles).to contain_exactly("小説A", "小説B")
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "genre_id と検索ワードが両方指定されているとき" do
+        let(:params) { { genre_id: novel_genre.id, q: "小説A" } }
+
+        it "両方の条件にマッチする本のみ取得できる" do
+          subject
+          res = response.parsed_body
+          titles = res["books"].map {|b| b["title"] }
+          expect(titles).to eq ["小説A"]
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "genre_id にマッチする本がないとき" do
+        let(:manga_genre) { create(:genre, :default, name: "漫画") }
+        let(:params) { { genre_id: manga_genre.id } }
+
+        it "空の配列が返る" do
+          subject
+          res = response.parsed_body
+          expect(res["books"]).to eq []
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "genre_id = null が指定されているとき" do
+        before { create(:book, title: "Railsテキスト", genre_id: nil, status: :finished, user: current_user) }
+
+        let(:params) { { genre_id: "null" } }
+
+        it "ジャンル未設定の本のみ取得できる" do
+          subject
+          res = response.parsed_body
+          titles = res["books"].map {|b| b["title"] }
+          expect(titles).to contain_exactly("Railsテキスト")
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "genre_id = null と検索ワードが両方指定されているとき" do
+        before { create(:book, title: "Railsテキスト", genre_id: nil, status: :finished, user: current_user) }
+
+        let(:params) { { genre_id: "null", q: "Rails" } }
+
+        it "両方の条件にマッチする本のみ取得できる" do
+          subject
+          res = response.parsed_body
+          titles = res["books"].map {|b| b["title"] }
+          expect(res["books"].length).to eq 1
+          expect(titles).to eq ["Railsテキスト"]
+          expect(response).to have_http_status(:ok)
+        end
       end
     end
   end

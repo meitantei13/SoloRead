@@ -32,10 +32,26 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   end
 
   def list
-    books = current_user.books.includes(:genre).finished.order(read_date: :desc)
+    books = current_user.books.
+              includes(:genre).
+              where(status: :finished).
+              order(read_date: :desc)
+
+    if params[:q].present?
+      books = books.where("title LIKE ? OR author LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%")
+    end
+
+    if params[:genre_id].present?
+      books = if params[:genre_id] == "null"
+                books.where(genre_id: nil)
+              else
+                books.where(genre_id: params[:genre_id])
+              end
+    end
+
     books = books.page(params[:page] || 1).per(10)
 
-    render json: books
+    render json: books, meta: pagination(books), adapter: :json
   end
 
   private
