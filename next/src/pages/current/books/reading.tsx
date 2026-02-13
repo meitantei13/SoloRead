@@ -1,19 +1,11 @@
-import {
-  Box,
-  Grid,
-  Pagination,
-  TextField,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Grid, Pagination, useMediaQuery, useTheme } from "@mui/material";
 import camelcaseKeys from "camelcase-keys";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import BookCard from "@/components/BookCard";
 import Error from "@/components/Error";
-import GenreSelect from "@/components/GenreSelect";
 import Loading from "@/components/Loading";
 import Sidebar from "@/components/Sidebar";
 import { useUserState } from "@/hooks/useGlobalState";
@@ -28,7 +20,7 @@ type ListProps = {
   genreName: string;
 };
 
-export default function MyList() {
+export default function ReadingList() {
   const [user] = useUserState();
   const router = useRouter();
   const theme = useTheme();
@@ -40,32 +32,10 @@ export default function MyList() {
     setDrawerOpen((prev) => !prev);
   };
 
-  const [query, setQuery] = useState("");
-  const [debounceQuery, setDebouncedQuery] = useState("");
-
-  const [selectedGenreId, setSelectedGenreId] = useState<
-    number | "unset" | null
-  >(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-    }, 700);
-    return () => clearTimeout(timer);
-  }, [query]);
-
-  const baseUrl =
-    process.env.NEXT_PUBLIC_API_BASE_URL + "/current/books/list?page=" + page;
-  let url = baseUrl;
-  if (debounceQuery) {
-    url += `&q=${encodeURIComponent(debounceQuery)}`;
-  }
-  if (selectedGenreId === "unset") {
-    url += `&genre_id=null`;
-  } else if (selectedGenreId) {
-    url += `&genre_id=${selectedGenreId}`;
-  }
-
+  const url =
+    process.env.NEXT_PUBLIC_API_BASE_URL +
+    "/current/books/reading?page=" +
+    page;
   const { data, error } = useSWR(user.isSignedIn ? url : null, fetcher);
   if (error) return <Error />;
   if (!data) return <Loading />;
@@ -75,11 +45,7 @@ export default function MyList() {
   const contentWidth = isLargeScreen ? "900px" : "460px";
 
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    router.push("/current/books/list?page=" + value);
-  };
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
+    router.push("/current/books/reading?page=" + value);
   };
 
   return (
@@ -90,36 +56,10 @@ export default function MyList() {
           fontSize: 32,
           fontWeight: "bold",
           pt: 7,
+          pb: 7,
         }}
       >
-        読了済一覧＆検索
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 2,
-          mt: 5,
-          mb: 8,
-        }}
-      >
-        <TextField
-          placeholder="タイトル・著者名で検索"
-          variant="outlined"
-          value={query}
-          onChange={handleSearch}
-          sx={{
-            width: "50%",
-            maxWidth: "500px",
-            backgroundColor: "#fff",
-          }}
-          InputLabelProps={{ shrink: false }}
-        />
-        <GenreSelect
-          selectedGenreId={selectedGenreId}
-          onGenreChange={setSelectedGenreId}
-        />
+        読書中一覧
       </Box>
       <Box
         sx={{ display: "flex", justifyContent: "center", minHeight: "100vh" }}
@@ -127,7 +67,7 @@ export default function MyList() {
         <Sidebar
           drawerOpen={drawerOpen}
           onToggle={handleDrawerToggle}
-          desktopMt={-10}
+          desktopMt={-8}
         />
         <Box sx={{ display: "flex" }}>
           <Box
@@ -154,10 +94,6 @@ export default function MyList() {
                     </Link>
                   </Grid>
                 ))
-              ) : debounceQuery ? (
-                <Box sx={{ textAlign: "center", width: "100%", py: 6 }}>
-                  検索結果がみつかりませんでした
-                </Box>
               ) : (
                 <Box sx={{ textAlign: "center", width: "100%", py: 6 }}>
                   データがありません

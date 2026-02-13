@@ -302,14 +302,14 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     context "ページネーション機能" do
       before { create_list(:book, 12, status: :reading, user: current_user) }
 
-      it "最初の１０件を取得できる" do
+      it "最初の10件を取得できる" do
         get(reading_api_v1_current_books_path, headers:, params: { page: 1 })
         res = response.parsed_body
         expect(res["books"].length).to eq 10
         expect(response).to have_http_status(:ok)
       end
 
-      it "次の3件が取得できる" do
+      it "次の2件が取得できる" do
         get(reading_api_v1_current_books_path, headers:, params: { page: 2 })
         res = response.parsed_body
         expect(res["books"].length).to eq 2
