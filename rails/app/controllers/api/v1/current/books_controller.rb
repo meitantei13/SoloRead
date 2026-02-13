@@ -31,6 +31,13 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
     }
   end
 
+  def list
+    books = current_user.books.includes(:genre).finished.order(read_date: :desc)
+    books = books.page(params[:page] || 1).per(10)
+
+    render json: books
+  end
+
   private
 
     def book_params

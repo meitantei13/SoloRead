@@ -10,6 +10,7 @@ Rails.application.routes.draw do
         resources :books, only: [:index, :show, :create, :update] do
           collection do
             get "counts"
+            get "list"
           end
         end
         resources :genres, only: [:index, :create]

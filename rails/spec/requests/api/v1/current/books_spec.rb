@@ -13,7 +13,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     context "ログインユーザーに紐づく books レコードが存在するとき" do
       before { create_list(:book, 7, user: current_user) }
 
-      it "正常にレコードを取得できる" do
+      it "正常にレコードを6件取得できる" do
         subject
         res = response.parsed_body
         expect(res.length).to eq 6
@@ -113,6 +113,29 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         res = response.parsed_body
         expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "user"]
         expect(res["user"].keys).to eq ["name"]
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
+  describe "GET api/v1/current/books/list" do
+    let(:headers) { current_user.create_new_auth_token }
+    let(:current_user) { create(:user) }
+
+    context "正常にリストを取得できる(ページネーション)" do
+      before { create_list(:book, 13, user: current_user) }
+
+      it "最初の１０件を取得できる" do
+        get(list_api_v1_current_books_path, headers:, params: { page: 1 })
+        res = response.parsed_body
+        expect(res.length).to eq 10
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "次の3件が取得できる" do
+        get(list_api_v1_current_books_path, headers:, params: { page: 2 })
+        res = response.parsed_body
+        expect(res.length).to eq 3
         expect(response).to have_http_status(:ok)
       end
     end
