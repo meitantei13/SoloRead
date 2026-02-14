@@ -18,3 +18,6 @@ ja:
         nusaved: 未保存
         reading: 読書中
         finished: 読了済
+  user_mailer:
+    email_change_confirmation:
+      subject: "【Solo Read】メールアドレス変更の確認"

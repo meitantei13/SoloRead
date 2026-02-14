@@ -1,0 +1,11 @@
+<p><%= @user.name %> さん</p>
+
+<p>Solo Read をご利用いただき、ありがとうございます。</p>
+
+<p>以下のリンクをクリックすると、メールアドレスの変更が完了します。</p>
+
+<p>
+  <%= link_to "メールアドレスを確認する", "#{ENV.fetch('FRONTEND_URL', "http://localhost:8000")}/confirm_email?token=#{@token}" %>
+</p>
+
+<p>※このメールに心当たりのない場合は、削除してください。</p>
