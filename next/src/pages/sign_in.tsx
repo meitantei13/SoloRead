@@ -1,5 +1,4 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Container,
@@ -9,6 +8,7 @@ import {
   Link,
   IconButton,
   Tooltip,
+  Button,
 } from "@mui/material";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
@@ -144,7 +144,7 @@ export default function SignIn() {
               />
             )}
           />
-          <LoadingButton
+          <Button
             variant="contained"
             type="submit"
             loading={isLoading}
@@ -157,7 +157,7 @@ export default function SignIn() {
             }}
           >
             送信する
-          </LoadingButton>
+          </Button>
           <Box sx={{ textAlign: "center" }}>
             <Link
               href="/forgot_password"

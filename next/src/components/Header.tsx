@@ -85,6 +85,7 @@ export default function Header() {
             </Link>
           </Box>
           <Button
+            loading
             variant="outlined"
             onClick={logout}
             sx={{
