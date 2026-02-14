@@ -3,6 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import React from "react";
 import { useSnackbarState, useUserState } from "@/hooks/useGlobalState";
 
 export default function Header() {
@@ -10,6 +11,7 @@ export default function Header() {
   const pathname = router.pathname;
   const [, setUser] = useUserState();
   const [, setSnackbar] = useSnackbarState();
+  const [loading, setLoading] = React.useState(false);
 
   // ヘッダーを非表示にするページ
   const hiddenHeaderPaths = ["/", "/sign_up", "/sign_in"];
@@ -18,6 +20,7 @@ export default function Header() {
   }
 
   const logout = async () => {
+    setLoading(true);
     try {
       await axios.delete(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/sign_out`,
@@ -85,7 +88,7 @@ export default function Header() {
             </Link>
           </Box>
           <Button
-            loading
+            loading={loading}
             variant="outlined"
             onClick={logout}
             sx={{
