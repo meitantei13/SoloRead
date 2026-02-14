@@ -15,6 +15,9 @@ Rails.application.routes.draw do
           end
         end
         resources :genres, only: [:index, :create]
+        namespace :settings do
+          resource :name, only: [:update]
+        end
       end
     end
   end
