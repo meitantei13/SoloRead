@@ -34,6 +34,8 @@ export default function Header() {
       );
     } catch (error) {
       console.log("サーバーログアウトに失敗しました", error);
+    } finally {
+      setLoading(false);
     }
 
     localStorage.removeItem("access-token");
