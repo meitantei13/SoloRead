@@ -10,7 +10,7 @@ export default function SuccessSnackbar() {
   const open = snackbar.severity !== null && snackbar.pathname === pathname;
 
   const handleClose = (
-    event: React.SyntheticEvent | Event,
+    _event: unknown,
     reason?: string,
   ) => {
     if (reason === "clickaway") return;

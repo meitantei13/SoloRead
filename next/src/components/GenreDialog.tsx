@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 
 type Genre = {
   id: number;
@@ -34,7 +34,7 @@ export default function GenreDialog({
 
   const genreUrl = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/genres";
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     const headers = {
       "Content-Type": "application/json",

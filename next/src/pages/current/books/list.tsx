@@ -74,11 +74,11 @@ export default function MyList() {
   const meta = camelcaseKeys(data.meta);
   const contentWidth = isLargeScreen ? "900px" : "460px";
 
-  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: unknown, value: number) => {
     router.push("/current/books/list?page=" + value);
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement, Event>) => {
     setQuery(e.target.value);
   };
 

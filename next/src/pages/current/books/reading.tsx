@@ -44,7 +44,7 @@ export default function ReadingList() {
   const meta = camelcaseKeys(data.meta);
   const contentWidth = isLargeScreen ? "900px" : "460px";
 
-  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: unknown, value: number) => {
     router.push("/current/books/reading?page=" + value);
   };
 
