@@ -5,6 +5,8 @@ class Book < ApplicationRecord
   validates :title, :content, :read_date, presence: true, if: :finished?
   validate :verify_only_one_unsaved_status_is_allowed
 
+  has_many :notes, dependent: :destroy
+
   # 今月、今年分の本を取得するスコープ
   scope :finished_this_month, -> { where(read_date: Time.current.all_month) }
   scope :finished_this_year, -> { where(read_date: Time.current.all_year) }

@@ -9,4 +9,6 @@ class User < ApplicationRecord
 
   has_many :books, dependent: :destroy
   has_many :genres, dependent: :destroy
+  has_many :notes, dependent: :destroy
+  has_many :tags, dependent: :destroy
 end

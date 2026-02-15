@@ -1,0 +1,8 @@
+class Tag < ApplicationRecord
+  belongs_to :user, optional: true
+
+  has_many :note_tags, dependent: :destroy
+  has_many :notes, through: :note_tags
+
+  validates :name, presence: true
+end

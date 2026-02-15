@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_14_124328) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_15_082154) do
   create_table "books", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "author", comment: "著者"
     t.text "content", comment: "感想"
@@ -33,6 +33,36 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_14_124328) do
     t.bigint "user_id"
     t.index ["user_id", "name"], name: "index_genres_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_genres_on_user_id"
+  end
+
+  create_table "note_tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "note_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["note_id", "tag_id"], name: "index_note_tags_on_note_id_and_tag_id", unique: true
+    t.index ["note_id"], name: "index_note_tags_on_note_id"
+    t.index ["tag_id"], name: "index_note_tags_on_tag_id"
+  end
+
+  create_table "notes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["book_id"], name: "index_notes_on_book_id"
+    t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
+  create_table "tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "is_default", default: false, null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["name", "user_id"], name: "index_tags_on_name_and_user_id", unique: true
+    t.index ["user_id"], name: "index_tags_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -66,4 +96,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_14_124328) do
   add_foreign_key "books", "genres"
   add_foreign_key "books", "users"
   add_foreign_key "genres", "users"
+  add_foreign_key "note_tags", "notes"
+  add_foreign_key "note_tags", "tags"
+  add_foreign_key "notes", "books"
+  add_foreign_key "notes", "users"
+  add_foreign_key "tags", "users"
 end
