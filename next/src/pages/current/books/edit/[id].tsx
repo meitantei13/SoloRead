@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import axios, { isAxiosError } from "axios";
 import dayjs from "dayjs";
@@ -358,7 +358,7 @@ export default function CurrntBookEdit() {
                   dateAdapter={AdapterDayjs}
                   adapterLocale="ja"
                 >
-                  <DatePicker
+                  <DesktopDatePicker
                     value={selectedDate}
                     onChange={(newValue) => {
                       if (newValue) {
