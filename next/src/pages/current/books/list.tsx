@@ -124,7 +124,7 @@ export default function MyList() {
       <Box
         sx={{
           display: "flex",
-          maxWidth: { lg: "1140px" },
+          maxWidth: { md: "700px", lg: "1140px" },
           mx: "auto",
           minHeight: "100vh",
         }}
