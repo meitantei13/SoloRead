@@ -5,6 +5,11 @@ ActiveRecord::Base.transaction do
     Genre.find_or_create_by!(name: name, is_default: true)
   end
 
+  default_tags = ["名言", "学び", "感想", "要約", "疑問", "実践したい"]
+  default_tags.each do |name|
+    Tag.find_or_create_by!(name: name, is_default: true)
+  end
+
   # 開発環境のみ: サンプルデータを作成
   if Rails.env.development?
     # ランダムにデフォルトジャンルを取得
