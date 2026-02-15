@@ -118,6 +118,44 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     end
   end
 
+  describe "DELETE api/v1/current/books/:id" do
+    subject { delete(api_v1_current_book_path(id), headers:) }
+
+    let(:current_user) { create(:user) }
+    let(:headers) { current_user.create_new_auth_token }
+
+    context ":id がログインユーザーに紐づく finished の book レコードの id であるとき" do
+      let!(:current_user_book) { create(:book, user: current_user, status: :finished) }
+      let(:id) { current_user_book.id }
+
+      it "正常にレコードを削除できる" do
+        expect { subject }.to change { current_user.books.count }.by(-1)
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context ":id がログインユーザーに紐づく reading の book レコードの id であるとき" do
+      let!(:current_user_book) { create(:book, user: current_user, status: :reading) }
+      let(:id) { current_user_book.id }
+
+      it "正常にレコードを削除できる" do
+        expect { subject }.to change { current_user.books.count }.by(-1)
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context ":id がログインユーザーに紐づく book レコードの id ではないとき" do
+      let(:other_user) { create(:user) }
+      let(:other_user_book) { create(:book, user: other_user) }
+      let(:id) { other_user_book.id }
+
+      it "404エラーが返る" do
+        subject
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
   describe "GET api/v1/current/books/list" do
     subject { get(list_api_v1_current_books_path, headers:, params:) }
 

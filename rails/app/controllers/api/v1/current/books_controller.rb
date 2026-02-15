@@ -22,6 +22,12 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
     render json: book
   end
 
+  def destroy
+    book = current_user.books.find(params[:id])
+    book.destroy!
+    head :no_content
+  end
+
   def counts
     user_books = current_user.books.finished
     render json: {
