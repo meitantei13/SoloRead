@@ -21,6 +21,8 @@ Rails.application.routes.draw do
             get :confirm, on: :collection
           end
         end
+        resources :notes, only: [:index, :show, :create, :update, :destroy]
+        resources :tags, only: [:index, :create, :destroy]
       end
     end
   end
