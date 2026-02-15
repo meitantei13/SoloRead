@@ -227,6 +227,7 @@ export default function CurrntBookEdit() {
             justifyContent: "center",
             flexDirection: "column",
             mt: 5,
+            px: { xs: 2, sm: 0 },
           }}
         >
           <Box

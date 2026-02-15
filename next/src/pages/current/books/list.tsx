@@ -122,22 +122,25 @@ export default function MyList() {
         />
       </Box>
       <Box
-        sx={{ display: "flex", justifyContent: "center", minHeight: "100vh" }}
+        sx={{
+          display: "flex",
+          maxWidth: { lg: "1140px" },
+          mx: "auto",
+          minHeight: "100vh",
+        }}
       >
         <Sidebar
           drawerOpen={drawerOpen}
           onToggle={handleDrawerToggle}
           desktopMt={-10}
         />
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
           <Box
             sx={{
               position: "relative",
               px: { xs: 2, sm: 6 },
-              flex: 1,
               width: { xs: "100%", lg: contentWidth },
               maxWidth: contentWidth,
-              mx: "auto",
             }}
           >
             <Grid container spacing={4}>

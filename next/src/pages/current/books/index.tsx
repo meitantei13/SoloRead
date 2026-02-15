@@ -64,28 +64,32 @@ const MyPage: NextPage = () => {
   return (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "center",
         minHeight: "100vh",
         backgroundColor: "secondary.main",
       }}
     >
-      <Sidebar
-        drawerOpen={drawerOpen}
-        onToggle={handleDrawerToggle}
-        desktopMt={7}
-      />
-      <Box sx={{ display: "flex" }}>
-        {/* メインコンテンツ */}
-        <Box
-          sx={{
-            position: "relative",
-            px: { xs: 2, sm: 6 },
-            width: { xs: "100%", lg: contentWidth() },
-            maxWidth: contentWidth(),
-            mx: "auto",
-          }}
-        >
+      <Box
+        sx={{
+          display: "flex",
+          maxWidth: { lg: "1140px" },
+          mx: "auto",
+        }}
+      >
+        <Sidebar
+          drawerOpen={drawerOpen}
+          onToggle={handleDrawerToggle}
+          desktopMt={7}
+        />
+        <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
+          {/* メインコンテンツ */}
+          <Box
+            sx={{
+              position: "relative",
+              px: { xs: 2, sm: 6 },
+              width: { xs: "100%", lg: contentWidth() },
+              maxWidth: contentWidth(),
+            }}
+          >
           <Typography
             sx={{
               mt: 7,
@@ -151,6 +155,7 @@ const MyPage: NextPage = () => {
             )}
           </Box>
         </Box>
+      </Box>
       </Box>
     </Box>
   );

@@ -31,7 +31,7 @@ const valueSx = {
 const BookCard = (props: BookCardProps) => {
   return (
     <Box sx={hoverSx}>
-      <Card sx={{ height: 175, width: 380, position: "relative" }}>
+      <Card sx={{ height: 175, width: "100%", maxWidth: 380, position: "relative" }}>
         <Box
           sx={{
             position: "absolute",
