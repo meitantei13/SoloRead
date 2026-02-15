@@ -3,38 +3,45 @@ import {
   Box,
   Container,
   IconButton,
+  Link,
   TextField,
   Tooltip,
   Typography,
   Button,
 } from "@mui/material";
 import axios, { AxiosError } from "axios";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSnackbarState } from "@/hooks/useGlobalState";
 
-type ChangeEmailData = {
-  email: string;
+type ChangePasswordData = {
+  password: string;
+  passwordConfirmation: string;
 };
 
-export default function ChangeEmail() {
+export default function ChangePassword() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [, setSnackbar] = useSnackbarState();
 
-  const { control, handleSubmit } = useForm<ChangeEmailData>({
-    defaultValues: { email: "" },
+  const { control, handleSubmit, watch } = useForm<ChangePasswordData>({
+    defaultValues: { password: "", passwordConfirmation: "" },
   });
 
-  const onSubmit = async (data: ChangeEmailData) => {
+  const password = watch("password");
+
+  const onSubmit = async (data: ChangePasswordData) => {
     setIsLoading(true);
-    const url =
-      process.env.NEXT_PUBLIC_API_BASE_URL + "/current/settings/email";
+    const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/auth/password";
 
     try {
-      await axios.post(
+      await axios.put(
         url,
-        { email: data.email },
+        {
+          password: data.password,
+          password_confirmation: data.passwordConfirmation,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -47,18 +54,19 @@ export default function ChangeEmail() {
       );
 
       setSnackbar({
-        message: "承認メールを送信しました",
+        message: "パスワードを更新しました",
         severity: "success",
-        pathname: "/current/settings/email",
+        pathname: "/current/settings",
       });
+      router.push("/current/settings");
     } catch (e) {
       const err = e as AxiosError<{ errors: string[] }>;
       console.error(err.message);
 
       setSnackbar({
-        message: "承認メールの送信に失敗しました",
+        message: "パスワードの更新に失敗しました",
         severity: "error",
-        pathname: "/current/settings/email",
+        pathname: "/current/settings/password",
       });
     } finally {
       setIsLoading(false);
@@ -66,13 +74,17 @@ export default function ChangeEmail() {
   };
 
   const validationRules = {
-    email: {
-      required: "メールアドレスを入力してください。",
-      pattern: {
-        value:
-          /^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
-        message: "正しい形式のメールアドレスを入力してください。",
+    password: {
+      required: "パスワードを入力してください。",
+      minLength: {
+        value: 6,
+        message: "パスワードは6文字以上で入力してください。",
       },
+    },
+    passwordConfirmation: {
+      required: "パスワード（確認）を入力してください",
+      validate: (value: string) =>
+        value === password || "パスワードが一致しません。",
     },
   };
 
@@ -108,25 +120,40 @@ export default function ChangeEmail() {
                 color: "black",
                 fontWeight: "bold",
                 textAlign: "center",
-                mb: 2,
               }}
             >
-              メールアドレスの変更
+              パスワードの更新
             </Typography>
           </Box>
           <Controller
-            name="email"
+            name="password"
             control={control}
-            rules={validationRules.email}
+            rules={validationRules.password}
             render={({ field, fieldState }) => (
               <TextField
                 {...field}
-                type="text"
-                placeholder="新しいメールアドレス"
+                type="password"
+                placeholder="新しいパスワード"
                 fullWidth
                 error={fieldState.invalid}
                 helperText={fieldState.error?.message}
                 sx={{ backgroundColor: "white", mb: 3 }}
+              />
+            )}
+          />
+          <Controller
+            name="passwordConfirmation"
+            control={control}
+            rules={validationRules.passwordConfirmation}
+            render={({ field, fieldState }) => (
+              <TextField
+                {...field}
+                type="password"
+                placeholder="新しいパスワード（確認）"
+                fullWidth
+                error={fieldState.invalid}
+                helperText={fieldState.error?.message}
+                sx={{ backgroundColor: "white" }}
               />
             )}
           />
@@ -143,7 +170,7 @@ export default function ChangeEmail() {
               mt: 3,
             }}
           >
-            メール認証に進む
+            更新
           </Button>
         </Box>
       </Container>
