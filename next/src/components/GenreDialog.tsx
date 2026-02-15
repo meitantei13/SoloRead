@@ -26,9 +26,11 @@ export default function GenreDialog({
   onSuccess,
 }: GenreDialogProps) {
   const [genreName, setGenreName] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleClose = () => {
     setGenreName("");
+    setErrorMessage("");
     onClose();
   };
 
@@ -43,15 +45,18 @@ export default function GenreDialog({
       uid: localStorage.getItem("uid"),
     };
 
-    const response = await axios.post(
-      genreUrl,
-      { genre: { name: genreName } },
-      { headers },
-    );
+    try {
+      const response = await axios.post(
+        genreUrl,
+        { genre: { name: genreName } },
+        { headers },
+      );
 
-    onSuccess(response.data);
-
-    handleClose();
+      onSuccess(response.data);
+      handleClose();
+    } catch {
+      setErrorMessage("同じ名前のジャンルは追加できません");
+    }
   };
 
   return (
@@ -66,6 +71,8 @@ export default function GenreDialog({
             id="genreId"
             name="genreName"
             onChange={(e) => setGenreName(e.target.value)}
+            error={!!errorMessage}
+            helperText={errorMessage}
           />
         </form>
       </DialogContent>
