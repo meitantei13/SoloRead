@@ -102,7 +102,8 @@ export default function Header() {
               border: "1.5px solid #A3B18A",
               "&:hover": {
                 border: "1.5px solid #A3B18A",
-                backgroundColor: "#ccd7b5ff",
+                backgroundColor: "#A3B18A",
+                color: "#fff",
               },
             }}
           >

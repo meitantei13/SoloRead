@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Card, CardContent, Typography } from "@mui/material";
 
 type BookCardProps = {
@@ -28,7 +26,7 @@ const valueSx = {
   color: "#3D3D3D",
 };
 
-const BookCard = (props: BookCardProps) => {
+export default function BookCard(props: BookCardProps) {
   return (
     <Box sx={hoverSx}>
       <Card
@@ -74,6 +72,4 @@ const BookCard = (props: BookCardProps) => {
       </Card>
     </Box>
   );
-};
-
-export default BookCard;
+}

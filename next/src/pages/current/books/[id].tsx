@@ -4,15 +4,20 @@ import {
   Button,
   Card,
   Container,
+  Grid,
   IconButton,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import camelcaseKeys from "camelcase-keys";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import useSWR from "swr";
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
+import NoteCard from "@/components/NoteCard";
+import NoteDialog from "@/components/NoteDialog";
 import { useUserState, useSnackbarState } from "@/hooks/useGlobalState";
 import { useRequireSginedIn } from "@/hooks/useRequireSignedIn";
 import { fetcher } from "@/lib/fetcher";
@@ -28,10 +33,26 @@ type CurrentBookProps = {
   genreName: string;
 };
 
+type TagProps = {
+  id: number;
+  name: string;
+  isDefault: boolean;
+};
+
+type NoteProps = {
+  id: number;
+  content: string;
+  bookId: number;
+  bookTitle: string;
+  createdAt: string;
+  tags: TagProps[];
+};
+
 const CurrentBookDetail = () => {
   useRequireSginedIn();
   const [user] = useUserState();
   const [, setSnackbar] = useSnackbarState();
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/books/";
@@ -40,6 +61,13 @@ const CurrentBookDetail = () => {
     user.isSignedIn && id ? url + id : null,
     fetcher,
   );
+
+  const notesUrl = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/notes";
+  const { data: notesData, mutate: mutateNotes } = useSWR(
+    user.isSignedIn && id ? `${notesUrl}?book_id=${id}` : null,
+    fetcher,
+  );
+
   if (error) return <Error />;
   if (!data) return <Loading />;
 
@@ -99,9 +127,12 @@ const CurrentBookDetail = () => {
   };
 
   const book: CurrentBookProps = camelcaseKeys(data);
+  const notes: NoteProps[] = notesData ? camelcaseKeys(notesData.notes) : [];
 
   return (
-    <Box sx={{ ...styles.pageMinHeight, backgroundColor: "secondary.main" }}>
+    <Box
+      sx={{ ...styles.pageMinHeight, backgroundColor: "secondary.main", pb: 7 }}
+    >
       <Box
         sx={{
           borderTop: "0.5px solid #acbcc7",
@@ -250,6 +281,55 @@ const CurrentBookDetail = () => {
               <Box sx={valueSx}>{book.content}</Box>{" "}
             </Box>
           </Card>
+        </Container>
+        <Container maxWidth="sm" sx={{ mt: 5 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              pt: 3,
+              pb: 2,
+            }}
+          >
+            <Typography sx={{ fontSize: 24, fontWeight: "bokd" }}>
+              ノート
+            </Typography>
+            <Button
+              variant="contained"
+              size="small"
+              color="primary"
+              sx={{
+                textTransform: "none",
+                fontSize: 13,
+                fontWeight: "bold",
+                color: "#fff",
+                borderRadius: 1,
+                "&:hover": {
+                  backgroundColor: "#8F9D77",
+                },
+              }}
+              onClick={() => setOpen(true)}
+            >
+              新規作成
+            </Button>
+          </Box>
+          <Grid container spacing={2}>
+            {notes.map((note: NoteProps) => (
+              <NoteCard
+                key={note.id}
+                content={note.content}
+                tags={note.tags}
+                createdAt={note.createdAt}
+              />
+            ))}
+          </Grid>
+          <NoteDialog
+            open={open}
+            onClose={() => setOpen(false)}
+            bookId={book.id}
+            onSuccess={() => mutateNotes()}
+          />
         </Container>
       </Box>
     </Box>
