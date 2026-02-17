@@ -43,5 +43,4 @@ class Api::V1::Current::NotesController < Api::V1::BaseController
     def note_params
       params.expect(note: [:content, :book_id, tag_ids: []])
     end
-  
 end
