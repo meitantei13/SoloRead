@@ -6,6 +6,7 @@ import {
   Container,
   Grid,
   IconButton,
+  Pagination,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -53,8 +54,10 @@ const CurrentBookDetail = () => {
   const [user] = useUserState();
   const [, setSnackbar] = useSnackbarState();
   const [open, setOpen] = useState(false);
+
   const router = useRouter();
   const { id } = router.query;
+
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/books/";
 
   const { data, error } = useSWR(
@@ -62,11 +65,14 @@ const CurrentBookDetail = () => {
     fetcher,
   );
 
+  const [page, setPage] = useState(1);
+
   const notesUrl = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/notes";
   const { data: notesData, mutate: mutateNotes } = useSWR(
-    user.isSignedIn && id ? `${notesUrl}?book_id=${id}` : null,
+    user.isSignedIn && id ? `${notesUrl}?book_id=${id}&page=${page}` : null,
     fetcher,
   );
+  const meta = notesData ? camelcaseKeys(notesData.meta) : null;
 
   if (error) return <Error />;
   if (!data) return <Loading />;
@@ -124,6 +130,10 @@ const CurrentBookDetail = () => {
     pt: 1,
     fontSize: 16,
     fontWeight: "medium",
+  };
+
+  const handleChange = (_event: unknown, value: number) => {
+    setPage(value);
   };
 
   const book: CurrentBookProps = camelcaseKeys(data);
@@ -324,6 +334,15 @@ const CurrentBookDetail = () => {
               />
             ))}
           </Grid>
+          {meta && meta.totalPages > 1 && (
+            <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
+              <Pagination
+                count={meta.totalPages}
+                page={meta.currentPage}
+                onChange={handleChange}
+              />
+            </Box>
+          )}
           <NoteDialog
             open={open}
             onClose={() => setOpen(false)}
