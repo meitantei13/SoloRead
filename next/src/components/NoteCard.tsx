@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 
 type TagProps = {
   id: number;
@@ -44,21 +44,19 @@ export default function NoteCard(props: NoteCardProps) {
           >
             {props.content}
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mt: "auto",
-              pt: 1,
-            }}
-          >
-            {props.tags.length > 0 && (
-              <Typography sx={{ fontSize: 12, color: "#856952" }}>
-                {props.tags.map((tag) => tag.name).join(", ")}
-              </Typography>
-            )}
-          </Box>
+          {props.tags.length > 0 && (
+            <Typography
+              sx={{
+                fontSize: 12,
+                color: "#856952",
+                position: "absolute",
+                left: 16,
+                bottom: 10,
+              }}
+            >
+              {props.tags.map((tag) => tag.name).join(", ")}
+            </Typography>
+          )}
           <Typography
             sx={{
               fontSize: 12,
