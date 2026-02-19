@@ -127,7 +127,7 @@ export default function NoteDialog({
       setSelectTagIds([]);
       mutateTags();
     } catch {
-      alert("タグの削除に失敗しました");
+      alert("デフォルトタグは削除できません");
     }
   };
 
@@ -226,9 +226,7 @@ export default function NoteDialog({
                 削除
               </Button>
             </Box>
-            <Box
-              sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1.5 }}
-            >
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1.5 }}>
               {tags.map((tag) => (
                 <Chip
                   key={tag.id}
