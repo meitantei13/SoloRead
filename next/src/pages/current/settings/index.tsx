@@ -65,7 +65,9 @@ const SettingItem = ({
   return href ? (
     <Link href={href}>{content}</Link>
   ) : (
-    <Box onClick={onClick}>{content}</Box>
+    <Box onClick={onClick} sx={{ cursor: "pointer" }}>
+      {content}
+    </Box>
   );
 };
 
