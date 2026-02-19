@@ -6,6 +6,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Snackbar,
+  Alert,
   TextField,
 } from "@mui/material";
 import axios from "axios";
@@ -39,6 +41,10 @@ export default function NoteDialog({
   const [showTags, setShowTags] = useState(false);
   const [selectTagIds, setSelectTagIds] = useState<number[]>([]);
   const [newTagName, setNewTagName] = useState("");
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackSeverity, setSnackSeverity] = useState<"info" | "error">(
+    "error",
+  );
 
   const handleClose = () => {
     setNoteContent("");
@@ -76,9 +82,12 @@ export default function NoteDialog({
         { headers },
       );
 
+      setSnackSeverity("info");
+      setSnackMessage("ノートを作成しました");
       onSuccess();
       handleClose();
     } catch {
+      setSnackSeverity("error");
       setErrorMessage("ノートの作成に失敗しました");
     }
   };
@@ -107,7 +116,8 @@ export default function NoteDialog({
       mutateTags();
       setNewTagName("");
     } catch {
-      alert("タグの作成に失敗しました");
+      setSnackSeverity("error");
+      setSnackMessage("タグの作成に失敗しました");
     }
   };
 
@@ -127,169 +137,186 @@ export default function NoteDialog({
       setSelectTagIds([]);
       mutateTags();
     } catch {
-      alert("デフォルトタグは削除できません");
+      setSnackMessage("デフォルトタグは削除できません");
     }
   };
 
   const tags: TagProps[] = tagsData || [];
 
   return (
-    <Dialog onClose={handleClose} open={open} fullWidth maxWidth="sm">
-      <DialogTitle>ノートを追加</DialogTitle>
-      <DialogContent>
-        <form onSubmit={handleSubmit} id="subscription-form">
-          <TextField
-            autoFocus
-            required
-            multiline
-            minRows={6}
-            fullWidth
-            placeholder={
-              "記録したい言葉を入力してください。\n\nタグを追加することで振り返りしやすくなります。"
-            }
-            value={noteContent}
-            id="noteContent"
-            name="noteContent"
-            onChange={(e) => setNoteContent(e.target.value)}
-            error={!!errorMessage}
-            helperText={errorMessage}
-          />
-        </form>
-        {showTags && (
-          <Box
-            sx={{
-              mt: 2,
-              p: 2,
-              backgroundColor: "#f9faf7",
-              borderRadius: "8px",
-              border: "1px solid #e0e6d6",
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-              <TextField
-                placeholder="新しいタグ名"
-                value={newTagName}
-                onChange={(e) => setNewTagName(e.target.value)}
-                size="small"
-                sx={{
-                  flex: 1,
-                  "& .MuiOutlinedInput-root": {
-                    backgroundColor: "#fff",
-                    borderRadius: "6px",
-                    fontSize: 13,
-                    height: 32,
-                  },
-                }}
-              />
-              <Button
-                onClick={handleCreateTag}
-                variant="outlined"
-                size="small"
-                disabled={!newTagName.trim()}
-                sx={{
-                  borderColor: "#A3B18A",
-                  color: "#A3B18A",
-                  fontWeight: "bold",
-                  whiteSpace: "nowrap",
-                  fontSize: 12,
-                  minWidth: "auto",
-                  px: 1.5,
-                  height: 32,
-                  "&:hover": {
-                    borderColor: "#8F9D77",
-                    backgroundColor: "#f0f4eb",
-                  },
-                }}
-              >
-                追加
-              </Button>
-              <Button
-                onClick={handleDeleteTag}
-                variant="outlined"
-                size="small"
-                disabled={selectTagIds.length === 0}
-                sx={{
-                  borderColor: "#e57373",
-                  color: "#e57373",
-                  fontWeight: "bold",
-                  whiteSpace: "nowrap",
-                  fontSize: 12,
-                  minWidth: "auto",
-                  px: 1.5,
-                  height: 32,
-                  "&:hover": {
-                    borderColor: "#d32f2f",
-                    backgroundColor: "#fce4ec",
-                  },
-                }}
-              >
-                削除
-              </Button>
-            </Box>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1.5 }}>
-              {tags.map((tag) => (
-                <Chip
-                  key={tag.id}
-                  label={tag.name}
+    <>
+      <Dialog onClose={handleClose} open={open} fullWidth maxWidth="sm">
+        <DialogTitle>ノートを追加</DialogTitle>
+        <DialogContent>
+          <form onSubmit={handleSubmit} id="subscription-form">
+            <TextField
+              autoFocus
+              required
+              multiline
+              minRows={6}
+              fullWidth
+              placeholder={
+                "記録したい言葉を入力してください。\n\nタグを追加することで振り返りしやすくなります。"
+              }
+              value={noteContent}
+              id="noteContent"
+              name="noteContent"
+              onChange={(e) => setNoteContent(e.target.value)}
+              error={!!errorMessage}
+              helperText={errorMessage}
+            />
+          </form>
+          {showTags && (
+            <Box
+              sx={{
+                mt: 2,
+                p: 2,
+                backgroundColor: "#f9faf7",
+                borderRadius: "8px",
+                border: "1px solid #e0e6d6",
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                <TextField
+                  placeholder="新しいタグ名"
+                  value={newTagName}
+                  onChange={(e) => setNewTagName(e.target.value)}
                   size="small"
-                  onClick={() => {
-                    setSelectTagIds((prev) =>
-                      prev.includes(tag.id)
-                        ? prev.filter((id) => id !== tag.id)
-                        : [...prev, tag.id],
-                    );
-                  }}
-                  variant={
-                    selectTagIds.includes(tag.id) ? "filled" : "outlined"
-                  }
                   sx={{
-                    borderColor: "#A3B18A",
-                    ...(selectTagIds.includes(tag.id)
-                      ? {
-                          backgroundColor: "#A3B18A",
-                          color: "#fff",
-                          "&:hover": { backgroundColor: "#8F9D77" },
-                        }
-                      : {
-                          backgroundColor: "#fff",
-                          color: "#555",
-                          "&:hover": { backgroundColor: "#f0f4eb" },
-                        }),
+                    flex: 1,
+                    "& .MuiOutlinedInput-root": {
+                      backgroundColor: "#fff",
+                      borderRadius: "6px",
+                      fontSize: 13,
+                      height: 32,
+                    },
                   }}
                 />
-              ))}
+                <Button
+                  onClick={handleCreateTag}
+                  variant="outlined"
+                  size="small"
+                  disabled={!newTagName.trim()}
+                  sx={{
+                    borderColor: "#A3B18A",
+                    color: "#A3B18A",
+                    fontWeight: "bold",
+                    whiteSpace: "nowrap",
+                    fontSize: 12,
+                    minWidth: "auto",
+                    px: 1.5,
+                    height: 32,
+                    "&:hover": {
+                      borderColor: "#8F9D77",
+                      backgroundColor: "#f0f4eb",
+                    },
+                  }}
+                >
+                  追加
+                </Button>
+                <Button
+                  onClick={handleDeleteTag}
+                  variant="outlined"
+                  size="small"
+                  disabled={selectTagIds.length === 0}
+                  sx={{
+                    borderColor: "#e57373",
+                    color: "#e57373",
+                    fontWeight: "bold",
+                    whiteSpace: "nowrap",
+                    fontSize: 12,
+                    minWidth: "auto",
+                    px: 1.5,
+                    height: 32,
+                    "&:hover": {
+                      borderColor: "#d32f2f",
+                      backgroundColor: "#fce4ec",
+                    },
+                  }}
+                >
+                  削除
+                </Button>
+              </Box>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1.5 }}>
+                {tags.map((tag) => (
+                  <Chip
+                    key={tag.id}
+                    label={tag.name}
+                    size="small"
+                    onClick={() => {
+                      setSelectTagIds((prev) =>
+                        prev.includes(tag.id)
+                          ? prev.filter((id) => id !== tag.id)
+                          : [...prev, tag.id],
+                      );
+                    }}
+                    variant={
+                      selectTagIds.includes(tag.id) ? "filled" : "outlined"
+                    }
+                    sx={{
+                      borderColor: "#A3B18A",
+                      ...(selectTagIds.includes(tag.id)
+                        ? {
+                            backgroundColor: "#A3B18A",
+                            color: "#fff",
+                            "&:hover": { backgroundColor: "#8F9D77" },
+                          }
+                        : {
+                            backgroundColor: "#fff",
+                            color: "#555",
+                            "&:hover": { backgroundColor: "#f0f4eb" },
+                          }),
+                    }}
+                  />
+                ))}
+              </Box>
             </Box>
-          </Box>
-        )}
-      </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={handleClose} sx={{ color: "#999" }}>
-          戻る
-        </Button>
-        <Button
-          onClick={handleTags}
-          sx={{
-            color: "#A3B18A",
-            fontWeight: "bold",
-          }}
+          )}
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={handleClose} sx={{ color: "#999" }}>
+            戻る
+          </Button>
+          <Button
+            onClick={handleTags}
+            sx={{
+              color: "#A3B18A",
+              fontWeight: "bold",
+            }}
+          >
+            {showTags ? "タグを閉じる" : "タグを追加"}
+          </Button>
+          <Button
+            type="submit"
+            form="subscription-form"
+            variant="contained"
+            sx={{
+              backgroundColor: "#A3B18A",
+              color: "#fff",
+              fontWeight: "bold",
+              borderRadius: 1,
+              "&:hover": { backgroundColor: "#8F9D77" },
+            }}
+          >
+            登録
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        open={!!snackMessage}
+        autoHideDuration={3000}
+        onClose={() => setSnackMessage("")}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackMessage("")}
+          severity={snackSeverity}
+          variant="standard"
+          icon={false}
         >
-          {showTags ? "タグを閉じる" : "タグを追加"}
-        </Button>
-        <Button
-          type="submit"
-          form="subscription-form"
-          variant="contained"
-          sx={{
-            backgroundColor: "#A3B18A",
-            color: "#fff",
-            fontWeight: "bold",
-            borderRadius: 1,
-            "&:hover": { backgroundColor: "#8F9D77" },
-          }}
-        >
-          登録
-        </Button>
-      </DialogActions>
-    </Dialog>
+          {snackMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
