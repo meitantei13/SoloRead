@@ -114,7 +114,7 @@ export default function MyList() {
             maxWidth: "500px",
             backgroundColor: "#fff",
           }}
-          InputLabelProps={{ shrink: false }}
+          slotProps={{ inputLabel: { shrink: false } }}
         />
         <GenreSelect
           selectedGenreId={selectedGenreId}
