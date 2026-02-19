@@ -42,9 +42,7 @@ export default function NoteDialog({
   const [selectTagIds, setSelectTagIds] = useState<number[]>([]);
   const [newTagName, setNewTagName] = useState("");
   const [snackMessage, setSnackMessage] = useState("");
-  const [snackSeverity, setSnackSeverity] = useState<"info" | "error">(
-    "error",
-  );
+  const [snackSeverity, setSnackSeverity] = useState<"info" | "error">("error");
 
   const handleClose = () => {
     setNoteContent("");
@@ -70,7 +68,7 @@ export default function NoteDialog({
     };
 
     try {
-      const response = await axios.post(
+      await axios.post(
         noteUrl,
         {
           note: {

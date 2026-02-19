@@ -18,6 +18,7 @@ import useSWR from "swr";
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
 import NoteCard from "@/components/NoteCard";
+import NoteDetailDialog from "@/components/NoteDetailDialog";
 import NoteDialog from "@/components/NoteDialog";
 import { useUserState, useSnackbarState } from "@/hooks/useGlobalState";
 import { useRequireSginedIn } from "@/hooks/useRequireSignedIn";
@@ -54,6 +55,7 @@ const CurrentBookDetail = () => {
   const [user] = useUserState();
   const [, setSnackbar] = useSnackbarState();
   const [open, setOpen] = useState(false);
+  const [selectedNote, setSelectedNote] = useState<NoteProps | null>(null);
 
   const router = useRouter();
   const { id } = router.query;
@@ -327,6 +329,7 @@ const CurrentBookDetail = () => {
           <Grid container spacing={2}>
             {notes.map((note: NoteProps) => (
               <NoteCard
+                onClick={() => setSelectedNote(note)}
                 key={note.id}
                 content={note.content}
                 tags={note.tags}
@@ -347,6 +350,11 @@ const CurrentBookDetail = () => {
             open={open}
             onClose={() => setOpen(false)}
             bookId={book.id}
+            onSuccess={() => mutateNotes()}
+          />
+          <NoteDetailDialog
+            note={selectedNote}
+            onClose={() => setSelectedNote(null)}
             onSuccess={() => mutateNotes()}
           />
         </Container>

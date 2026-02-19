@@ -10,13 +10,16 @@ type NoteCardProps = {
   content: string;
   createdAt: string;
   tags: TagProps[];
+  onClick: () => void;
 };
 
 export default function NoteCard(props: NoteCardProps) {
   return (
     <Grid size={{ xs: 12, sm: 6 }}>
       <Card
+        onClick={props.onClick}
         sx={{
+          cursor: "pointer", // マウスを乗せると指マークになる
           height: 120,
           width: "100%",
           backgroundColor: "#fff",
