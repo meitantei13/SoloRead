@@ -14,6 +14,7 @@ import Error from "@/components/Error";
 import GenreSelect from "@/components/GenreSelect";
 import Loading from "@/components/Loading";
 import NoteCard from "@/components/NoteCard";
+import NoteDetailDialog from "@/components/NoteDetailDialog";
 import Sidebar from "@/components/Sidebar";
 import { useUserState } from "@/hooks/useGlobalState";
 import { useRequireSginedIn } from "@/hooks/useRequireSignedIn";
@@ -42,6 +43,7 @@ export default function NoteList() {
   const [query, setQuery] = useState("");
   const [debounceQuery, setDebouncedQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [selectedNote, setSelectedNote] = useState<NoteProps | null>(null);
 
   const [selectedTagId, setSelectedTagId] = useState<number | "unset" | null>(
     null,
@@ -70,7 +72,7 @@ export default function NoteList() {
     url += `&q=${encodeURIComponent(debounceQuery)}`;
   }
 
-  const { data, error } = useSWR(user.isSignedIn ? url : null, fetcher);
+  const { data, error, mutate } = useSWR(user.isSignedIn ? url : null, fetcher);
 
   const meta = data ? camelcaseKeys(data.meta) : null;
   const handleChange = (_event: unknown, value: number) => {
@@ -154,7 +156,7 @@ export default function NoteList() {
                       content={note.content}
                       createdAt={note.createdAt}
                       tags={note.tags}
-                      onClick={() => {}}
+                      onClick={() => setSelectedNote(note)}
                     />
                   </Grid>
                 ))
@@ -171,6 +173,11 @@ export default function NoteList() {
                 />
               </Box>
             )}
+            <NoteDetailDialog
+              note={selectedNote}
+              onClose={() => setSelectedNote(null)}
+              onSuccess={() => mutate()}
+            />
           </Box>
         </Box>
       </Box>
