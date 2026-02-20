@@ -11,11 +11,11 @@ import camelcaseKeys from "camelcase-keys";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import Error from "@/components/Error";
-import GenreSelect from "@/components/GenreSelect";
 import Loading from "@/components/Loading";
 import NoteCard from "@/components/NoteCard";
 import NoteDetailDialog from "@/components/NoteDetailDialog";
 import Sidebar from "@/components/Sidebar";
+import TagSelect from "@/components/TagSelect";
 import { useUserState } from "@/hooks/useGlobalState";
 import { useRequireSginedIn } from "@/hooks/useRequireSignedIn";
 import { fetcher } from "@/lib/fetcher";
@@ -71,6 +71,11 @@ export default function NoteList() {
   if (debounceQuery) {
     url += `&q=${encodeURIComponent(debounceQuery)}`;
   }
+  if (selectedTagId === "unset") {
+    url += `&tag_id=null`;
+  } else if (selectedTagId) {
+    url += `&tag_id=${selectedTagId}`;
+  }
 
   const { data, error, mutate } = useSWR(user.isSignedIn ? url : null, fetcher);
 
@@ -122,9 +127,9 @@ export default function NoteList() {
           }}
           slotProps={{ inputLabel: { shrink: false } }}
         />
-        <GenreSelect
-          selectedGenreId={selectedTagId}
-          onGenreChange={setSelectedTagId}
+        <TagSelect
+          selectedTagId={selectedTagId}
+          onTagChange={setSelectedTagId}
         />
       </Box>
       <Box
