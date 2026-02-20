@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
+import NoteDialog from "./NoteDialog";
 
 type TagProps = {
   id: number;
@@ -41,6 +42,7 @@ export default function NoteDetailDialog({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackMessage, setSnackMessage] = useState("");
   const [snackSeverity, setSnackSeverity] = useState<"info" | "error">("error");
+  const [editOpetn, setEditOpen] = useState(false);
 
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/notes/";
   const handleDeleteNote = async () => {
@@ -66,6 +68,7 @@ export default function NoteDetailDialog({
       setSnackMessage("ノートの削除に失敗しました");
     }
   };
+
   return (
     <>
       <Dialog open={!!note} onClose={onClose} fullWidth maxWidth="sm">
@@ -138,11 +141,47 @@ export default function NoteDetailDialog({
               minWidth: "auto",
               px: 1.5,
               height: 32,
+              "&:hover": {
+                borderColor: "#e57373",
+                backgroundColor: "#e57373",
+                color: "#fff",
+              },
             }}
           >
             削除
           </Button>
-          <Button onClick={onClose} sx={{ color: "#999" }}>
+          <Button
+            onClick={() => setEditOpen(true)}
+            variant="outlined"
+            size="small"
+            sx={{
+              borderColor: "#A3B18A",
+              color: "#A3B18A",
+              fontWeight: "bold",
+              whiteSpace: "nowrap",
+              fontSize: 12,
+              minWidth: "auto",
+              px: 1.5,
+              height: 32,
+              "&:hover": {
+                borderColor: "#A3B18A",
+                backgroundColor: "#A3B18A",
+                color: "#fff",
+              },
+            }}
+          >
+            編集
+          </Button>
+          <Button
+            onClick={onClose}
+            sx={{
+              color: "#999",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+                color: "#666",
+              },
+            }}
+          >
             閉じる
           </Button>
         </DialogActions>
@@ -162,6 +201,19 @@ export default function NoteDetailDialog({
           {snackMessage}
         </Alert>
       </Snackbar>
+      {note && (
+        <NoteDialog
+          open={editOpetn}
+          onClose={() => setEditOpen(false)}
+          bookId={note.bookId}
+          onSuccess={() => {
+            onSuccess();
+            setEditOpen(false);
+            onClose();
+          }}
+          editNote={{ id: note.id, content: note.content, tags: note.tags }}
+        />
+      )}
     </>
   );
 }

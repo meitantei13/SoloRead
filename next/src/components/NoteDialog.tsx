@@ -11,7 +11,7 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { useUserState } from "@/hooks/useGlobalState";
 import { fetcher } from "@/lib/fetcher";
@@ -21,6 +21,11 @@ type NoteDialogProps = {
   onClose: () => void;
   bookId: number;
   onSuccess: () => void;
+  editNote?: {
+    id: number;
+    content: string;
+    tags: { id: number; name: string }[];
+  };
 };
 
 type TagProps = {
@@ -34,12 +39,15 @@ export default function NoteDialog({
   onClose,
   bookId,
   onSuccess,
+  editNote,
 }: NoteDialogProps) {
   const [user] = useUserState();
-  const [noteContent, setNoteContent] = useState("");
+  const [noteContent, setNoteContent] = useState(editNote?.content ?? "");
   const [errorMessage, setErrorMessage] = useState("");
   const [showTags, setShowTags] = useState(false);
-  const [selectTagIds, setSelectTagIds] = useState<number[]>([]);
+  const [selectTagIds, setSelectTagIds] = useState<number[]>(
+    editNote?.tags.map((t) => t.id) ?? [],
+  );
   const [newTagName, setNewTagName] = useState("");
   const [snackMessage, setSnackMessage] = useState("");
   const [snackSeverity, setSnackSeverity] = useState<"info" | "error">("error");
@@ -60,6 +68,13 @@ export default function NoteDialog({
 
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const noteData = {
+      note: {
+        content: noteContent,
+        book_id: bookId,
+        tag_ids: selectTagIds,
+      },
+    };
     const headers = {
       "Content-Type": "application/json",
       "access-token": localStorage.getItem("access-token"),
@@ -68,20 +83,16 @@ export default function NoteDialog({
     };
 
     try {
-      await axios.post(
-        noteUrl,
-        {
-          note: {
-            content: noteContent,
-            book_id: bookId,
-            tag_ids: selectTagIds,
-          },
-        },
-        { headers },
-      );
+      if (editNote) {
+        await axios.patch(`${noteUrl}/${editNote.id}`, noteData, { headers });
+        setSnackSeverity("info");
+        setSnackMessage("ノートを更新しました");
+      } else {
+        await axios.post(noteUrl, noteData, { headers });
+        setSnackSeverity("info");
+        setSnackMessage("ノートを作成しました");
+      }
 
-      setSnackSeverity("info");
-      setSnackMessage("ノートを作成しました");
       onSuccess();
       handleClose();
     } catch {

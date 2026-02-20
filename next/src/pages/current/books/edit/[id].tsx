@@ -105,13 +105,6 @@ export default function CurrntBookEdit() {
   useEffect(() => {
     if (data) {
       reset(book);
-    }
-  }, [data, book, reset]);
-
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-      reset(book);
       setStatusChecked(book.status == "読了済");
       setIsFetched(true);
     }
