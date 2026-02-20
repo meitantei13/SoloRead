@@ -13,7 +13,7 @@ import {
 import camelcaseKeys from "camelcase-keys";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useSWR from "swr";
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
@@ -56,6 +56,7 @@ const CurrentBookDetail = () => {
   const [, setSnackbar] = useSnackbarState();
   const [open, setOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState<NoteProps | null>(null);
+  const notesSectionRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const { id } = router.query;
@@ -71,7 +72,9 @@ const CurrentBookDetail = () => {
 
   const notesUrl = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/notes";
   const { data: notesData, mutate: mutateNotes } = useSWR(
-    user.isSignedIn && id ? `${notesUrl}?book_id=${id}&page=${page}` : null,
+    user.isSignedIn && id
+      ? `${notesUrl}?book_id=${id}&page=${page}&note_page=10`
+      : null,
     fetcher,
   );
   const meta = notesData ? camelcaseKeys(notesData.meta) : null;
@@ -136,6 +139,7 @@ const CurrentBookDetail = () => {
 
   const handleChange = (_event: unknown, value: number) => {
     setPage(value);
+    notesSectionRef.current?.scrollIntoView({ behavior: "instant" });
   };
 
   const book: CurrentBookProps = camelcaseKeys(data);
@@ -296,6 +300,7 @@ const CurrentBookDetail = () => {
         </Container>
         <Container maxWidth="sm" sx={{ mt: 5 }}>
           <Box
+            ref={notesSectionRef}
             sx={{
               display: "flex",
               justifyContent: "space-between",

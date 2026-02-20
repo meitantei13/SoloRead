@@ -82,6 +82,7 @@ export default function NoteList() {
   const meta = data ? camelcaseKeys(data.meta) : null;
   const handleChange = (_event: unknown, value: number) => {
     setPage(value);
+    window.scrollTo({ top: 0, behavior: "instant" });
   };
 
   if (error) return <Error />;
