@@ -30,7 +30,13 @@ export default function BookCard(props: BookCardProps) {
   return (
     <Box sx={hoverSx}>
       <Card
-        sx={{ height: 175, width: "100%", maxWidth: 380, position: "relative" }}
+        sx={{
+          height: 175,
+          width: "100%",
+          maxWidth: 380,
+          mx: "auto",
+          position: "relative",
+        }}
       >
         <Box
           sx={{

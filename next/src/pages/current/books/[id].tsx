@@ -328,13 +328,14 @@ const CurrentBookDetail = () => {
           </Box>
           <Grid container spacing={2}>
             {notes.map((note: NoteProps) => (
-              <NoteCard
-                onClick={() => setSelectedNote(note)}
-                key={note.id}
-                content={note.content}
-                tags={note.tags}
-                createdAt={note.createdAt}
-              />
+              <Grid key={note.id} size={{ xs: 12, sm: 6 }}>
+                <NoteCard
+                  onClick={() => setSelectedNote(note)}
+                  content={note.content}
+                  tags={note.tags}
+                  createdAt={note.createdAt}
+                />
+              </Grid>
             ))}
           </Grid>
           {meta && meta.totalPages > 1 && (

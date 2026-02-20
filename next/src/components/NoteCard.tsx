@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 
 type TagProps = {
   id: number;
@@ -15,13 +15,14 @@ type NoteCardProps = {
 
 export default function NoteCard(props: NoteCardProps) {
   return (
-    <Grid size={{ xs: 12, sm: 6 }}>
-      <Card
+    <Card
         onClick={props.onClick}
         sx={{
           cursor: "pointer", // マウスを乗せると指マークになる
           height: 120,
           width: "100%",
+          maxWidth: 250,
+          mx: "auto",
           backgroundColor: "#fff",
           border: "2px solid #c2d4a7",
           boxShadow: "none",
@@ -73,6 +74,5 @@ export default function NoteCard(props: NoteCardProps) {
           </Typography>
         </CardContent>
       </Card>
-    </Grid>
   );
 }

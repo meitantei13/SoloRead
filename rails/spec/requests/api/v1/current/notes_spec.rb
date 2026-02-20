@@ -26,7 +26,7 @@ RSpec.describe "Api::V1::Current::Notes", type: :request do
     end
 
     context "ページネーションが正常に動いている" do
-      before { create_list(:note, 13, user: current_user, book: current_user_book) }
+      before { create_list(:note, 20, user: current_user, book: current_user_book) }
 
       context "1ページ目" do
         let(:params) { { page: 1 } }
@@ -34,7 +34,7 @@ RSpec.describe "Api::V1::Current::Notes", type: :request do
         it "1ページ目に10件のデータを取得できる" do
           subject
           res = response.parsed_body
-          expect(res["notes"].length).to eq 10
+          expect(res["notes"].length).to eq 15
           expect(response).to have_http_status(:ok)
         end
       end
@@ -44,7 +44,7 @@ RSpec.describe "Api::V1::Current::Notes", type: :request do
         it "2ページ目に3件のデータを取得できる" do
           subject
           res = response.parsed_body
-          expect(res["notes"].length).to eq 3
+          expect(res["notes"].length).to eq 5
           expect(response).to have_http_status(:ok)
         end
       end

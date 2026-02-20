@@ -16,7 +16,7 @@ class Api::V1::Current::NotesController < Api::V1::BaseController
       notes = notes.where(book_id: params[:book_id])
     end
 
-    notes = notes.order(created_at: :desc).page(params[:page] || 1).per(10)
+    notes = notes.order(created_at: :desc).page(params[:page] || 1).per(params[:note_page] || 15)
     render json: notes, meta: pagination(notes), adapter: :json
   end
 
