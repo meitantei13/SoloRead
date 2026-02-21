@@ -11,4 +11,7 @@ class User < ApplicationRecord
   has_many :genres, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :tags, dependent: :destroy
+
+  # １以上の整数のみ許可。未入力はnil
+  validates :yearly_reading_goal, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
 end

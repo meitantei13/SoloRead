@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for "User", at: "auth"
 
       namespace :current do
-        resource :user, only: [:show]
+        resource :user, only: [:show, :update]
         resources :books, only: [:index, :show, :create, :update, :destroy] do
           collection do
             get "counts"

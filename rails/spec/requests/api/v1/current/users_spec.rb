@@ -11,7 +11,7 @@ RSpec.describe "Api::V1::Current::Users", type: :request do
       it "正常にレコードを取得できる" do
         subject
         res = response.parsed_body
-        expect(res.keys).to eq ["id", "name", "email"]
+        expect(res.keys).to eq ["id", "name", "email", "yearly_reading_goal"]
         expect(response).to have_http_status(:ok)
       end
     end
@@ -24,6 +24,33 @@ RSpec.describe "Api::V1::Current::Users", type: :request do
         res = response.parsed_body
         expect(res["errors"]).to eq ["ログインもしくはアカウント登録してください。"]
         expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  describe "PATCH api/v1/current/user" do
+    subject { patch(api_v1_current_user_path, headers:, params:) }
+
+    let(:headers) { current_user.create_new_auth_token }
+    let(:current_user) { create(:user) }
+
+    context "ログインユーザーのデータを更新する" do
+      let(:params) { { user: { yearly_reading_goal: "30" } } }
+
+      it "正常にデータを更新できる" do
+        subject
+        res = response.parsed_body
+        expect(res["yearly_reading_goal"]).to eq 30
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "バリデーションエラーの場合" do
+      let(:params) { { user: { yearly_reading_goal: 0 } } }
+
+      it "422エラーが返る" do
+        expect { subject }.not_to change { current_user.reload.yearly_reading_goal }
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end

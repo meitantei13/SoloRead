@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_15_082154) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_21_072333) do
   create_table "books", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "author", comment: "著者"
     t.text "content", comment: "感想"
@@ -86,6 +86,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_15_082154) do
     t.string "uid", default: "", null: false
     t.string "unconfirmed_email"
     t.datetime "updated_at", null: false
+    t.integer "yearly_reading_goal"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["email_change_token"], name: "index_users_on_email_change_token", unique: true

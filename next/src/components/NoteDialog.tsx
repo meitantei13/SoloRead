@@ -11,7 +11,7 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import { useUserState } from "@/hooks/useGlobalState";
 import { fetcher } from "@/lib/fetcher";

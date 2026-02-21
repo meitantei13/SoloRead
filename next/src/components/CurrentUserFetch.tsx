@@ -28,6 +28,7 @@ export default function CurrentUserFetch() {
         email: "",
         isSignedIn: false,
         isFetched: false,
+        yearly_reading_goal: null,
       });
       return;
     }
