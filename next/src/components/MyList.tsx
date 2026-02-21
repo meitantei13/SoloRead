@@ -154,6 +154,19 @@ const MyList = () => {
                 }}
               />
             </ListItemIcon>
+            <Link href={"/current/analytics"}>
+              <ListItemButton sx={listSx}>統計＆分析</ListItemButton>
+            </Link>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", pb: 0.5 }}>
+            <ListItemIcon sx={{ minWidth: 10 }}>
+              <FiberManualRecordIcon
+                sx={{
+                  fontSize: 10,
+                  color: "#000",
+                }}
+              />
+            </ListItemIcon>
             <Link href={"/current/settings"}>
               <ListItemButton sx={listSx}>ユーザー設定</ListItemButton>
             </Link>

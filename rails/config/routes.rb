@@ -23,6 +23,11 @@ Rails.application.routes.draw do
         end
         resources :notes, only: [:index, :show, :create, :update, :destroy]
         resources :tags, only: [:index, :create, :destroy]
+        resource :analytics, only: [] do
+          collection do
+            get :summary
+          end
+        end
       end
     end
   end

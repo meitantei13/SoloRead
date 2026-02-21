@@ -3,19 +3,6 @@ class Api::V1::Current::NotesController < Api::V1::BaseController
 
   def index
     notes = current_user.notes.includes(:tags, :book)
-
-    if params[:q].present?
-      notes = notes.where("content LIKE ?", "%#{params[:q]}%")
-    end
-
-    if params[:tag_id].present?
-      notes = notes.joins(:note_tags).where(note_tags: { tag_id: params[:tag_id] })
-    end
-
-    if params[:book_id].present?
-      notes = notes.where(book_id: params[:book_id])
-    end
-
     notes = notes.order(created_at: :desc).page(params[:page] || 1).per(params[:note_page] || 15)
     render json: notes, meta: pagination(notes), adapter: :json
   end
@@ -43,6 +30,14 @@ class Api::V1::Current::NotesController < Api::V1::BaseController
   end
 
   private
+
+    def filter_notes
+      notes = current_user.notes.includes(:tags, :book)
+      notes = notes.where("content LIKE ?", "%#{params[:q]}%") if params[:q].present?
+      notes = notes.joins(:note_tags).where(note_tags: { tag_id: params[:tag_id] }) if params[:tag_id].present?
+      notes = notes.where(book_id: params[:book_id]) if params[:book_id].present?
+      notes
+    end
 
     def note_params
       params.expect(note: [:content, :book_id, tag_ids: []])

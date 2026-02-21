@@ -14,9 +14,15 @@ type SidebarProps = {
   drawerOpen: boolean;
   onToggle: () => void;
   desktopMt?: number;
+  showCounts?: boolean;
 };
 
-const Sidebar = ({ drawerOpen, onToggle, desktopMt = 0 }: SidebarProps) => {
+const Sidebar = ({
+  drawerOpen,
+  onToggle,
+  desktopMt = 0,
+  showCounts = true,
+}: SidebarProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -45,7 +51,7 @@ const Sidebar = ({ drawerOpen, onToggle, desktopMt = 0 }: SidebarProps) => {
       <Drawer open={drawerOpen} onClose={onToggle}>
         <Box sx={{ width: "250px", p: 1, mt: 5 }}>
           <MyList />
-          <Counts />
+          {showCounts && <Counts />}
         </Box>
       </Drawer>
 
@@ -54,7 +60,7 @@ const Sidebar = ({ drawerOpen, onToggle, desktopMt = 0 }: SidebarProps) => {
         {!isMobile && (
           <Box sx={{ width: "240px", flexShrink: 0, mt: desktopMt }}>
             <MyList />
-            <Counts />
+            {showCounts && <Counts />}
           </Box>
         )}
       </Box>
