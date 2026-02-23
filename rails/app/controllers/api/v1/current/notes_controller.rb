@@ -2,7 +2,7 @@ class Api::V1::Current::NotesController < Api::V1::BaseController
   before_action :authenticate_user!
 
   def index
-    notes = current_user.notes.includes(:tags, :book)
+    notes = filter_notes
     notes = notes.order(created_at: :desc).page(params[:page] || 1).per(params[:note_page] || 15)
     render json: notes, meta: pagination(notes), adapter: :json
   end

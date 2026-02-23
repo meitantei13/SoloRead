@@ -49,6 +49,82 @@ RSpec.describe "Api::V1::Current::Notes", type: :request do
         end
       end
     end
+
+    context "note の内容で検索" do
+      before do
+        create(:note, content: "サンプル１", user: current_user, book: current_user_book)
+        create(:note, content: "サンプル２", user: current_user, book: current_user_book)
+      end
+
+      let(:params) { { q: "サンプル１" } }
+
+      it "該当する note レコードが返る" do
+        subject
+        res = response.parsed_body
+        expect(res["notes"].length).to eq 1
+        expect(res["notes"][0]["content"]).to eq "サンプル１"
+        expect(response).to have_http_status(:ok)
+      end
+
+      context "複数該当がある場合" do
+        before do
+          create(:note, content: "サンプル３", user: current_user, book: current_user_book)
+        end
+
+        let!(:params) { { q: "サンプル" } }
+
+        it "複数該当がある場合" do
+          subject
+          res = response.parsed_body
+          expect(res["notes"].length).to eq 3
+          expect(res["notes"][0]["content"]).to eq "サンプル３"
+          expect(res["notes"][1]["content"]).to eq "サンプル２"
+          expect(res["notes"][2]["content"]).to eq "サンプル１"
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+
+    context "タグで検索" do
+      let(:params) { { tag_id: @tag_novel.id } }
+
+      before do
+        @tag_sports = create(:tag, name: "スポーツ", user: current_user)
+        @tag_novel = create(:tag, name: "小説", user: current_user)
+
+        note1 = create(:note, content: "タグ検索１", user: current_user, book: current_user_book)
+        create(:note_tag, note: note1, tag: @tag_sports)
+
+        note2 = create(:note, content: "タグ検索２", user: current_user, book: current_user_book)
+        create(:note_tag, note: note2, tag: @tag_novel)
+      end
+
+      it "該当するレコードが返る" do
+        subject
+        res = response.parsed_body
+        expect(res["notes"].length).to eq 1
+        expect(res["notes"][0]["content"]).to eq "タグ検索２"
+        expect(response).to have_http_status(:ok)
+      end
+
+      context "内容とタグでの検索" do
+        before do
+          note3 = create(:note, content: "タグ検索３", user: current_user, book: current_user_book)
+          create(:note_tag, note: note3, tag: @tag_sports)
+        end
+
+        let(:params) { { q: "検索", tag_id: @tag_sports.id } }
+
+        it "該当するレコードが返る" do
+          subject
+          res = response.parsed_body
+          expect(res["notes"].length).to eq 2
+          expect(res["notes"][0]["content"]).to eq "タグ検索３"
+          expect(res["notes"][1]["content"]).to eq "タグ検索１"
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
   end
 
   describe "POST api/v1/current/notes" do
