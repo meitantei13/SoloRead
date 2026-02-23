@@ -26,13 +26,13 @@ export default function ManthlyChart() {
     `/current/analytics/monthly_counts?year=${year}`;
   const { data, error } = useSWR(url, fetcher, { keepPreviousData: true });
 
+  if (error) return <p>データの取得に失敗しました</p>;
+  if (!data) return <p>読み込み中・・・</p>;
+
   const months = data.counts.map((c: { month: number }) =>
     isSmall ? `${c.month}` : `${c.month}月`,
   );
   const values = data.counts.map((c: { count: number }) => c.count);
-
-  if (error) return <p>データの取得に失敗しました</p>;
-  if (!data) return <p>読み込み中・・・</p>;
 
   return (
     <Box>
