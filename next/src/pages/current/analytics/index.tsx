@@ -10,6 +10,7 @@ import { Target } from "lucide-react";
 import { useState } from "react";
 import useSWR from "swr";
 import GoalDialog from "@/components/GoalDialog";
+import MonthlyChart from "@/components/MonthlyChart";
 import Sidebar from "@/components/Sidebar";
 import SummaryCard from "@/components/SummaryCard";
 import { useUserState } from "@/hooks/useGlobalState";
@@ -185,6 +186,9 @@ export default function Analytics() {
               />
             </CardContent>
           </Card>
+          <Box sx={{ mt: 5 }}>
+            <MonthlyChart />
+          </Box>
         </Box>
       </Box>
     </Box>
