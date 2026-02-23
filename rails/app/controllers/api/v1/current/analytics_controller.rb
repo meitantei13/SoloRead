@@ -12,6 +12,21 @@ class Api::V1::Current::AnalyticsController < Api::V1::BaseController
     }
   end
 
+  def monthly_counts
+    year = params[:year].to_i
+    year = Date.current.year if year <= 0
+
+    books = current_user.books.finished.
+              group_by_month(:read_date, range: Date.new(year, 1, 1)..Date.new(year, 12, 31), time_zone: "Tokyo").
+              count
+
+    counts = books.map do |date, count|
+      { month: date.month, count: count }
+    end
+
+    render json: { year: year, counts: counts }
+  end
+
   private
 
     def monthly_average(books)

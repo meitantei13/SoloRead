@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         resource :analytics, only: [] do
           collection do
             get :summary
+            get :monthly_counts
           end
         end
       end
