@@ -56,7 +56,7 @@ const MyList = () => {
           backgroundColor: "#fff",
           pt: 3,
           m: 2,
-          border: "1px solid #ccc",
+          border: "1px solid #e0e6d6",
           borderRadius: 2,
         }}
       >

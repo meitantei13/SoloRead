@@ -36,6 +36,8 @@ export default function BookCard(props: BookCardProps) {
           maxWidth: 380,
           mx: "auto",
           position: "relative",
+          border: "1px solid #e0e6d6",
+          boxShadow: "none",
         }}
       >
         <Box

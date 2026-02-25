@@ -19,7 +19,7 @@ const StatCard = ({ label, value, unit, icon }: StatCardProps) => (
   <Box
     sx={{
       backgroundColor: "#fff",
-      border: "1px solid #ccc",
+      border: "1px solid #e0e6d6",
       borderRadius: 2,
       p: 2,
       display: "flex",

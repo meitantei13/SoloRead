@@ -254,7 +254,7 @@ const CurrentBookDetail = () => {
             <Box
               sx={{
                 ...fieldBoxSx,
-                borderBottom: "1px solid #ccc",
+                borderBottom: "1px solid #e0e6d6",
               }}
             >
               <Box sx={labelSx}>書名</Box>
@@ -263,7 +263,7 @@ const CurrentBookDetail = () => {
             <Box
               sx={{
                 ...fieldBoxSx,
-                borderBottom: "1px solid #ccc",
+                borderBottom: "1px solid #e0e6d6",
               }}
             >
               <Box sx={labelSx}>著者</Box>
@@ -272,7 +272,7 @@ const CurrentBookDetail = () => {
             <Box
               sx={{
                 ...fieldBoxSx,
-                borderBottom: "1px solid #ccc",
+                borderBottom: "1px solid #e0e6d6",
               }}
             >
               <Box sx={labelSx}>ジャンル</Box>
@@ -281,7 +281,7 @@ const CurrentBookDetail = () => {
             <Box
               sx={{
                 ...fieldBoxSx,
-                borderBottom: "1px solid #ccc",
+                borderBottom: "1px solid #e0e6d6",
               }}
             >
               <Box sx={labelSx}>読了日</Box>

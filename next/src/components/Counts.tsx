@@ -29,7 +29,7 @@ const Counts = () => {
           m: 2,
           p: 2,
           backgroundColor: "#fff",
-          border: "1px solid #ccc",
+          border: "1px solid #e0e6d6",
           borderRadius: 2,
         }}
       >
