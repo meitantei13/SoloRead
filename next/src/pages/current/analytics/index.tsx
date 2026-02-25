@@ -9,6 +9,7 @@ import {
 import { Target } from "lucide-react";
 import { useState } from "react";
 import useSWR from "swr";
+import GenreChar from "@/components/GenreChart";
 import GoalDialog from "@/components/GoalDialog";
 import MonthlyChart from "@/components/MonthlyChart";
 import Sidebar from "@/components/Sidebar";
@@ -188,6 +189,9 @@ export default function Analytics() {
           </Card>
           <Box sx={{ mt: 5 }}>
             <MonthlyChart />
+          </Box>
+          <Box sx={{ mt: 5 }}>
+            <GenreChar />
           </Box>
         </Box>
       </Box>

@@ -35,62 +35,58 @@ export default function ManthlyChart() {
   const values = data.counts.map((c: { count: number }) => c.count);
 
   return (
-    <Box>
-      <Card
-        sx={{
-          borderRadius: 2,
-          border: "1px solid #e0e6d6",
-          boxShadow: "none",
-        }}
-      >
-        <CardContent sx={{ p: 3 }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1.5,
-              mb: 2,
-            }}
-          >
-            <BarChart3 size={22} color="#4254FB" />
-            <Typography
-              sx={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
-            >
-              月別読了数
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 1,
-            }}
-          >
-            <IconButton onClick={() => setYear((y) => y - 1)}>
-              <ChevronLeft />
-            </IconButton>
-            <Typography sx={{ fontWeight: "bold", fontSize: 18 }}>
-              {year}年
-            </Typography>
-            <IconButton onClick={() => setYear((y) => y + 1)}>
-              <ChevronRight />
-            </IconButton>
-          </Box>
-          <BarChart
-            xAxis={[{ data: months, scaleType: "band" }]}
-            yAxis={[
-              {
-                valueFormatter: (value: number | null) =>
-                  value == null ? "" : `${Math.floor(value)}`,
-              },
-            ]}
-            series={[{ data: values, label: "読了数" }]}
-            height={300}
-            margin={{ left: -20, right: 5 }}
-          />
-        </CardContent>
-      </Card>
-    </Box>
+    <Card
+      sx={{
+        borderRadius: 2,
+        border: "1px solid #e0e6d6",
+        boxShadow: "none",
+      }}
+    >
+      <CardContent sx={{ p: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1.5,
+            mb: 2,
+          }}
+        >
+          <BarChart3 size={22} color="#4254FB" />
+          <Typography sx={{ fontSize: 16, fontWeight: "bold", color: "#333" }}>
+            月別読了数
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1,
+          }}
+        >
+          <IconButton onClick={() => setYear((y) => y - 1)}>
+            <ChevronLeft />
+          </IconButton>
+          <Typography sx={{ fontWeight: "bold", fontSize: 18 }}>
+            {year}年
+          </Typography>
+          <IconButton onClick={() => setYear((y) => y + 1)}>
+            <ChevronRight />
+          </IconButton>
+        </Box>
+        <BarChart
+          xAxis={[{ data: months, scaleType: "band" }]}
+          yAxis={[
+            {
+              valueFormatter: (value: number | null) =>
+                value == null ? "" : `${Math.floor(value)}`,
+            },
+          ]}
+          series={[{ data: values, label: "読了数" }]}
+          height={300}
+          margin={{ left: -20, right: 5 }}
+        />
+      </CardContent>
+    </Card>
   );
 }
