@@ -168,11 +168,11 @@ export default function Analytics() {
                     fontSize: 16,
                     borderRadius: 2,
                     boxShadow: "none",
-                    color: "#A3B18A",
-                    border: "1.5px solid #A3B18A",
+                    color: "#D4915E",
+                    border: "1.5px solid #D4915E",
                     "&:hover": {
-                      border: "1.5px solid #A3B18A",
-                      backgroundColor: "#A3B18A",
+                      border: "1.5px solid #D4915E",
+                      backgroundColor: "#D4915E",
                       color: "#fff",
                     },
                   }}
