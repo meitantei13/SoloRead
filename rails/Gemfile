@@ -45,6 +45,9 @@ gem "rails-i18n"
 # データ集計で利用
 gem "groupdate"
 
+# google_books_api との通信で使用
+gem "faraday"
+
 group :development, :test do
   # テスト用のデータを作成する
   gem "factory_bot_rails"
@@ -65,4 +68,7 @@ group :development, :test do
   gem "rubocop-faker"
   gem "rubocop-rails"
   gem "rubocop-rspec"
+
+  # Google Books API のテストで使用
+  gem "webmock"
 end

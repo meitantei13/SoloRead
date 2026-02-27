@@ -64,9 +64,22 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
     render json: books, meta: pagination(books), adapter: :json
   end
 
+  def search_google
+    query = params[:q]
+    return render json: { items: [] }, status: :bad_request if query.blank?
+
+    result = GoogleBooksService.new.search(query)
+
+    if result[:error]
+      render json: result, status: :service_unavailable
+    else
+      render json: { items: result }
+    end
+  end
+
   private
 
     def book_params
-      params.expect(book: [:title, :author, :content, :read_date, :status, :genre_id])
+      params.expect(book: [:title, :author, :content, :read_date, :status, :genre_id, :image_url])
     end
 end

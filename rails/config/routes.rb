@@ -12,6 +12,7 @@ Rails.application.routes.draw do
             get "counts"
             get "list"
             get "reading"
+            get "search_google"
           end
         end
         resources :genres, only: [:index, :create]

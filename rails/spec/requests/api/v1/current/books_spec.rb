@@ -17,7 +17,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         subject
         res = response.parsed_body
         expect(res.length).to eq 6
-        expect(res[0].keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "user"]
+        expect(res[0].keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
         expect(response).to have_http_status(:ok)
       end
     end
@@ -45,7 +45,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       it "正常にレコードを取得できる" do
         subject
         res = response.parsed_body
-        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -73,7 +73,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         expect { subject }.to change { current_user.books.count }.by(1)
         expect(current_user.books.last).to be_unsaved
         res = response.parsed_body
-        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -85,7 +85,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       it "既存の未保存ステータスの記事を表示する" do
         expect { subject }.not_to change { current_user.books.count }
         res = response.parsed_body
-        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -111,7 +111,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
           change { current_user_book.reload.read_date }.from("").to("2026.2.7") and
           change { current_user_book.reload.status }.from("reading").to("finished")
         res = response.parsed_body
-        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end

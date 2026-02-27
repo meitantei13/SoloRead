@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_21_072333) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_26_013046) do
   create_table "books", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "author", comment: "著者"
     t.text "content", comment: "感想"
     t.datetime "created_at", null: false
     t.bigint "genre_id"
+    t.string "image_url"
     t.date "read_date", comment: "読了日"
     t.integer "status", comment: "ステータス （10:未保存, 20：読書中, 30:読了済）"
     t.string "title", comment: "タイトル"
