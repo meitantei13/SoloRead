@@ -70,9 +70,12 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
 
     result = GoogleBooksService.new.search(query)
 
-    if result[:error]
+    # 成功したら配列、失敗時はHash が返る
+    if result.is_a?(Hash)
+      # 失敗時
       render json: result, status: :service_unavailable
     else
+      # 成功時
       render json: { items: result }
     end
   end

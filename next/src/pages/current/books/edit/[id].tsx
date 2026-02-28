@@ -21,6 +21,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import useSWR from "swr";
 import Error from "@/components/Error";
 import GenreDialog from "@/components/GenreDialog";
+import GoogleBooksDialog from "@/components/GoogleBooksDialog";
 import Loading from "@/components/Loading";
 import { useSnackbarState, useUserState } from "@/hooks/useGlobalState";
 import { fetcher } from "@/lib/fetcher";
@@ -57,6 +58,7 @@ export default function CurrntBookEdit() {
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [googleOpen, setGoogleOpen] = useState(false);
 
   const handleChangeStatusChecked = () => {
     setStatusChecked(!statusChecked);
@@ -256,6 +258,7 @@ export default function CurrntBookEdit() {
                 alignItems: "center",
               }}
             >
+              <Button onClick={() => setGoogleOpen(true)}>本を検索</Button>
               <Box
                 sx={{
                   display: "flex",
@@ -473,6 +476,10 @@ export default function CurrntBookEdit() {
                 sx={{ backgroundColor: "white" }}
               />
             )}
+          />
+          <GoogleBooksDialog
+            open={googleOpen}
+            onClose={() => setGoogleOpen(false)}
           />
         </Box>
       </Box>
