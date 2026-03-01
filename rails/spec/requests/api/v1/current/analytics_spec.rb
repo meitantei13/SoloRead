@@ -12,6 +12,7 @@ RSpec.describe "Api::V1::Current::Analytics", type: :request do
 
     context "summary が正常に動く" do
       before do
+        travel_to Date.new(2026, 2, 25)
         create(:book, read_date: "2026-02-20", user: current_user)
         create(:book, read_date: "2025-08-15", user: current_user)
         create(:book, read_date: "2025-06-24", user: current_user)
