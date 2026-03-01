@@ -15,6 +15,7 @@ import { useState } from "react";
 type GoogleBooksDialogProps = {
   open: boolean;
   onClose: () => void;
+  onSelect: (book: BookDataProps) => void;
 };
 
 type BookDataProps = {
@@ -26,11 +27,13 @@ type BookDataProps = {
 export default function GoogleBooksDialog({
   open,
   onClose,
+  onSelect,
 }: GoogleBooksDialogProps) {
   const [searchKey, setSearchKey] = useState("");
   const [books, setBooks] = useState<BookDataProps[]>([]);
   const handleClose = () => {
     onClose();
+    setBooks([]);
   };
 
   const url =
@@ -95,12 +98,19 @@ export default function GoogleBooksDialog({
           {books.map((book) => (
             <Card
               key={book.title}
+              onClick={() => {
+                onSelect(book);
+                handleClose();
+              }}
               sx={{
                 mb: 2,
                 backgroundColor: "#f9faf7",
                 border: "1px solid #e0e6d6",
                 boxShadow: "none",
                 borderRadius: "8px",
+                "&:hover": {
+                  backgroundColor: "secondary.main",
+                },
               }}
             >
               <CardContent>

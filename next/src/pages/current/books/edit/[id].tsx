@@ -100,7 +100,7 @@ export default function CurrntBookEdit() {
     };
   }, [data]);
 
-  const { handleSubmit, control, reset } = useForm<BookFormData>({
+  const { handleSubmit, control, reset, setValue } = useForm<BookFormData>({
     defaultValues: book,
   });
 
@@ -480,6 +480,11 @@ export default function CurrntBookEdit() {
           <GoogleBooksDialog
             open={googleOpen}
             onClose={() => setGoogleOpen(false)}
+            onSelect={(book) => {
+              setValue("title", book.title ?? "");
+              setValue("author", book.author ?? "");
+              setGoogleOpen(false);
+            }}
           />
         </Box>
       </Box>
