@@ -315,7 +315,7 @@ export default function CurrntBookEdit() {
                     textTransform: "none",
                   }}
                 >
-                  更新する
+                  {data.title ? "更新する" : "登録する"}
                 </Button>
               </Box>
             </Box>
