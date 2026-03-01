@@ -3,6 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Button,
+  Container,
   IconButton,
   InputAdornment,
   MenuItem,
@@ -217,20 +218,16 @@ export default function CurrntBookEdit() {
     <Box sx={{ ...styles.pageMinHeight, backgroundColor: "secondary.main" }}>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
           borderTop: "0.5px solid #acbcc7",
         }}
       >
-        <Box
+        <Container
           maxWidth="sm"
           sx={{
-            width: "100%",
             display: "flex",
-            justifyContent: "center",
             flexDirection: "column",
-            mt: 5,
-            px: { xs: 2, sm: 0 },
+            justifyContent: "flex-start",
+            pt: 3,
           }}
         >
           <Box
@@ -238,6 +235,8 @@ export default function CurrntBookEdit() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              mt: 3.5,
+              mb: 3,
             }}
           >
             <Link
@@ -315,7 +314,7 @@ export default function CurrntBookEdit() {
                     textTransform: "none",
                   }}
                 >
-                  {data.title ? "更新する" : "登録する"}
+                  {data.title ? "更新" : "登録"}
                 </Button>
               </Box>
             </Box>
@@ -508,7 +507,7 @@ export default function CurrntBookEdit() {
               setGoogleOpen(false);
             }}
           />
-        </Box>
+        </Container>
       </Box>
     </Box>
   );

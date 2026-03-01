@@ -146,9 +146,7 @@ const CurrentBookDetail = () => {
   const notes: NoteProps[] = notesData ? camelcaseKeys(notesData.notes) : [];
 
   return (
-    <Box
-      sx={{ ...styles.pageMinHeight, backgroundColor: "secondary.main", pb: 7 }}
-    >
+    <Box sx={{ ...styles.pageMinHeight, backgroundColor: "secondary.main" }}>
       <Box
         sx={{
           borderTop: "0.5px solid #acbcc7",
@@ -167,6 +165,7 @@ const CurrentBookDetail = () => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              mt: 5,
             }}
           >
             <Link
@@ -240,7 +239,7 @@ const CurrentBookDetail = () => {
             justifyContent: "flex-start",
             alignItems: "center",
             height: "100%",
-            mt: 5,
+            mt: 4,
           }}
         >
           <Card
