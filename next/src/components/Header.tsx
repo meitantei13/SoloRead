@@ -48,6 +48,7 @@ export default function Header() {
       email: "",
       isSignedIn: false,
       isFetched: false,
+      yearly_reading_goal: null,
     });
 
     await router.push("/");

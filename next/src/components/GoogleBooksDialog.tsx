@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -6,6 +7,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -31,6 +33,8 @@ export default function GoogleBooksDialog({
 }: GoogleBooksDialogProps) {
   const [searchKey, setSearchKey] = useState("");
   const [books, setBooks] = useState<BookDataProps[]>([]);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackSeverity, setSnackSeverity] = useState<"info" | "error">("error");
   const handleClose = () => {
     onClose();
     setBooks([]);
@@ -51,8 +55,21 @@ export default function GoogleBooksDialog({
         },
       });
 
-      setBooks((await res.json()).items);
-    } catch {}
+      const data = await res.json();
+
+      if (data.error) {
+        setSnackSeverity("error");
+        setSnackMessage(data.error);
+        return;
+      }
+
+      setBooks(data.items);
+    } catch (e) {
+      console.error(e);
+
+      setSnackSeverity("error");
+      setSnackMessage("Google Books との通信に失敗しました");
+    }
   };
 
   return (
@@ -95,9 +112,9 @@ export default function GoogleBooksDialog({
               検索
             </Button>
           </Box>
-          {books.map((book) => (
+          {books.map((book, index) => (
             <Card
-              key={book.title}
+              key={index}
               onClick={() => {
                 onSelect(book);
                 handleClose();
@@ -116,12 +133,14 @@ export default function GoogleBooksDialog({
               <CardContent>
                 <Box sx={{ display: "flex", mt: 1.5 }}>
                   <Box>
-                    <Image
-                      src={book.image_url}
-                      alt={book.title}
-                      width={100}
-                      height={160}
-                    />
+                    {book.image_url && (
+                      <Image
+                        src={book.image_url}
+                        alt={book.title}
+                        width={100}
+                        height={160}
+                      />
+                    )}
                   </Box>
                   <Box sx={{ ml: 4 }}>
                     <Box sx={{ mt: 1, mb: 3 }}>
@@ -149,6 +168,21 @@ export default function GoogleBooksDialog({
           ))}
         </DialogContent>
       </Dialog>
+      <Snackbar
+        open={!!snackMessage}
+        autoHideDuration={3000}
+        onClose={() => setSnackMessage("")}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackMessage("")}
+          severity={snackSeverity}
+          variant="standard"
+          icon={false}
+        >
+          {snackMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
