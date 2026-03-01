@@ -35,6 +35,7 @@ type BookProps = {
   content: string;
   status: string;
   genreId: string;
+  imageUrl: string;
 };
 
 type BookFormData = {
@@ -59,6 +60,7 @@ export default function CurrntBookEdit() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [googleOpen, setGoogleOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleChangeStatusChecked = () => {
     setStatusChecked(!statusChecked);
@@ -88,15 +90,17 @@ export default function CurrntBookEdit() {
         content: "",
         status: "",
         genreId: "",
+        imageUrl: "",
       };
     }
     return {
-      title: data.title == null ? "" : data.title,
-      author: data.author == null ? "" : data.author,
-      readDate: data.read_date == null ? "" : data.read_date,
-      content: data.content == null ? "" : data.content,
+      title: data.title === null ? "" : data.title,
+      author: data.author === null ? "" : data.author,
+      readDate: data.read_date === null ? "" : data.read_date,
+      content: data.content === null ? "" : data.content,
       status: data.status,
-      genreId: data.genre_id == null ? "" : String(data.genre_id),
+      genreId: data.genre_id === null ? "" : String(data.genre_id),
+      imageUrl: data.image_url === null ? "" : data.image_url,
     };
   }, [data]);
 
@@ -107,7 +111,8 @@ export default function CurrntBookEdit() {
   useEffect(() => {
     if (data) {
       reset(book);
-      setStatusChecked(book.status == "読了済");
+      setStatusChecked(book.status === "読了済");
+      setImageUrl(book.imageUrl ?? "");
       setIsFetched(true);
     }
   }, [data, book, reset]);
@@ -169,6 +174,7 @@ export default function CurrntBookEdit() {
         content: data.content,
         status: status,
         genre_id: data.genreId ? Number(data.genreId) : null,
+        image_url: imageUrl,
       },
     };
 
@@ -483,6 +489,7 @@ export default function CurrntBookEdit() {
             onSelect={(book) => {
               setValue("title", book.title ?? "");
               setValue("author", book.author ?? "");
+              setImageUrl(book.image_url ?? "");
               setGoogleOpen(false);
             }}
           />

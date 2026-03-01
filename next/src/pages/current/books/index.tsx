@@ -24,6 +24,7 @@ type BookProps = {
   author: string;
   readDate: string;
   genreName: string;
+  imageUrl: string;
 };
 
 export default function MyPage() {
@@ -120,6 +121,7 @@ export default function MyPage() {
                             author={book.author}
                             readDate={book.readDate}
                             genreName={book.genreName}
+                            imageUrl={book.imageUrl}
                           />
                         </Link>
                       </Grid>

@@ -1,10 +1,12 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
+import Image from "next/image";
 
 type BookCardProps = {
   title: string;
   author: string;
   readDate: string;
   genreName: string;
+  imageUrl: string;
 };
 
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
@@ -57,24 +59,27 @@ export default function BookCard(props: BookCardProps) {
           {props.genreName}
         </Box>
         <CardContent>
-          <Typography
-            component="h1"
-            sx={{
-              lineHeight: 1.5,
-            }}
-          >
-            <Box sx={labelSx}>書名</Box>
-            <Box sx={valueSx}>{omit(props.title)(19)("...")}</Box>
-          </Typography>
-          <Box sx={{ display: "flex", justifyContent: "space-between", pt: 2 }}>
-            <Typography component="h5">
-              <Box sx={labelSx}>著者</Box>
-              <Box sx={valueSx}>{omit(props.author)(13)("...")}</Box>
-            </Typography>
-            <Typography component="h5">
-              <Box sx={labelSx}>読了日</Box>
-              <Box sx={valueSx}>{props.readDate}</Box>
-            </Typography>
+          <Box sx={{ display: "flex" }}>
+            {props.imageUrl && (
+              <Box sx={{ mt: 1, mr: 2, flexShrink: 0 }}>
+                <Image
+                  src={props.imageUrl}
+                  alt={props.title}
+                  width={80}
+                  height={120}
+                />
+              </Box>
+            )}
+            <Box sx={{ flex: 1 }}>
+              <Typography component="h1" sx={{ lineHeight: 1.5 }}>
+                <Box sx={labelSx}>書名</Box>
+                <Box sx={valueSx}>{omit(props.title)(13)("...")}</Box>
+              </Typography>
+              <Typography component="h5" sx={{ pt: 2 }}>
+                <Box sx={labelSx}>著者</Box>
+                <Box sx={valueSx}>{omit(props.author)(13)("...")}</Box>
+              </Typography>
+            </Box>
           </Box>
         </CardContent>
       </Card>
