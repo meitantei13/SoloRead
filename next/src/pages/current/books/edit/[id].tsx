@@ -1,8 +1,10 @@
 import ChevronLefitIcon from "@mui/icons-material/ChevronLeft";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Button,
   IconButton,
+  InputAdornment,
   MenuItem,
   Select,
   Switch,
@@ -264,7 +266,6 @@ export default function CurrntBookEdit() {
                 alignItems: "center",
               }}
             >
-              <Button onClick={() => setGoogleOpen(true)}>本を検索</Button>
               <Box
                 sx={{
                   display: "flex",
@@ -331,6 +332,20 @@ export default function CurrntBookEdit() {
                 placeholder="タイトル"
                 fullWidth
                 sx={{ backgroundColor: "white" }}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setGoogleOpen(true)}
+                          edge="end"
+                        >
+                          <SearchIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
               />
             )}
           />
