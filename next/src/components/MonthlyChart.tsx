@@ -42,7 +42,7 @@ export default function ManthlyChart() {
         boxShadow: "none",
       }}
     >
-      <CardContent sx={{ p: 3 }}>
+      <CardContent sx={{ p: 3, pb: 0.5 }}>
         <Box
           sx={{
             display: "flex",
@@ -74,6 +74,13 @@ export default function ManthlyChart() {
             <ChevronRight />
           </IconButton>
         </Box>
+      </CardContent>
+      {/* 毎月のデータの合計が0の場合はグラフ非表示*/}
+      {values.every((v: number) => v === 0) ? (
+        <Typography sx={{ textAlign: "center", color: "#999", py: 4 }}>
+          この期間に読了した本はありません
+        </Typography>
+      ) : (
         <BarChart
           xAxis={[{ data: months, scaleType: "band" }]}
           yAxis={[
@@ -85,8 +92,9 @@ export default function ManthlyChart() {
           series={[{ data: values, label: "読了数" }]}
           height={300}
           margin={{ left: -20, right: 5 }}
+          sx={{ m: 2 }}
         />
-      </CardContent>
+      )}
     </Card>
   );
 }
