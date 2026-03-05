@@ -30,8 +30,12 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  # S3 導入で使用する
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
+
+  # rails_blob_url で使用
+  Rails.application.routes.default_url_options = { host: "localhost:3000" }
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

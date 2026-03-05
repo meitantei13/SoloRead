@@ -6,6 +6,7 @@ class Book < ApplicationRecord
   validate :verify_only_one_unsaved_status_is_allowed
 
   has_many :notes, dependent: :destroy
+  has_one_attached :cover_image
 
   # 今月、今年分の本を取得するスコープ
   scope :finished_this_month, -> { where(read_date: Time.current.all_month) }

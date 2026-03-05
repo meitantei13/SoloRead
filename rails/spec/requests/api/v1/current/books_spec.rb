@@ -17,7 +17,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         subject
         res = response.parsed_body
         expect(res.length).to eq 6
-        expect(res[0].keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
+        expect(res[0].keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "cover_image", "user"]
         expect(response).to have_http_status(:ok)
       end
     end
@@ -45,8 +45,9 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       it "正常にレコードを取得できる" do
         subject
         res = response.parsed_body
-        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "cover_image", "user"]
         expect(res["user"].keys).to eq ["name"]
+        expect(res["cover_image"]).to be_nil
         expect(response).to have_http_status(:ok)
       end
     end
@@ -73,7 +74,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         expect { subject }.to change { current_user.books.count }.by(1)
         expect(current_user.books.last).to be_unsaved
         res = response.parsed_body
-        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "cover_image", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -85,7 +86,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       it "既存の未保存ステータスの記事を表示する" do
         expect { subject }.not_to change { current_user.books.count }
         res = response.parsed_body
-        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "cover_image", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -111,10 +112,29 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
           change { current_user_book.reload.read_date }.from("").to("2026.2.7") and
           change { current_user_book.reload.status }.from("reading").to("finished")
         res = response.parsed_body
-        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "user"]
+        expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "cover_image", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
+    end
+  end
+
+  describe "PATCH api/v1/current/books/:id （画像アップロード）" do
+    subject { patch(api_v1_current_book_path(id), headers:, params:) }
+
+    let(:current_user) { create(:user) }
+    let(:headers) { current_user.create_new_auth_token }
+    let(:book) { create(:book, user: current_user) }
+    let(:id) { book.id }
+    let(:image) { fixture_file_upload(Rails.root.join("spec/fixtures/files/test.jpg"), "image/jpeg") }
+    let(:params) { { book: { cover_image: image } } }
+
+    it "画像をアップロードできる" do
+      subject
+      res = response.parsed_body
+      expect(res["cover_image"]).to be_present
+      expect(book.reload.cover_image).to be_attached
+      expect(response).to have_http_status(:ok)
     end
   end
 

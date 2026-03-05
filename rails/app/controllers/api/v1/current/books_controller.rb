@@ -83,6 +83,6 @@ class Api::V1::Current::BooksController < Api::V1::BaseController
   private
 
     def book_params
-      params.expect(book: [:title, :author, :content, :read_date, :status, :genre_id, :image_url])
+      params.expect(book: [:title, :author, :content, :read_date, :status, :genre_id, :image_url, :cover_image])
     end
 end
