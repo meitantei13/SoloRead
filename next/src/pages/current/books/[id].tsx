@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import camelcaseKeys from "camelcase-keys";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
@@ -27,12 +28,14 @@ import { styles } from "@/styles";
 
 type CurrentBookProps = {
   id: number;
-  title: string;
-  author: string;
-  content: string;
-  readDate: string;
-  status: string;
-  genreName: string;
+  title: string | null;
+  author: string | null;
+  content: string | null;
+  readDate: string | null;
+  status: string | null;
+  genreName: string | null;
+  imageUrl: string | null;
+  coverImage: string | null;
 };
 
 type TagProps = {
@@ -165,7 +168,8 @@ const CurrentBookDetail = () => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              mt: 5,
+              alignItems: "center",
+              mt: 3.5,
             }}
           >
             <Link
@@ -187,6 +191,17 @@ const CurrentBookDetail = () => {
                 </IconButton>
               </Tooltip>
             </Link>
+            {(book.coverImage || book.imageUrl) && (
+              <Box sx={{ mt: 1, mb: 1 }}>
+                <Image
+                  src={book.coverImage || book.imageUrl || ""}
+                  alt="preview"
+                  width={80}
+                  height={100}
+                  style={{ objectFit: "cover" }}
+                />
+              </Box>
+            )}
             <Box>
               <Link href={"/current/books/edit/" + book.id}>
                 <Button

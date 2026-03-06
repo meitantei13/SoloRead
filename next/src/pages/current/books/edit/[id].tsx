@@ -23,7 +23,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import Error from "@/components/Error";
 import GenreDialog from "@/components/GenreDialog";
 import GoogleBooksDialog from "@/components/GoogleBooksDialog";
@@ -61,6 +61,7 @@ type Genre = {
 export default function CurrntBookEdit() {
   const [user] = useUserState();
   const [, setSnackbar] = useSnackbarState();
+  const { mutate } = useSWRConfig();
   const [statusChecked, setStatusChecked] = useState<boolean>(false);
   const [isFetched, setIsFetched] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -203,6 +204,13 @@ export default function CurrntBookEdit() {
 
     try {
       await axios.patch(patchUrl, formData, { headers });
+
+      await mutate(
+        // /current/books 関連を一括更新
+        (key) => typeof key === "string" && key.includes("/current/books"),
+        undefined,
+        { revalidate: true },
+      );
 
       setSnackbar({
         message: "記事を保存しました",
