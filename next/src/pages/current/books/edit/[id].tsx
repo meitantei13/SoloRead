@@ -1,3 +1,4 @@
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import ChevronLefitIcon from "@mui/icons-material/ChevronLeft";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -20,7 +21,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import useSWR from "swr";
 import Error from "@/components/Error";
@@ -40,6 +41,7 @@ type BookProps = {
   status: string;
   genreId: string;
   imageUrl: string;
+  coverImage: string;
 };
 
 type BookFormData = {
@@ -66,7 +68,8 @@ export default function CurrntBookEdit() {
   const [googleOpen, setGoogleOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [selectImageFile, setSelectImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState("");
+  const [coverImage, setCoverImage] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChangeStatusChecked = () => {
     setStatusChecked(!statusChecked);
@@ -97,6 +100,7 @@ export default function CurrntBookEdit() {
         status: "",
         genreId: "",
         imageUrl: "",
+        coverImage: "",
       };
     }
     return {
@@ -107,6 +111,7 @@ export default function CurrntBookEdit() {
       status: data.status,
       genreId: data.genre_id === null ? "" : String(data.genre_id),
       imageUrl: data.image_url === null ? "" : data.image_url,
+      coverImage: data.cover_image === null ? "" : data.cover_image,
     };
   }, [data]);
 
@@ -119,6 +124,7 @@ export default function CurrntBookEdit() {
       reset(book);
       setStatusChecked(book.status === "読了済");
       setImageUrl(book.imageUrl ?? "");
+      setCoverImage(book.coverImage ?? "");
       setIsFetched(true);
     }
   }, [data, book, reset]);
@@ -127,7 +133,7 @@ export default function CurrntBookEdit() {
     const file = event.target.files?.[0];
     if (!file) return;
     setSelectImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
+    setCoverImage(URL.createObjectURL(file));
   };
 
   const onSubmit: SubmitHandler<BookFormData> = async (data) => {
@@ -239,6 +245,13 @@ export default function CurrntBookEdit() {
             pt: 3,
           }}
         >
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleSelectFile}
+          />
           <Box
             sx={{
               display: "flex",
@@ -267,24 +280,16 @@ export default function CurrntBookEdit() {
                 </IconButton>
               </Tooltip>
             </Link>
-            <input
-              type="file"
-              id="file-upload"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleSelectFile}
-            />
-            <label htmlFor="file-upload">
-              <Button
-                variant="outlined"
-                component="span"
-                sx={{ backgroundColor: "#fff" }}
-              >
-                表紙画像をアップロード
-              </Button>
-            </label>
-            {previewUrl && (
-              <Image src={previewUrl} alt="preview" width={80} height={100} />
+            {(coverImage || imageUrl) && (
+              <Box sx={{ mt: 1, mb: 1 }}>
+                <Image
+                  src={coverImage || imageUrl}
+                  alt="preview"
+                  width={80}
+                  height={100}
+                  style={{ objectFit: "cover" }}
+                />
+              </Box>
             )}
             <Box
               sx={{
@@ -368,6 +373,12 @@ export default function CurrntBookEdit() {
                           edge="end"
                         >
                           <SearchIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => fileInputRef.current?.click()}
+                          edge="end"
+                        >
+                          <AddPhotoAlternateIcon />
                         </IconButton>
                       </InputAdornment>
                     ),
