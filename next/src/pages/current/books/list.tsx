@@ -22,11 +22,11 @@ import { styles } from "@/styles";
 
 type ListProps = {
   id: number;
-  title: string;
-  author: string;
-  readDate: string;
-  genreName: string;
-  imageUrl: string;
+  title: string | null;
+  author: string | null;
+  readDate: string | null;
+  genreName: string | null;
+  imageUrl: string | null;
   coverImage: string | null;
 };
 
@@ -151,11 +151,11 @@ export default function MyList() {
                   <Grid key={i} size={{ xs: 12, lg: 6 }}>
                     <Link href={"/current/books/" + book.id}>
                       <BookCard
-                        title={book.title}
-                        author={book.author}
-                        readDate={book.readDate}
-                        genreName={book.genreName}
-                        imageUrl={book.imageUrl}
+                        title={book.title ?? ""}
+                        author={book.author ?? ""}
+                        readDate={book.readDate ?? ""}
+                        genreName={book.genreName ?? ""}
+                        imageUrl={book.imageUrl ?? ""}
                         coverImage={book.coverImage ?? ""}
                       />
                     </Link>
