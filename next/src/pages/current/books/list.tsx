@@ -27,6 +27,7 @@ type ListProps = {
   readDate: string;
   genreName: string;
   imageUrl: string;
+  coverImage: string | null;
 };
 
 export default function MyList() {
@@ -155,6 +156,7 @@ export default function MyList() {
                         readDate={book.readDate}
                         genreName={book.genreName}
                         imageUrl={book.imageUrl}
+                        coverImage={book.coverImage ?? ""}
                       />
                     </Link>
                   </Grid>

@@ -5,7 +5,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 
   images: {
-    remotePatterns: [{ hostname: "books.google.com" }],
+    remotePatterns: [
+      { hostname: "books.google.com" },
+      { hostname: "localhost" },
+    ],
+    unoptimized: true,
   },
 };
 

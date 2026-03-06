@@ -17,6 +17,7 @@ import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import axios, { isAxiosError } from "axios";
 import dayjs from "dayjs";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -64,6 +65,8 @@ export default function CurrntBookEdit() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [googleOpen, setGoogleOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const [selectImageFile, setSelectImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState("");
 
   const handleChangeStatusChecked = () => {
     setStatusChecked(!statusChecked);
@@ -120,6 +123,13 @@ export default function CurrntBookEdit() {
     }
   }, [data, book, reset]);
 
+  const handleSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setSelectImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
+
   const onSubmit: SubmitHandler<BookFormData> = async (data) => {
     const isFinished = statusChecked;
 
@@ -161,7 +171,6 @@ export default function CurrntBookEdit() {
       process.env.NEXT_PUBLIC_API_BASE_URL + "/current/books/" + id;
 
     const headers = {
-      "Content-Type": "application/json",
       "access-token": localStorage.getItem("access-token"),
       client: localStorage.getItem("client"),
       uid: localStorage.getItem("uid"),
@@ -169,17 +178,17 @@ export default function CurrntBookEdit() {
 
     const status = statusChecked ? "finished" : "reading";
 
-    const patchData = {
-      book: {
-        title: data.title,
-        author: data.author,
-        read_date: data.readDate,
-        content: data.content,
-        status: status,
-        genre_id: data.genreId ? Number(data.genreId) : null,
-        image_url: imageUrl,
-      },
-    };
+    const formData = new FormData();
+    formData.append("book[title]", data.title);
+    formData.append("book[author]", data.author);
+    formData.append("book[read_date]", data.readDate);
+    formData.append("book[content]", data.content);
+    formData.append("book[status]", status);
+    formData.append("book[genre_id]", data.genreId ?? "");
+    formData.append("book[image_url]", imageUrl);
+    if (selectImageFile) {
+      formData.append("book[cover_image]", selectImageFile);
+    }
 
     const pageChange =
       statusChecked === false
@@ -187,7 +196,7 @@ export default function CurrntBookEdit() {
         : "/current/books/list";
 
     try {
-      await axios.patch(patchUrl, patchData, { headers });
+      await axios.patch(patchUrl, formData, { headers });
 
       setSnackbar({
         message: "記事を保存しました",
@@ -258,6 +267,25 @@ export default function CurrntBookEdit() {
                 </IconButton>
               </Tooltip>
             </Link>
+            <input
+              type="file"
+              id="file-upload"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleSelectFile}
+            />
+            <label htmlFor="file-upload">
+              <Button
+                variant="outlined"
+                component="span"
+                sx={{ backgroundColor: "#fff" }}
+              >
+                表紙画像をアップロード
+              </Button>
+            </label>
+            {previewUrl && (
+              <Image src={previewUrl} alt="preview" width={80} height={100} />
+            )}
             <Box
               sx={{
                 display: "flex",

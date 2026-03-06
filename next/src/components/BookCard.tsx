@@ -7,6 +7,7 @@ type BookCardProps = {
   readDate: string;
   genreName: string;
   imageUrl: string;
+  coverImage: string;
 };
 
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
@@ -60,13 +61,14 @@ export default function BookCard(props: BookCardProps) {
         </Box>
         <CardContent>
           <Box sx={{ display: "flex" }}>
-            {props.imageUrl && (
+            {(props.coverImage || props.imageUrl) && (
               <Box sx={{ mt: 1, mr: 2, flexShrink: 0 }}>
                 <Image
-                  src={props.imageUrl}
+                  src={props.coverImage || props.imageUrl}
                   alt={props.title}
-                  width={80}
-                  height={120}
+                  width={90}
+                  height={130}
+                  style={{ objectFit: "cover" }}
                 />
               </Box>
             )}
