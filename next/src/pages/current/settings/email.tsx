@@ -52,11 +52,12 @@ export default function ChangeEmail() {
         pathname: "/current/settings/email",
       });
     } catch (e) {
-      const err = e as AxiosError<{ errors: string[] }>;
+      const err = e as AxiosError<{ message: string }>;
       console.error(err.message);
 
       setSnackbar({
-        message: "承認メールの送信に失敗しました",
+        message:
+          err.response?.data?.message || "承認メールの送信に失敗しました",
         severity: "error",
         pathname: "/current/settings/email",
       });

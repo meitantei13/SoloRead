@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSnackbarState, useUserState } from "@/hooks/useGlobalState";
@@ -9,6 +9,7 @@ export default function ConfirmEmail() {
   const [, setSnackbar] = useSnackbarState();
   const [, setUser] = useUserState();
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const token = router.query.token as string | undefined;
 
@@ -55,7 +56,11 @@ export default function ConfirmEmail() {
           pathname: "/current/settings",
         });
         router.push("/current/settings");
-      } catch {
+      } catch (e) {
+        const err = e as AxiosError<{ message: string }>;
+        setErrorMessage(
+          err.response?.data?.message || "このリンクは無効または期限切れです",
+        );
         setIsError(true);
       }
     };
@@ -74,7 +79,7 @@ export default function ConfirmEmail() {
     >
       {isError ? (
         <Typography color="error" variant="h6">
-          このリンクは無効または期限切れです。
+          {errorMessage}
         </Typography>
       ) : (
         <Typography variant="h6">メールアドレスを確認中・・・</Typography>

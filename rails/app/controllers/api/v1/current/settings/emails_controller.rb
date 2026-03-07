@@ -4,6 +4,11 @@ class Api::V1::Current::Settings::EmailsController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:create]
 
   def create
+    # 送信前に他ユーザーとの重複をチェック
+    if User.where.not(id: current_user.id).exists?(email: params[:email])
+      return render json: { message: "このメールアドレスはすでに使用されています" }, status: :unprocessable_content
+    end
+
     token = SecureRandom.urlsafe_base64
 
     current_user.update!(
@@ -25,6 +30,11 @@ class Api::V1::Current::Settings::EmailsController < Api::V1::BaseController
     user = User.find_by(email_change_token: params[:token])
 
     return render_invalid_token if invalid_email_change_token?(user)
+
+    # 他ユーザーとの重複をチェック
+    if User.where.not(id: user.id).exists?(email: user.unconfirmed_email)
+      return render json: { message: "このメールアドレスはすでに使用されています" }, status: :unprocessable_content
+    end
 
     user.update!(
       email: user.unconfirmed_email,

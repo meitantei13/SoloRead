@@ -18,6 +18,21 @@ RSpec.describe "Api::V1::Current::Settings::Emails", type: :request do
         expect(response).to have_http_status(:ok)
       end
     end
+
+    context "他ユーザーが同じメールアドレスを使用しているとき" do
+      before { create(:user, email: "new@example.com") }
+
+      it "422エラーが返る" do
+        subject
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it "承認メールが送信されていない" do
+        subject
+        current_user.reload
+        expect(current_user.unconfirmed_email).to be_nil
+      end
+    end
   end
 
   describe "GET api/v1/current/settings/email/confirm" do
@@ -70,6 +85,21 @@ RSpec.describe "Api::V1::Current::Settings::Emails", type: :request do
       it "422エラーが返る" do
         subject
         expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context "確認中に他ユーザーが同じメールアドレスを登録した場合" do
+      before { create(:user, email: "new@example.com") }
+
+      it "422 エラーが返る" do
+        subject
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it "メールアドレスが更新されない" do
+        subject
+        current_user.reload
+        expect(current_user.email).not_to eq "new@example.com"
       end
     end
   end
