@@ -58,6 +58,7 @@ export default function NoteDialog({
     onClose();
     setShowTags(false);
     setSelectTagIds([]);
+    setNewTagName("");
   };
 
   const handleTags = () => {
