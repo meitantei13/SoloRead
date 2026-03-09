@@ -1,7 +1,16 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Link from "next/link";
+// import { useState } from "react";
 
 export default function Home() {
+  // const [isLoading, setIsLoading] = useState(false);
+
+  // const GestUserLogin = async () => {
+  // try {
+  // setIsLoading(true);
+  // } catch {}
+  // };
+
   return (
     <Box
       sx={{
@@ -91,14 +100,16 @@ export default function Home() {
           </Link>
           <Button
             variant="contained"
-            color="primary"
+            // onClick={GestUserLogin}
+            // loading={isLoading}
             sx={{
               width: 140,
               height: 50,
-              color: "#fff",
+              color: "grey.800",
+              backgroundColor: "grey.300",
               fontWeight: "bold",
               "&:hover": {
-                backgroundColor: "#8F9D77",
+                backgroundColor: "#cdc7c7ff",
               },
             }}
           >
