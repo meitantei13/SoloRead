@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useSnackbarState } from "@/hooks/useGlobalState";
 
@@ -83,6 +83,16 @@ export default function SignIn() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (router.query.confirmed === "true") {
+      setSnackbar({
+        message: "新規登録が完了しました",
+        severity: "success",
+        pathname: "/sign_in",
+      });
+    }
+  }, [router.query, setSnackbar]);
 
   return (
     <Box
