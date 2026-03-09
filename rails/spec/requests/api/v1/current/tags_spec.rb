@@ -33,6 +33,24 @@ RSpec.describe "Api::V1::Current::Tags", type: :request do
       expect(res["name"]).to eq "スポーツ"
       expect(response).to have_http_status(:ok)
     end
+
+    context "デフォルトタグと同じ名前のとき" do
+      before { create(:tag, :default, name: "スポーツ") }
+
+      it "エラーが返る" do
+        expect { subject }.not_to change { current_user.tags.count }
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+    end
+
+    context "既存タグと同じ名前のとき" do
+      before { create(:tag, name: "スポーツ", user: current_user) }
+
+      it "エラーが返る" do
+        expect { subject }.not_to change { current_user.tags.count }
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+    end
   end
 
   describe "DELETE api/v1/current/tags/id" do
