@@ -5,8 +5,12 @@ class Api::V1::Current::TagsController < Api::V1::BaseController
   end
 
   def create
-    tag = current_user.tags.create!(tag_params)
-    render json: tag
+    tag = current_user.tags.build(tag_params)
+    if tag.save
+      render json: tag
+    else
+      render json: { errors: tag.errors }, status: :unprocessable_content
+    end
   end
 
   def destroy

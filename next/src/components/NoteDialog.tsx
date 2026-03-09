@@ -124,9 +124,18 @@ export default function NoteDialog({
       );
       mutateTags();
       setNewTagName("");
-    } catch {
+    } catch (e) {
       setSnackSeverity("error");
-      setSnackMessage("タグの作成に失敗しました");
+      if (axios.isAxiosError(e) && e.response?.data?.errors?.name) {
+        const message = e.response.data.errors.name[0];
+        if (message === "はすでに存在します") {
+          setSnackMessage(`このタグ${message}`);
+        } else {
+          setSnackMessage(message);
+        }
+      } else {
+        setSnackMessage("タグの作成に失敗しました");
+      }
     }
   };
 
