@@ -1,15 +1,44 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
+import axios from "axios";
 import Link from "next/link";
-// import { useState } from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useSnackbarState } from "@/hooks/useGlobalState";
 
 export default function Home() {
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [, setSnackbar] = useSnackbarState();
+  const router = useRouter();
 
-  // const GestUserLogin = async () => {
-  // try {
-  // setIsLoading(true);
-  // } catch {}
-  // };
+  const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/guest_logins";
+
+  const GuestUserLogin = async () => {
+    try {
+      setIsLoading(true);
+      const res = await axios.post(url);
+
+      const token = res.headers["access-token"] || res.headers["access_token"];
+      const client = res.headers["client"];
+      const uid = res.headers["uid"];
+
+      localStorage.setItem("access-token", token);
+      localStorage.setItem("client", client);
+      localStorage.setItem("uid", uid);
+
+      setSnackbar({
+        message: "サインインに成功しました",
+        severity: "success",
+        pathname: "/current/books",
+      });
+      router.push("/current/books");
+
+      return res.data.data;
+    } catch (e) {
+      console.error("ゲストログインに失敗しました", e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Box
@@ -100,8 +129,8 @@ export default function Home() {
           </Link>
           <Button
             variant="contained"
-            // onClick={GestUserLogin}
-            // loading={isLoading}
+            onClick={GuestUserLogin}
+            loading={isLoading}
             sx={{
               width: 140,
               height: 50,
