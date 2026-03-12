@@ -1,6 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "Api::V1::GuestLogins", type: :request do
+  # ゲストアカウントで使用する実際のデータ
+  before { Rails.application.load_seed }
+
   describe "POST api/v1/guest_logins" do
     subject { post(api_v1_guest_logins_path) }
 

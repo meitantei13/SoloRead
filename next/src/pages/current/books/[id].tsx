@@ -153,6 +153,7 @@ const CurrentBookDetail = () => {
       <Box
         sx={{
           borderTop: "0.5px solid #acbcc7",
+          pb: 7,
         }}
       >
         <Container

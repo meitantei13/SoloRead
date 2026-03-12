@@ -11,6 +11,7 @@ class GuestSampleDataService
   def initialize(user)
     @user = user
     @genres = {}
+    @tags = {}
   end
 
   def call
@@ -27,9 +28,15 @@ class GuestSampleDataService
       @genres[name] ||= Genre.find_by(name: name, is_default: true)
     end
 
+    def tag(name)
+      return nil if name.blank?
+
+      @tags[name] ||= Tag.find_by(name: name, is_default: true)
+    end
+
     def create_books(books_data, status:)
       books_data.each_with_index do |data, index|
-        Book.create!(
+        book = Book.create!(
           user: @user,
           status: status,
           title: data[:title],
@@ -39,6 +46,12 @@ class GuestSampleDataService
           read_date: (status == :finished) ? (index + 1).weeks.ago.to_date : nil,
           image_url: data[:image_url],
         )
+        (data[:notes] || []).each do |note_data|
+          note = Note.create!(user: @user, book: book, content: note_data[:content])
+          (note_data[:tags] || []).each do |tag_name|
+            note.tags << tag(tag_name)
+          end
+        end
       end
     end
 end
