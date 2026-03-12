@@ -99,6 +99,10 @@ Metrics/BlockLength:
     - "*.gemspec"
     - "db/seeds.rb"
 
+Metrics/ModuleLength:
+  Exclude:
+    - "app/services/guest_sample_data/*.rb"
+
 Metrics/CyclomaticComplexity:
   Max: 10
 

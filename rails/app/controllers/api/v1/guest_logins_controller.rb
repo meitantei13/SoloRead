@@ -7,6 +7,8 @@ class Api::V1::GuestLoginsController < Api::V1::BaseController
       is_guest: true,
     )
 
+    GuestSampleDataService.create_for(guest)
+
     token = guest.create_new_auth_token
 
     response.set_header("access-token", token["access-token"])
