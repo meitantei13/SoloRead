@@ -54,6 +54,12 @@ gem "sidekiq"
 # 定期実行ジョブ
 gem "sidekiq-cron"
 
+# AWS S3 との通信
+gem "aws-sdk-s3", require: false
+
+# 画像をトリミング
+gem "image_processing", "~> 1.2"
+
 group :development, :test do
   # テスト用のデータを作成する
   gem "factory_bot_rails"
