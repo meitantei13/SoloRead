@@ -1,0 +1,4 @@
+delete_expired_guests:
+  cron: "0 0 * * *"
+  class: DeleteGuestUsersJob
+  queue: cron

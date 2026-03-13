@@ -48,6 +48,12 @@ gem "groupdate"
 # google_books_api との通信で使用
 gem "faraday"
 
+# 非同期ジョブ処理（ゲストアカウント削除）
+gem "sidekiq"
+
+# 定期実行ジョブ
+gem "sidekiq-cron"
+
 group :development, :test do
   # テスト用のデータを作成する
   gem "factory_bot_rails"
