@@ -171,13 +171,15 @@ export default function MyList() {
                 </Box>
               )}
             </Grid>
-            <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
-              <Pagination
-                count={meta.totalPages}
-                page={meta.currentPage}
-                onChange={handleChange}
-              />
-            </Box>
+            {meta && meta.totalPages > 1 && (
+              <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
+                <Pagination
+                  count={meta.totalPages}
+                  page={meta.currentPage}
+                  onChange={handleChange}
+                />
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>

@@ -167,7 +167,9 @@ export default function NoteList() {
                   </Grid>
                 ))
               ) : (
-                <Typography>データがありません</Typography>
+                <Box sx={{ textAlign: "center", width: "100%", py: 6 }}>
+                  データがありません
+                </Box>
               )}
             </Grid>
             {meta && meta.totalPages > 1 && (
