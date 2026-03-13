@@ -1,8 +1,6 @@
-require_relative "guest_sample_data/finished_books_data"
-require_relative "guest_sample_data/reading_books_data"
-
 class GuestSampleDataService
-  include GuestSampleData
+  include GuestSampleData::FinishedBooksData
+  include GuestSampleData::ReadingBooksData
 
   def self.create_for(user)
     new(user).call

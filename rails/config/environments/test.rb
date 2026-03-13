@@ -67,4 +67,7 @@ Rails.application.configure do
 
   # rails_blob_url で使用
   Rails.application.routes.default_url_options = { host: "localhost:3000" }
+
+  # テスト環境ではSidekiqを使用しない
+  config.active_job.queue_adapter = :test
 end
