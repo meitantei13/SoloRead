@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 80",
     "lint": "eslint src/ && echo 'Lint passed: No errors found'",
     "lint:fix": "eslint src/ --fix && echo 'Lint fix completed'",
     "format": "prettier --write src/ && echo 'Format completed'"
