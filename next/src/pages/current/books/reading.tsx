@@ -74,7 +74,7 @@ export default function ReadingList() {
         <Sidebar
           drawerOpen={drawerOpen}
           onToggle={handleDrawerToggle}
-          desktopMt={-8}
+          desktopMt={-14}
         />
         <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
           <Box

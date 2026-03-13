@@ -144,7 +144,7 @@ export default function NoteList() {
         <Sidebar
           drawerOpen={drawerOpen}
           onToggle={handleDrawerToggle}
-          desktopMt={-10}
+          desktopMt={-14}
         />
         <Box
           sx={{
