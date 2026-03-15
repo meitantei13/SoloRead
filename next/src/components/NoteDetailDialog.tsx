@@ -11,6 +11,7 @@ import {
   Alert,
 } from "@mui/material";
 import axios from "axios";
+import Link from "next/link";
 import { useState } from "react";
 import NoteDialog from "./NoteDialog";
 
@@ -72,8 +73,28 @@ export default function NoteDetailDialog({
   return (
     <>
       <Dialog open={!!note} onClose={onClose} fullWidth maxWidth="sm">
-        <DialogTitle sx={{ fontWeight: "bold", fontSize: 18 }}>
-          ノート詳細
+        <DialogTitle>
+          <Typography
+            sx={{ fontSize: 12, color: "#999", fontWeight: "normal", mb: 0.5 }}
+          >
+            ノート詳細
+          </Typography>
+          <Link
+            href={`/current/books/${note?.bookId}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Typography
+              sx={{
+                fontWeight: "bold",
+                fontSize: 18,
+                color: "#3D3D3D",
+                lineHeight: 1.4,
+                "&:hover": { color: "#A3B18A", textDecoration: "underline" },
+              }}
+            >
+              {note?.bookTitle}
+            </Typography>
+          </Link>
         </DialogTitle>
         <DialogContent>
           <Box
