@@ -1,3 +1,4 @@
+require "rails_helper"
 RSpec.describe DeleteGuestUsersJob, type: :job do
   describe "#perform" do
     it "24時間以上経過したゲストアカウントを削除" do

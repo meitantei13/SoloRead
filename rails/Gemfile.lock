@@ -449,6 +449,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 8.1.2)
   rails-i18n
+  redis-client
   rspec-rails
   rubocop-faker
   rubocop-rails
