@@ -54,6 +54,9 @@ gem "sidekiq"
 # 定期実行ジョブ
 gem "sidekiq-cron"
 
+# Valkeyキャッシュとの通信
+gem "redis-client"
+
 # AWS S3 との通信
 gem "aws-sdk-s3", require: false
 

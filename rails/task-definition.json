@@ -29,7 +29,7 @@
           "value": "https://solo-read.click/"
         },
         {
-          "name": "REDIS_URL",
+          "name": "VALKEY_URL",
           "value": "rediss://solo-read-valkey-aw2807.serverless.apne1.cache.amazonaws.com:6379/0"
         }
       ],
@@ -100,7 +100,7 @@
           "value": "18e267fcc15a44a9d61c063e2f202864"
         },
         {
-          "name": "REDIS_URL",
+          "name": "VALKEY_URL",
           "value": "rediss://solo-read-valkey-aw2807.serverless.apne1.cache.amazonaws.com:6379/0"
         },
         {

@@ -102,4 +102,11 @@ Rails.application.configure do
     authentication: "plain",
     enable_starttls_auto: true,
   }
+
+  # Valkeyの設定
+  config.cache_store = :redis_cache_store, {
+    url: ENV.fetch("VALKEY_URL", nil),
+    pool_size: ENV.fetch("RAILS_MAX_THREADS", 5).to_i,
+    pool_timeout: 5,
+  }
 end
