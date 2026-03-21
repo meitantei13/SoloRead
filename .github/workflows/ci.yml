@@ -37,6 +37,9 @@ jobs:
           bundler-cache: true
           working-directory: rails
 
+      - name: Install libvips
+        run: sudo apt-get update && sudo apt-get install -y libvips
+
       - name: Database create and migrate
         run: |
           cp config/database.yml.ci config/database.yml
