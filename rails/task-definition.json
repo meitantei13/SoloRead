@@ -21,6 +21,14 @@
           "value": "true"
         },
         {
+          "name": "AWS_ACCESS_KEY_ID",
+          "value": "AKIA5DSA3UB7MLBSZ5UI"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "value": "KdAdftguGX/Hp2JWD/B2U0rT3w9RtIGSZW/EJZHG"
+        },
+        {
           "name": "FRONTEND_URL",
           "value": "https://solo-read.click/"
         },
@@ -29,14 +37,14 @@
           "value": "rediss://master.solo-read.aw2807.apne1.cache.amazonaws.com:6379"
         }
       ],
+      "mountPoints": [],
+      "volumesFrom": [],
       "secrets": [
         {
           "name": "RAILS_MASTER_KEY",
           "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/rails-master-key-o8A25p"
         }
       ],
-      "mountPoints": [],
-      "volumesFrom": [],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -87,7 +95,7 @@
     },
     {
       "name": "sidekiq",
-      "image": "901005418622.dkr.ecr.ap-northeast-1.amazonaws.com/solo-read-rails@sha256:dd8c7cdebd2233ddcaf7b3f3651905dda509e0facb6f5db6c2cbef968c9df0de",
+      "image": "901005418622.dkr.ecr.ap-northeast-1.amazonaws.com/solo-read-rails:latest",
       "cpu": 0,
       "portMappings": [],
       "essential": false,
@@ -98,23 +106,22 @@
           "value": "production"
         },
         {
-          "name": "VALKEY_URL",
-          "value": "rediss://master.solo-read.aw2807.apne1.cache.amazonaws.com:6379"
-        },
-        {
           "name": "FRONTEND_URL",
           "value": "https://solo-read.click/"
+        },
+        {
+          "name": "VALKEY_URL",
+          "value": "rediss://master.solo-read.aw2807.apne1.cache.amazonaws.com:6379"
         }
       ],
+      "mountPoints": [],
+      "volumesFrom": [],
       "secrets": [
         {
           "name": "RAILS_MASTER_KEY",
           "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/rails-master-key-o8A25p"
         }
       ],
-      "environmentFiles": [],
-      "mountPoints": [],
-      "volumesFrom": [],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
