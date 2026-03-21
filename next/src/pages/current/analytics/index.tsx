@@ -44,10 +44,9 @@ export default function Analytics() {
         sx={{
           textAlign: "center",
           pt: 7,
-          mb: 4,
+          mb: 7,
           fontWeight: "bold",
-          fontSize: 28,
-          color: "#333",
+          fontSize: 32,
         }}
       >
         統計＆分析
@@ -57,12 +56,13 @@ export default function Analytics() {
           display: "flex",
           maxWidth: { md: "700px", lg: "1140px" },
           mx: "auto",
+          minHeight: "100nh",
         }}
       >
         <Sidebar
           drawerOpen={drawerOpen}
           onToggle={handleDrawerToggle}
-          desktopMt={0}
+          desktopMt={-14}
           showCounts={false}
         />
         <Box sx={{ flex: 1, px: { xs: 2, sm: 6 }, pb: 6 }}>

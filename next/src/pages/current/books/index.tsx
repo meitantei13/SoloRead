@@ -79,7 +79,7 @@ export default function MyPage() {
         <Sidebar
           drawerOpen={drawerOpen}
           onToggle={handleDrawerToggle}
-          desktopMt={7}
+          desktopMt={0}
         />
         <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
           {/* メインコンテンツ */}
