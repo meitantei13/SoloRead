@@ -1,5 +1,5 @@
 FROM ruby:4.0.1
-RUN apt-get update -qq && apt-get install -y vim
+RUN apt-get update -qq && apt-get install -y vim libvips-dev
 
 WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile

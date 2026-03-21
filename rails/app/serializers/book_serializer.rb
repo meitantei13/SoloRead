@@ -13,6 +13,6 @@ class BookSerializer < ActiveModel::Serializer
   def cover_image
     return nil unless object.cover_image.attached?
 
-    Rails.application.routes.url_helpers.rails_blob_url(object.cover_image, only_path: false)
+    object.cover_image.variant(resize_to_limit: [400, 600], format: :webp).processed.url(expires_in: 1.hour)
   end
 end
