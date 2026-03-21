@@ -21,14 +21,6 @@
           "value": "true"
         },
         {
-          "name": "AWS_ACCESS_KEY_ID",
-          "value": "AKIA5DSA3UB7MLBSZ5UI"
-        },
-        {
-          "name": "AWS_SECRET_ACCESS_KEY",
-          "value": "KdAdftguGX/Hp2JWD/B2U0rT3w9RtIGSZW/EJZHG"
-        },
-        {
           "name": "FRONTEND_URL",
           "value": "https://solo-read.click/"
         },
@@ -43,6 +35,14 @@
         {
           "name": "RAILS_MASTER_KEY",
           "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/rails-master-key-o8A25p"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/aws-access-key-id-2oMDV8"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/aws-secret-access-key-Yi2z6R"
         }
       ],
       "logConfiguration": {
@@ -120,6 +120,14 @@
         {
           "name": "RAILS_MASTER_KEY",
           "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/rails-master-key-o8A25p"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/aws-access-key-id-2oMDV8"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/aws-secret-access-key-Yi2z6R"
         }
       ],
       "logConfiguration": {
