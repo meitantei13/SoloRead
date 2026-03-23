@@ -3,7 +3,7 @@
 誰にも見られない、自分だけの読書管理アプリ。  
 「Solo Read」は、あなただけが開ける**秘密の本棚**です。
 
-![Image](https://github.com/user-attachments/assets/8b91ed1f-e741-490c-afb7-18d89b9f190e)
+![Image](https://github.com/user-attachments/assets/4fd94406-842f-447b-a128-4c221c49ec72)
 
 ## サービスURL
 
@@ -225,6 +225,7 @@ https://solo-read.click
 - Route53 による DNS 管理
 - ACM による SSL / TLS 証明書の管理
 - ALB を経由して Frontend / Backend へリクエストを振り分け
+- S3 による画像管理
 
 #### フロントエンド (ECS / Fargate)
 
@@ -239,7 +240,7 @@ https://solo-read.click
 - GitHub Actions と ECR を連携した自動デプロイパイプラインを構築
 - アプリケーションの応答性と安全性を保つため、Sidekiq と Redis (ElastiCache) を用いた非同期処理基盤を構築
 
-![Image](https://github.com/user-attachments/assets/8b91ed1f-e741-490c-afb7-18d89b9f190e)
+![Image](https://github.com/user-attachments/assets/4fd94406-842f-447b-a128-4c221c49ec72)
 
 ### ER図
 
