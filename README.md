@@ -247,7 +247,7 @@ https://solo-read.click
 - 完全非公開の読書記録をユーザー単位で管理するため、User と Book を**1対多**の関係で設計
 - Genre は共通で利用できるデフォルトジャンルと、ユーザーが独自に追加できるジャンルの両方を扱えるよう、user_id を nullable とした設計
 
-![Image](https://github.com/user-attachments/assets/2aaf8ad8-8f1b-4287-a4a7-787e2d0d1376)
+![Image](https://github.com/user-attachments/assets/29e8c484-dcfb-454f-8e3c-96678b21bc00)
 
 ## 設計で工夫した点
 
