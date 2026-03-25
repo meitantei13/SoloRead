@@ -4,7 +4,13 @@ class GoogleBooksService
     res = Faraday.get(uri, q: query, maxResults: 10, langRestrict: "ja", key: Settings.google_books_api_key)
 
     # 200 〜 299 以外は空の配列を返す
-    return { error: "Google Books との通信に失敗しました" } unless res.success?
+    # return { error: "Google Books との通信に失敗しました" } unless res.success?
+
+    unless res.success?
+      Rails.logger.error("Google Books API error: status=#{res.status}, body=#{res.body}")
+      return { error: "Google Books との通信に失敗しました" }
+    end
+
 
     data = JSON.parse(res.body)
 
