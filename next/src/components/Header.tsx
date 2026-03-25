@@ -86,6 +86,7 @@ export default function Header() {
                 width={133}
                 height={40}
                 alt="logo"
+                priority
                 style={{ display: "block" }}
               />
             </Link>
