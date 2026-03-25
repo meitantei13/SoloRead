@@ -282,6 +282,7 @@ export default function CurrntBookEdit() {
                     ? "読書中一覧に移動"
                     : "記事一覧に移動"
                 }
+                placement="top"
               >
                 <IconButton sx={{ backgroundColor: "#ffffff" }}>
                   <ChevronLefitIcon sx={{ color: "#99AAB6" }} />
@@ -376,7 +377,7 @@ export default function CurrntBookEdit() {
                   input: {
                     endAdornment: (
                       <InputAdornment position="end">
-                        <Tooltip title="本を検索">
+                        <Tooltip title="本を検索" placement="top">
                           <IconButton
                             onClick={() => setGoogleOpen(true)}
                             edge="end"
@@ -384,7 +385,7 @@ export default function CurrntBookEdit() {
                             <SearchIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="表紙画像を選択">
+                        <Tooltip title="表紙画像を選択" placement="top">
                           <IconButton
                             onClick={() => fileInputRef.current?.click()}
                             edge="end"
@@ -442,7 +443,7 @@ export default function CurrntBookEdit() {
                       },
                       openPickerButton: {
                         component: (props) => (
-                          <Tooltip title="日付を選択">
+                          <Tooltip title="日付を選択" placement="top">
                             <IconButton {...props} />
                           </Tooltip>
                         ),
