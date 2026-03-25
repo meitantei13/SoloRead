@@ -104,6 +104,8 @@ export default function MyList() {
           gap: 2,
           mt: 5,
           mb: 8,
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <TextField
