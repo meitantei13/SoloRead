@@ -376,18 +376,22 @@ export default function CurrntBookEdit() {
                   input: {
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => setGoogleOpen(true)}
-                          edge="end"
-                        >
-                          <SearchIcon />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => fileInputRef.current?.click()}
-                          edge="end"
-                        >
-                          <AddPhotoAlternateIcon />
-                        </IconButton>
+                        <Tooltip title="本を検索">
+                          <IconButton
+                            onClick={() => setGoogleOpen(true)}
+                            edge="end"
+                          >
+                            <SearchIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="表紙画像を選択">
+                          <IconButton
+                            onClick={() => fileInputRef.current?.click()}
+                            edge="end"
+                          >
+                            <AddPhotoAlternateIcon />
+                          </IconButton>
+                        </Tooltip>
                       </InputAdornment>
                     ),
                   },
@@ -435,6 +439,13 @@ export default function CurrntBookEdit() {
                     slotProps={{
                       field: {
                         clearable: true,
+                      },
+                      openPickerButton: {
+                        component: (props) => (
+                          <Tooltip title="日付を選択">
+                            <IconButton {...props} />
+                          </Tooltip>
+                        ),
                       },
                       day: {
                         sx: {
