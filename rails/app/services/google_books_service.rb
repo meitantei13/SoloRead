@@ -1,7 +1,7 @@
 class GoogleBooksService
   def search(query)
     uri = "https://www.googleapis.com/books/v1/volumes"
-    res = Faraday.get(uri, q: query, maxResults: 10, langRestrict: "ja", key: Settings.google_books_api_key)
+    res = Faraday.get(uri, q: query, maxResults: 10, langRestrict: "ja", key: ENV.fetch("GOOGLE_BOOKS_API_KEY", Settings.google_books_api_key))
 
     unless res.success?
       Rails.logger.error("Google Books API error: status=#{res.status}, body=#{res.body}")

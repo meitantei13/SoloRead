@@ -45,7 +45,7 @@
           "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/aws-secret-access-key-Yi2z6R"
         },
         {
-          "name": "SETTINGS__GOOGLE_BOOKS_API_KEY",
+          "name": "GOOGLE_BOOKS_API_KEY",
           "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:901005418622:secret:solo-read/google-books-api-key-u2Dy6n"
         }
       ],
