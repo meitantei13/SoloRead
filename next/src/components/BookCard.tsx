@@ -75,11 +75,11 @@ export default function BookCard(props: BookCardProps) {
             <Box sx={{ flex: 1 }}>
               <Typography component="h1" sx={{ lineHeight: 1.5 }}>
                 <Box sx={labelSx}>書名</Box>
-                <Box sx={valueSx}>{omit(props.title)(13)("...")}</Box>
+                <Box sx={valueSx}>{omit(props.title)(12)("...")}</Box>
               </Typography>
               <Typography component="h5" sx={{ pt: 2 }}>
                 <Box sx={labelSx}>著者</Box>
-                <Box sx={valueSx}>{omit(props.author)(13)("...")}</Box>
+                <Box sx={valueSx}>{omit(props.author)(12)("...")}</Box>
               </Typography>
             </Box>
           </Box>
