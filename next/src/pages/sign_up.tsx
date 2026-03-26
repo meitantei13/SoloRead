@@ -77,11 +77,14 @@ export default function SignUp() {
       });
       router.push("/sign_in");
     } catch (e) {
-      const err = e as AxiosError<{ error: string }>;
+      const err = e as AxiosError<{ errors: { email?: string[] } }>;
       console.error(err.message);
 
+      const isEmailTaken = err.response?.data?.errors?.email !== undefined;
       setSnackbar({
-        message: "ユーザー情報が正しく設定されていません",
+        message: isEmailTaken
+          ? "このメールアドレスは既に使用されています"
+          : "ユーザー情報が正しく設定されていません",
         severity: "error",
         pathname: "/sign_up",
       });

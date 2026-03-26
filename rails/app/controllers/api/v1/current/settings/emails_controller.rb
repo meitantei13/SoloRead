@@ -36,6 +36,7 @@ class Api::V1::Current::Settings::EmailsController < Api::V1::BaseController
       return render json: { message: "このメールアドレスはすでに使用されています" }, status: :unprocessable_content
     end
 
+    user.skip_reconfirmation!
     user.update!(
       email: user.unconfirmed_email,
       uid: user.unconfirmed_email,
