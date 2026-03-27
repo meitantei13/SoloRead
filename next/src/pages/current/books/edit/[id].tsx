@@ -142,7 +142,7 @@ export default function CurrntBookEdit() {
 
     if (data.title.trim() === "") {
       return setSnackbar({
-        message: "記事の保存にはタイトルが必要です",
+        message: "記事の保存には書名が必要です",
         severity: "error",
         pathname: "/current/books/edit/[id]",
       });
@@ -370,7 +370,7 @@ export default function CurrntBookEdit() {
                 type="text"
                 error={fieldState.invalid}
                 helperText={fieldState.error?.message}
-                placeholder="タイトル"
+                placeholder="書名"
                 fullWidth
                 sx={{ backgroundColor: "white" }}
                 slotProps={{

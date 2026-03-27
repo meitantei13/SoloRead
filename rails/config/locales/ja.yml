@@ -2,7 +2,7 @@ ja:
   activerecord:
     attributes:
       book:
-        title: タイトル
+        title: 書名
         author: 著者
         content: 感想
         read_date: 読了日

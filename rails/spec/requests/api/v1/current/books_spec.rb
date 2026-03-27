@@ -201,17 +201,17 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
     end
 
-    context "検索ワード（タイトル）が指定されているとき" do
+    context "検索ワード（書名）が指定されているとき" do
       before do
         create(:book, title: "Ruby入門", author: "伊藤一", read_date: "2026-01-01", status: :finished, user: current_user)
         create(:book, title: "Next.js実践", author: "田中二", status: :finished, user: current_user)
         create(:book, title: "Docker基礎", author: "佐藤三", status: :finished, user: current_user)
       end
 
-      context "タイトルにマッチした記事を取得できる" do
+      context "書名にマッチした記事を取得できる" do
         let(:params) { { q: "Ruby" } }
 
-        it "該当するタイトルの記事を取得" do
+        it "該当する書名の記事を取得" do
           subject
           res = response.parsed_body
           titles = res["books"].map {|b| b["title"] }

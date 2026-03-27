@@ -89,7 +89,7 @@ export default function GoogleBooksDialog({
           >
             <TextField
               fullWidth
-              placeholder="タイトルを入力してください"
+              placeholder="書名を入力してください"
               onChange={(e) => setSearchKey(e.target.value)}
             />
             <Button

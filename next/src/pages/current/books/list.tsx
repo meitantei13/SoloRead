@@ -109,7 +109,7 @@ export default function MyList() {
         }}
       >
         <TextField
-          placeholder="タイトル・著者名で検索"
+          placeholder="書名・著者名で検索"
           variant="outlined"
           value={query}
           onChange={handleSearch}
