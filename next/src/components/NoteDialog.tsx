@@ -83,6 +83,12 @@ export default function NoteDialog({
       uid: localStorage.getItem("uid"),
     };
 
+    if (noteContent === "") {
+      setSnackSeverity("error");
+      setSnackMessage("内容を入力してください");
+      return;
+    }
+
     try {
       if (editNote) {
         await axios.patch(`${noteUrl}/${editNote.id}`, noteData, { headers });
@@ -170,7 +176,6 @@ export default function NoteDialog({
           <form onSubmit={handleSubmit} id="subscription-form">
             <TextField
               autoFocus
-              required
               multiline
               minRows={6}
               fullWidth
