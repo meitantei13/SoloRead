@@ -206,10 +206,6 @@ https://solo-read.click
 各項目を入力後、画面上部で**読書中**か**読了済**を選択し、**更新する**ボタンを押します。  
 ※読書中で更新する場合は、書名のみが必須項目となります。
 
-![Image](https://github.com/user-attachments/assets/4bd1a843-7fbd-4e87-bc6c-368a3beb9644)
-
-![Image](https://github.com/user-attachments/assets/56b5f4f3-9f39-4e5b-9e2b-e20b7303bb5c)
-
 ![Image](https://github.com/user-attachments/assets/b7c3c460-c150-47c6-944b-da56b1d2128f)
 
 ### 登録一覧からデータを検索
@@ -221,14 +217,14 @@ https://solo-read.click
 また、ジャンルを選択することで、指定したジャンルの本のみを表示することができます。  
 ジャンルを指定した後に検索を行うことで、**指定したジャンル内での検索**が可能です。
 
-![Image](https://github.com/user-attachments/assets/27f366e7-8b66-48a3-a1b1-eeac1ab186d2)
+![Image](https://github.com/user-attachments/assets/93824b51-6d93-42a4-bcd7-c675d616b82c)
 
 ### ノートの登録
 
 読書記録の詳細ページからノートの登録をすることができます。
 ノートはタグを選択して保存することができ、ユーザー独自のタグも作成可能です。
 
-![Image](https://github.com/user-attachments/assets/6ad8b3f0-2adb-4e3b-be69-b32f7199a77a)
+![Image](https://github.com/user-attachments/assets/43255f44-54ac-4ea7-a072-df3cccf57bcf)
 
 ### 統計・分析
 
@@ -236,7 +232,7 @@ https://solo-read.click
 年間の読書目標を設定することで、目標の達成度を可視化することができます。
 また、月別の読書数やジャンル別の読書数を確認することが可能です。
 
-![Image](https://github.com/user-attachments/assets/39e2f0c8-ef94-4513-8e56-5f417b79a46d)
+![Image](https://github.com/user-attachments/assets/1a57d840-2d4c-4697-8b96-4976cb500c4c)
 
 ## システム構成
 
