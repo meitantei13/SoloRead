@@ -191,6 +191,8 @@ https://solo-read.click
 
 ![Image](https://github.com/user-attachments/assets/74a097b1-1619-4a62-8b07-e7eaac532323)
 
+![Image](https://github.com/user-attachments/assets/b2c862fa-3402-48ea-9288-dbf6b6c45df7)
+
 ### 読書記録の新規登録
 
 読書記録の新規登録画面です。
