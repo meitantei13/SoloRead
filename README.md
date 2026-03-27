@@ -189,10 +189,6 @@ https://solo-read.click
 ※動画ではゲストログインを表示しています。  
 ※ゲストログインでは自動でサンプルデータが追加されています。
 
-![Image](https://github.com/user-attachments/assets/74a097b1-1619-4a62-8b07-e7eaac532323)
-
-![Image](https://github.com/user-attachments/assets/273956d0-2ceb-42e0-bb42-36fa277f8d7a)
-
 ![Image](https://github.com/user-attachments/assets/b2c862fa-3402-48ea-9288-dbf6b6c45df7)
 
 ### 読書記録の新規登録
@@ -211,6 +207,10 @@ https://solo-read.click
 ※読書中で更新する場合は、書名のみが必須項目となります。
 
 ![Image](https://github.com/user-attachments/assets/4bd1a843-7fbd-4e87-bc6c-368a3beb9644)
+
+![Image](https://github.com/user-attachments/assets/56b5f4f3-9f39-4e5b-9e2b-e20b7303bb5c)
+
+![Image](https://github.com/user-attachments/assets/b7c3c460-c150-47c6-944b-da56b1d2128f)
 
 ### 登録一覧からデータを検索
 
