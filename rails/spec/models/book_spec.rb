@@ -26,12 +26,12 @@ RSpec.describe Book, type: :model do
       end
     end
 
-    context "ステータスが読了済かつ、タイトルが空のとき" do
+    context "ステータスが読了済かつ、書名が空のとき" do
       let(:title) { "" }
 
       it "エラーメッセージが返る" do
         expect(subject).to be_falsy
-        expect(book.errors.full_messages).to eq ["タイトルを入力してください"]
+        expect(book.errors.full_messages).to eq ["書名を入力してください"]
       end
     end
 

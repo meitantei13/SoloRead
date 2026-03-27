@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_09_210803) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_27_023521) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -47,7 +47,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_09_210803) do
     t.string "image_url"
     t.date "read_date", comment: "読了日"
     t.integer "status", comment: "ステータス （10:未保存, 20：読書中, 30:読了済）"
-    t.string "title", comment: "タイトル"
+    t.string "title", comment: "書名"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["genre_id"], name: "index_books_on_genre_id"
