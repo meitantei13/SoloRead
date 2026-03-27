@@ -51,7 +51,7 @@ RSpec.describe Book, type: :model do
       end
     end
 
-    context "ステータスが未保存かつ、すでに同一ユーザーが未保存ステータスの記事を保有していたとき" do
+    context "ステータスが未保存かつ、すでに同一ユーザーが未保存ステータスの記録を保有していたとき" do
       let(:status) { "unsaved" }
       before { create(:book, status: :unsaved, user:) }
 

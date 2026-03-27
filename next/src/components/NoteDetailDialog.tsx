@@ -47,7 +47,7 @@ export default function NoteDetailDialog({
 
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/current/notes/";
   const handleDeleteNote = async () => {
-    if (!confirm("この記事を削除しますか？")) return;
+    if (!confirm("この記録を削除しますか？")) return;
     try {
       setIsLoading(true);
       await axios.delete(`${url}${note?.id}`, {

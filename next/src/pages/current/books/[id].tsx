@@ -86,7 +86,7 @@ const CurrentBookDetail = () => {
   if (!data) return <Loading />;
 
   const handleDelete = async () => {
-    if (!confirm("この記事を削除しますか？")) return;
+    if (!confirm("この記録を削除しますか？")) return;
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/current/books/${book.id}`,
@@ -109,14 +109,14 @@ const CurrentBookDetail = () => {
           : "/current/books/list";
 
       setSnackbar({
-        message: "記事を削除しました",
+        message: "記録を削除しました",
         severity: "success",
         pathname: deleteStatus,
       });
       router.push(deleteStatus);
     } catch (error) {
       setSnackbar({
-        message: "記事の削除に失敗しました",
+        message: "記録の削除に失敗しました",
         severity: "error",
         pathname: `/current/books/${book.id}`,
       });

@@ -69,8 +69,8 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
     let(:headers) { current_user.create_new_auth_token }
     let(:current_user) { create(:user) }
 
-    context "ログインユーザーに紐づく未保存ステータスの記事が０件のとき" do
-      it "未保存ステータスの記事が新規作成される" do
+    context "ログインユーザーに紐づく未保存ステータスの記録が０件のとき" do
+      it "未保存ステータスの記録が新規作成される" do
         expect { subject }.to change { current_user.books.count }.by(1)
         expect(current_user.books.last).to be_unsaved
         res = response.parsed_body
@@ -80,10 +80,10 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
       end
     end
 
-    context "ログインユーザーに紐づく未保存ステータスの記事が１件のとき" do
+    context "ログインユーザーに紐づく未保存ステータスの記録が１件のとき" do
       before { create(:book, user: current_user, status: :unsaved) }
 
-      it "既存の未保存ステータスの記事を表示する" do
+      it "既存の未保存ステータスの記録を表示する" do
         expect { subject }.not_to change { current_user.books.count }
         res = response.parsed_body
         expect(res.keys).to eq ["id", "title", "author", "content", "status", "read_date", "genre_id", "genre_name", "image_url", "cover_image", "user"]
@@ -208,10 +208,10 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         create(:book, title: "Docker基礎", author: "佐藤三", status: :finished, user: current_user)
       end
 
-      context "書名にマッチした記事を取得できる" do
+      context "書名にマッチした記録を取得できる" do
         let(:params) { { q: "Ruby" } }
 
-        it "該当する書名の記事を取得" do
+        it "該当する書名の記録を取得" do
           subject
           res = response.parsed_body
           titles = res["books"].map {|b| b["title"] }
@@ -220,9 +220,9 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         end
       end
 
-      context "著者にマッチした記事を取得できる" do
+      context "著者にマッチした記録を取得できる" do
         let(:params) { { q: "田中" } }
-        it "該当する著者の記事を取得" do
+        it "該当する著者の記録を取得" do
           subject
           res = response.parsed_body
           author = res["books"].map {|b| b["author"] }
@@ -231,7 +231,7 @@ RSpec.describe "Api::V1::Current::Books", type: :request do
         end
       end
 
-      context "検索ワードに該当する記事が存在しないとき" do
+      context "検索ワードに該当する記録が存在しないとき" do
         let(:params) { { q: "HTML" } }
         it "空の配列が返る" do
           subject

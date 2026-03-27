@@ -142,7 +142,7 @@ export default function CurrntBookEdit() {
 
     if (data.title.trim() === "") {
       return setSnackbar({
-        message: "記事の保存には書名が必要です",
+        message: "記録の保存には書名が必要です",
         severity: "error",
         pathname: "/current/books/edit/[id]",
       });
@@ -150,7 +150,7 @@ export default function CurrntBookEdit() {
 
     if (isFinished && data.author.trim() === "") {
       return setSnackbar({
-        message: "記事の保存には著者名が必要です",
+        message: "記録の保存には著者名が必要です",
         severity: "error",
         pathname: "/current/books/edit/[id]",
       });
@@ -158,7 +158,7 @@ export default function CurrntBookEdit() {
 
     if (isFinished && data.readDate.trim() === "") {
       return setSnackbar({
-        message: "記事の保存には読了日が必要です",
+        message: "記録の保存には読了日が必要です",
         severity: "error",
         pathname: "/current/books/edit/[id]",
       });
@@ -166,7 +166,7 @@ export default function CurrntBookEdit() {
 
     if (isFinished && data.content.trim() === "") {
       return setSnackbar({
-        message: "記事の保存には本の感想が必要です",
+        message: "記録の保存には本の感想が必要です",
         severity: "error",
         pathname: "/current/books/edit/[id]",
       });
@@ -213,7 +213,7 @@ export default function CurrntBookEdit() {
       );
 
       setSnackbar({
-        message: "記事を保存しました",
+        message: "記録を保存しました",
         severity: "success",
         pathname: pageChange,
       });
@@ -224,7 +224,7 @@ export default function CurrntBookEdit() {
         console.log(err.message);
 
         setSnackbar({
-          message: "記事の保存に失敗しました",
+          message: "記録の保存に失敗しました",
           severity: "error",
           pathname: "/current/books/edit/[id]",
         });
@@ -280,7 +280,7 @@ export default function CurrntBookEdit() {
                 title={
                   book.status === "読書中"
                     ? "読書中一覧に移動"
-                    : "記事一覧に移動"
+                    : "記録一覧に移動"
                 }
                 placement="top"
               >
