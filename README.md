@@ -3,7 +3,7 @@
 誰にも見られない、自分だけの読書管理アプリ。  
 「Solo Read」は、あなただけが開けられる**秘密の本棚**です。
 
-![Image](https://github.com/user-attachments/assets/4fd94406-842f-447b-a128-4c221c49ec72)
+![Image](https://github.com/user-attachments/assets/24c1b4a2-6bd7-4743-8364-a5ee87717a21)
 
 ## サービスURL
 
@@ -259,7 +259,7 @@ https://solo-read.click
 - GitHub Actions と ECR を連携した自動デプロイパイプラインを構築
 - アプリケーションの応答性と安全性を保つため、Sidekiq と Redis (ElastiCache) を用いた非同期処理基盤を構築
 
-![Image](https://github.com/user-attachments/assets/4fd94406-842f-447b-a128-4c221c49ec72)
+![Image](https://github.com/user-attachments/assets/24c1b4a2-6bd7-4743-8364-a5ee87717a21)
 
 ### ER図
 
