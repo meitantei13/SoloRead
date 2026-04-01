@@ -121,7 +121,7 @@ https://solo-read.click
 | バックエンド        | Ruby 4.0.1 / Ruby on Rails 8.1.2 (APIモード) |
 | リバースプロキシ    | Nginx                                        |
 | 認証                | Devise / Devise Token Auth                   |
-| データベース        | MySQL 8.0.45                                 |
+| データベース        | MySQL 8.4.8                                  |
 | データ集計          | groupdate                                    |
 | 書籍検索            | Google Books API                             |
 | 非同期処理          | Sidekiq / sidekiq-cron                       |
