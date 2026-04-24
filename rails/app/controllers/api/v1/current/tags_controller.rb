@@ -1,6 +1,6 @@
 class Api::V1::Current::TagsController < Api::V1::BaseController
   before_action :authenticate_user!
-  
+
   def index
     tags = Tag.where(is_default: true).or(Tag.where(user: current_user))
     render json: tags
